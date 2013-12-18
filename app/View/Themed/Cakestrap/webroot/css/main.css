@@ -1,0 +1,21 @@
+#header {
+	margin-top:20px;
+}
+#page-container {
+	margin-bottom:20px;
+}
+#url-rewriting-warning {
+	display:none;
+}
+
+.dfinput {
+	display: inline-block !important;
+	width: auto;
+	margin-right: 8px;
+}
+.dfrow {
+	padding-bottom: 14px;
+}
+#DataFinderCancel {
+	margin-right: 8px;
+}
