@@ -142,10 +142,17 @@ class SimpleCaptcha {
     /** GD image */
     public $im;
 
+    private $cakeSession;
+
     public function __construct($config = array()) {
         $current_dir = dirname(__FILE__) . DS;
         
         $this->resourcesPath = $current_dir . 'simple_captcha';
+    }
+
+    public function setCakeSession(&$session)
+    {
+        $this->cakeSession = &$session;
     }
 
     public function CreateImage() {
@@ -159,7 +166,8 @@ class SimpleCaptcha {
         $fontcfg  = $this->fonts[array_rand($this->fonts)];
         $this->WriteText($text, $fontcfg);
 
-        $_SESSION[$this->session_var] = $text;
+        //$_SESSION[$this->session_var] = $text;
+        $this->cakeSession->write('DreamCMS.simple_captcha_value', $text);
 
         /** Transformations */
         if (!empty($this->lineWidth)) {

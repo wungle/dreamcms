@@ -13,10 +13,20 @@ class SimpleCaptchaController extends DreamcmsAppController {
  * @return void
  */
 	public function index() {
+		//
+	}
+
+/**
+ * secret_captcha method
+ *
+ * @return void
+ */
+	public function secret_captcha($counter = 0) {
 		$captcha = new SimpleCaptcha();
 
+		$captcha->setCakeSession($this->Session);
 		$captcha->session_var = 'DreamCMS.simple_captcha_value';
-		$captcha->width = 300;
+		$captcha->width = 289;
 		$captcha->height = 60;
 		$captcha->imageFormat = 'png';
 		//$captcha->lineWidth = 3;
