@@ -30,9 +30,7 @@
 											<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 												<thead>
 													<tr>
-														<th><?php echo $this->Paginator->sort('id'); ?></th> 
 														<th><?php echo $this->Paginator->sort('name'); ?></th> 
-														<th class="hidden-480"><?php echo $this->Paginator->sort('deleted'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('created'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('modified'); ?></th> 
  
@@ -45,9 +43,7 @@
 												<tbody>
 <?php foreach ($groups as $group): ?>
 													<tr>
-														<td><?php echo h($group['Group']['id']); ?>&nbsp;</td>
 														<td><?php echo h($group['Group']['name']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($group['Group']['deleted']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($group['Group']['created']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($group['Group']['modified']); ?>&nbsp;</td>
 														<td class="center">
