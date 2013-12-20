@@ -1,3 +1,18 @@
+.secret-captcha-container{
+	position: relative;
+}
+.secret-captcha {
+	width: 289px;
+	height: 60px;
+	border: 1px solid rgb(213, 213, 213);
+}
+
+.secret-captcha-reload {
+	position: absolute;
+	right: 8px;
+	bottom: 8px;
+}
+
 .dt-btns {
 	margin-bottom: 6px !important;
 }

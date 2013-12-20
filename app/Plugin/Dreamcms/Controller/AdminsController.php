@@ -1,5 +1,6 @@
 <?php
 App::uses('DreamcmsAppController', 'Dreamcms.Controller');
+App::uses("Sanitize", "Utility");
 /**
  * Admins Controller
  *
@@ -116,4 +117,48 @@ class AdminsController extends DreamcmsAppController {
 		}
 		$this->Session->setFlash(__('Admin was not deleted'), 'flash/error');
 		$this->redirect(array('action' => 'index'));
-	}}
+	}
+
+/**
+ * login method
+ *
+ * @throws NotFoundException
+ * @param string $login_param
+ * @return void
+ */
+	public function login($login_param = '')
+	{
+		if ($this->DreamcmsAuth->user())
+			$this->redirect('/dreamcms');
+
+		$this->layout = 'login';
+
+		if ($this->data)
+		{
+			$this->data = Sanitize::clean($this->data);
+
+			if ($this->Session->read('DreamCMS.simple_captcha_value') == $this->data['Admin']['captcha'])
+			{
+				if ($this->DreamcmsAuth->login())
+				{
+					$this->redirect('/dreamcms');
+				}
+				else
+					$this->Session->setFlash(__('Invalid username or password.'), 'flash/error');
+			}
+			else
+				$this->Session->setFlash(__('Invalid captcha validation code.'), 'flash/error');
+		}
+	}
+
+/**
+ * login method
+ *
+ * @return void
+ */
+	public function logout()
+	{
+		$this->DreamcmsAuth->logout();
+		$this->redirect('/');
+	}
+}
