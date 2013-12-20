@@ -86,7 +86,9 @@ class AdminsController extends DreamCmsAppController {
 			}
 		} else {
 			$options = array('conditions' => array('Admin.' . $this->Admin->primaryKey => $id));
-			$this->request->data = $this->Admin->find('first', $options);
+			$data = $this->Admin->find('first', $options);
+			unset($data['Admin']['password']);
+			$this->request->data = $data;
 		}
 		$groups = $this->Admin->Group->find('list');
 		$this->set(compact('groups'));
