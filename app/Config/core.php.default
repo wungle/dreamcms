@@ -150,7 +150,7 @@
  *	`manager_index()` and `/manager/controller/index`
  *
  */
-	Configure::write('Routing.prefixes', array('dream_cms'));
+	Configure::write('Routing.prefixes', array('dreamcms'));
 
 /**
  * Turn off all caching application-wide.
