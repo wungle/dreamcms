@@ -9,6 +9,16 @@ App::uses('DreamCmsAppController', 'DreamCms.Controller');
 class CmsMenusController extends DreamCmsAppController {
 
 /**
+ * Uses
+ *
+ * @var array
+ */
+	public $uses = array(
+		'DreamCms.CmsMenu',
+		'DreamCms.Icon'
+	);
+
+/**
  * Components
  *
  * @var array
@@ -61,8 +71,19 @@ class CmsMenusController extends DreamCmsAppController {
 				$this->Session->setFlash(__('The cms menu could not be saved. Please, try again.'), 'flash/error');
 			}
 		}
-		$parentCmsMenus = $this->CmsMenu->ParentCmsMenu->find('list');
+		$parentCmsMenus = $this->CmsMenu->find(
+			'list',
+			array(
+				'conditions' => array(
+					'CmsMenu.parent_id' => 0,
+					'CmsMenu.published' => 'Yes'
+				),
+				'order' => 'CmsMenu.name ASC'
+			)
+		);
+		$parentCmsMenus = array_merge(array(0 => 'No Parent'), $parentCmsMenus);
 		$this->set(compact('parentCmsMenus'));
+		$this->set('iconList', $this->Icon->getIconList());
 	}
 
 /**
@@ -88,8 +109,20 @@ class CmsMenusController extends DreamCmsAppController {
 			$options = array('conditions' => array('CmsMenu.' . $this->CmsMenu->primaryKey => $id));
 			$this->request->data = $this->CmsMenu->find('first', $options);
 		}
-		$parentCmsMenus = $this->CmsMenu->ParentCmsMenu->find('list');
+		$parentCmsMenus = $this->CmsMenu->find(
+			'list',
+			array(
+				'conditions' => array(
+					'CmsMenu.parent_id' => 0,
+					'CmsMenu.published' => 'Yes',
+					'CmsMenu.id !=' => $this->request->data['CmsMenu']['id']
+				),
+				'order' => 'CmsMenu.name ASC'
+			)
+		);
+		$parentCmsMenus = array_merge(array(0 => 'No Parent'), $parentCmsMenus);
 		$this->set(compact('parentCmsMenus'));
+		$this->set('iconList', $this->Icon->getIconList());
 	}
 
 /**
