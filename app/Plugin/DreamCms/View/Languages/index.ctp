@@ -1,5 +1,6 @@
 
-<?php $this->startIfEmpty('breadcrumb'); ?>						<ul class="breadcrumb">
+<?php $this->startIfEmpty('breadcrumb'); ?>
+						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home home-icon"></i>
 								<a href="#"><?php echo __('Home'); ?></a>
@@ -7,6 +8,7 @@
 							<li class="active"><?php echo __('Languages'); ?></li>
 						</ul><!-- .breadcrumb -->
 <?php $this->end(); ?>
+
 						<div class="page-header">
 							<h1>
 								<?php echo __('Languages'); ?>							</h1>
@@ -30,10 +32,8 @@
 											<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 												<thead>
 													<tr>
-														<th><?php echo $this->Paginator->sort('id'); ?></th> 
 														<th><?php echo $this->Paginator->sort('name'); ?></th> 
-														<th class="hidden-480"><?php echo $this->Paginator->sort('locale'); ?></th> 
-														<th class="hidden-480"><?php echo $this->Paginator->sort('deleted'); ?></th> 
+														<th><?php echo $this->Paginator->sort('locale'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('created'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('modified'); ?></th> 
  
@@ -46,10 +46,8 @@
 												<tbody>
 <?php foreach ($languages as $language): ?>
 													<tr>
-														<td><?php echo h($language['Language']['id']); ?>&nbsp;</td>
 														<td><?php echo h($language['Language']['name']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($language['Language']['locale']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($language['Language']['deleted']); ?>&nbsp;</td>
+														<td><?php echo h($language['Language']['locale']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($language['Language']['created']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($language['Language']['modified']); ?>&nbsp;</td>
 														<td class="center">
