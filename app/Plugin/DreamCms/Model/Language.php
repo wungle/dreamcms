@@ -73,16 +73,8 @@ class Language extends DreamCmsAppModel {
 		),
 		'deleted' => array(
 			'inList' => array(
-				'rule' => array('inList', array('Yes', 'No')),
+				'rule' => array('inList', array('0', '1')),
 				'message' => 'Please provide a valid deleted value.',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
-				'message' => 'Deleted value can not be empty.',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
