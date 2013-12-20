@@ -34,7 +34,7 @@ class AppController extends Controller {
 	public function beforeFilter()
 	{
 		// Load the website settings..
-		$this->loadModel('DreamCms.Setting');
+		$this->loadModel('Dreamcms.Setting');
 		$this->Setting->publishSettings();
 
 		if (Configure::read('DreamCMS.debug_status') == 'On')
@@ -49,7 +49,7 @@ class AppController extends Controller {
 		$locale = $this->Session->read('Config.language') ? $this->Session->read('Config.language') : 'en-US';
 		Configure::write('Config.language', $locale);
 
-		$this->loadModel('DreamCms.Language');
+		$this->loadModel('Dreamcms.Language');
 		$languages = $this->Language->find(
 			'list',
 			array(
