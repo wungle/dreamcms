@@ -1,5 +1,6 @@
 
-<?php $this->startIfEmpty('breadcrumb'); ?>						<ul class="breadcrumb">
+<?php $this->startIfEmpty('breadcrumb'); ?>
+						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home home-icon"></i>
 								<a href="#"><?php echo __('Home'); ?></a>
@@ -7,6 +8,7 @@
 							<li class="active"><?php echo __('Settings'); ?></li>
 						</ul><!-- .breadcrumb -->
 <?php $this->end(); ?>
+
 						<div class="page-header">
 							<h1>
 								<?php echo __('Settings'); ?>							</h1>
@@ -29,12 +31,9 @@
 										<div class="table-responsive">
 											<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 												<thead>
-													<tr>
-														<th><?php echo $this->Paginator->sort('id'); ?></th> 
+													<tr> 
 														<th><?php echo $this->Paginator->sort('name'); ?></th> 
-														<th class="hidden-480"><?php echo $this->Paginator->sort('value'); ?></th> 
-														<th class="hidden-480"><?php echo $this->Paginator->sort('deleted'); ?></th> 
-														<th class="hidden-480"><?php echo $this->Paginator->sort('created'); ?></th> 
+														<th><?php echo $this->Paginator->sort('created'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('modified'); ?></th> 
  
 														<th class="center">
@@ -46,11 +45,8 @@
 												<tbody>
 <?php foreach ($settings as $setting): ?>
 													<tr>
-														<td><?php echo h($setting['Setting']['id']); ?>&nbsp;</td>
 														<td><?php echo h($setting['Setting']['name']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($setting['Setting']['value']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($setting['Setting']['deleted']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($setting['Setting']['created']); ?>&nbsp;</td>
+														<td><?php echo h($setting['Setting']['created']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($setting['Setting']['modified']); ?>&nbsp;</td>
 														<td class="center">
 															<?php echo $this->Html->link($this->Html->tag('i', ' ' . __('View'), array('class' => 'icon-eye-open bigger-120')), array('action' => 'view', $setting['Setting']['id']), array('class' => 'btn btn-xs btn-warning dt-btns', 'escape' => false)); ?> &nbsp; 

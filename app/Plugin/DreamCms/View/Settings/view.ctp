@@ -1,4 +1,14 @@
 
+<?php $this->startIfEmpty('breadcrumb'); ?>
+						<ul class="breadcrumb">
+							<li>
+								<i class="icon-home home-icon"></i>
+								<a href="#"><?php echo __('Home'); ?></a>
+							</li>
+							<li class="active"><?php echo __('Settings'); ?></li>
+						</ul><!-- .breadcrumb -->
+<?php $this->end(); ?>
+
 <div class="row">
 	<div class="col-sm-12">
 		<h2><?php  echo __('Setting'); ?></h2>
@@ -23,14 +33,6 @@
 					<label><strong><?php echo __('Value'); ?></strong></label>
 		<div class="preview-pane">
 			<?php echo h($setting['Setting']['value']); ?>
-			&nbsp;
-		</div>
- 
-		</div> 
-		<div class="form-group">
-					<label><strong><?php echo __('Deleted'); ?></strong></label>
-		<div class="preview-pane">
-			<?php echo h($setting['Setting']['deleted']); ?>
 			&nbsp;
 		</div>
  
