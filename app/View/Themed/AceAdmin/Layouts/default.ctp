@@ -135,12 +135,12 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 		<!-- basic scripts -->
 		<!--[if !IE]> -->
 			<script type="text/javascript">
-				window.jQuery || document.write('<?php echo fixInlineScriptLoading($this->Html->script('jquery-2.0.3.min')); ?>');
+				document.write('<?php echo fixInlineScriptLoading($this->Html->script('jquery-2.0.3.min')); ?>');
 			</script>
 		<!-- <![endif]-->
 		<!--[if IE]>
 			<script type="text/javascript">
-				window.jQuery || document.write('<?php echo fixInlineScriptLoading($this->Html->script('jquery-1.10.2.min')); ?>');
+				document.write('<?php echo fixInlineScriptLoading($this->Html->script('jquery-1.10.2.min')); ?>');
 			</script>
 		<![endif]-->
 

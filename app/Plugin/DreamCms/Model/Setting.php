@@ -74,4 +74,48 @@ class Setting extends DreamCmsAppModel {
 			),
 		),
 	);
+
+	public function saveSettings($data)
+    {
+		foreach ($data['Setting'] as $key => $value)
+			$this->query('UPDATE `' . $this->useTable . '` SET `value`=\'' . addslashes($value) . '\', `modified`=NOW() WHERE `name`=\'' . $key . '\' LIMIT 1');
+    }
+    
+    public function loadSettings()
+    {
+		$temp = $this->find('all', array('order' => 'Setting.name ASC'));
+		return array(
+			'Setting' => Set::combine(
+				$temp,
+				'{n}.Setting.name',
+				'{n}.Setting.value'
+			),
+			'Permisions' => Set::combine(
+				$temp,
+				'{n}.Setting.name',
+				'{n}.Setting.value'
+			)
+		);
+    }
+    
+    public function publishSettings()
+    {
+		$temp = array(
+			'Setting' => Set::combine(
+				$this->find('all', array('conditions' => array('Setting.deleted' => 0), 'order' => 'Setting.name ASC')),
+				'{n}.Setting.name',
+				'{n}.Setting.value'
+			)
+		);
+		
+		foreach ($temp['Setting'] as  $key => $value)
+			Configure::write('DreamCMS.' . $key, $value);
+		
+		Configure::write('Config.language', $temp['Setting']['default_language']);
+		
+		//if (Configure::read('DreamCMS.cache_status') == 'On')
+		//	Configure::write('Cache.disable', false);
+		//else
+		//	Configure::write('Cache.disable', true);
+    }
 }

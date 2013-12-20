@@ -106,4 +106,5 @@ CakeLog::config('error', array(
 	'file' => 'error',
 ));
 
+CakePlugin::load('DebugKit', array('bootstrap' => false, 'routes' => false));
 CakePlugin::load('DreamCms', array('bootstrap' => false, 'routes' => false));
