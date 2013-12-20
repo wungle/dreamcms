@@ -4,17 +4,8 @@ App::uses("SimpleCaptcha", 'DreamCms.Lib');
 /**
  * SimpleCaptcha Controller
  *
- * @property Admin $Admin
- * @property PaginatorComponent $Paginator
  */
 class SimpleCaptchaController extends DreamCmsAppController {
-
-/**
- * Components
- *
- * @var array
- */
-	//public $components = array('Paginator');
 
 /**
  * index method
