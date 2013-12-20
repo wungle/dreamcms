@@ -85,15 +85,7 @@ class Admin extends DreamCmsAppModel {
 			'minLength' => array(
 				'rule' => array('minLength', 8),
 				'message' => 'Password has to be at least 8 characters.',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
-				'message' => 'Password can not be empty.',
-				//'allowEmpty' => false,
+				'allowEmpty' => true,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
@@ -103,15 +95,7 @@ class Admin extends DreamCmsAppModel {
 			'minLength' => array(
 				'rule' => array('minLength', 8),
 				'message' => 'Password confirmation has to be at least 8 characters.',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
-				'message' => 'Password confirmation can not be empty.',
-				//'allowEmpty' => false,
+				'allowEmpty' => true,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
@@ -224,8 +208,10 @@ class Admin extends DreamCmsAppModel {
 		if (isset($this->data['Admin']['old_password']))
 			unset($this->data['Admin']['old_password']);
 		
-		if (isset($this->data['Admin']['password']))
+		if (isset($this->data['Admin']['password']) && !empty($this->data['Admin']['password']))
 			$this->data['Admin']['password'] = Security::hash($this->data['Admin']['password'], 'blowfish');
+		else
+			unset($this->data['Admin']['password']);
 		
 		return true;
 	}
