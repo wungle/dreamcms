@@ -47,8 +47,8 @@ class Setting extends DreamCmsAppModel {
 		),
 		'value' => array(
 			'minLength' => array(
-				'rule' => array('minLength', 3),
-				'message' => 'Value has to be at least 3 characters.',
+				'rule' => array('minLength', 1),
+				'message' => 'Value has to be at least 1 characters.',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
