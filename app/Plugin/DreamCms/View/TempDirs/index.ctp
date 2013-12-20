@@ -1,15 +1,17 @@
 
-<?php $this->startIfEmpty('breadcrumb'); ?>						<ul class="breadcrumb">
+<?php $this->startIfEmpty('breadcrumb'); ?>
+						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home home-icon"></i>
 								<a href="#"><?php echo __('Home'); ?></a>
 							</li>
-							<li class="active"><?php echo __('Temp Dirs'); ?></li>
+							<li class="active"><?php echo __('Temporary Dirs'); ?></li>
 						</ul><!-- .breadcrumb -->
 <?php $this->end(); ?>
+
 						<div class="page-header">
 							<h1>
-								<?php echo __('Temp Dirs'); ?>							</h1>
+								<?php echo __('Temporary Dirs'); ?>							</h1>
 						</div><!-- /.page-header -->
 
 						<div>
@@ -17,7 +19,7 @@
 								<?php echo $this->element('common/data_finder'); ?> 
 							</div>
 							<div class="col-sm-6" align="right">
-								<?php echo $this->Html->link($this->Html->tag('i', ' ' . __('New Temp Dir'), array('class' => 'icon-plus bigger-120')), array('action' => 'add'), array('class' => 'btn btn-info dt-btns', 'escape' => false)); ?> &nbsp; 
+								<?php echo $this->Html->link($this->Html->tag('i', ' ' . __('New Temporary Dir'), array('class' => 'icon-plus bigger-120')), array('action' => 'add'), array('class' => 'btn btn-info dt-btns', 'escape' => false)); ?> &nbsp; 
 							</div>
 						</div>
 
@@ -30,10 +32,8 @@
 											<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 												<thead>
 													<tr>
-														<th><?php echo $this->Paginator->sort('id'); ?></th> 
 														<th><?php echo $this->Paginator->sort('path'); ?></th> 
-														<th class="hidden-480"><?php echo $this->Paginator->sort('lifespan'); ?></th> 
-														<th class="hidden-480"><?php echo $this->Paginator->sort('deleted'); ?></th> 
+														<th><?php echo $this->Paginator->sort('lifespan'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('created'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('modified'); ?></th> 
  
@@ -46,10 +46,8 @@
 												<tbody>
 <?php foreach ($tempDirs as $tempDir): ?>
 													<tr>
-														<td><?php echo h($tempDir['TempDir']['id']); ?>&nbsp;</td>
 														<td><?php echo h($tempDir['TempDir']['path']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($tempDir['TempDir']['lifespan']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($tempDir['TempDir']['deleted']); ?>&nbsp;</td>
+														<td><?php echo h($tempDir['TempDir']['lifespan']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($tempDir['TempDir']['created']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($tempDir['TempDir']['modified']); ?>&nbsp;</td>
 														<td class="center">

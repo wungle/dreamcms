@@ -1,7 +1,17 @@
 
+<?php $this->startIfEmpty('breadcrumb'); ?>
+						<ul class="breadcrumb">
+							<li>
+								<i class="icon-home home-icon"></i>
+								<a href="#"><?php echo __('Home'); ?></a>
+							</li>
+							<li class="active"><?php echo __('Temporary Dirs'); ?></li>
+						</ul><!-- .breadcrumb -->
+<?php $this->end(); ?>
+
 <div class="row">
 	<div class="col-sm-12">
-		<h2><?php  echo __('Temp Dir'); ?></h2>
+		<h2><?php  echo __('Temporary Dir'); ?></h2>
 
 		<div class="form-group">
 					<label><strong><?php echo __('Id'); ?></strong></label>
@@ -23,14 +33,6 @@
 					<label><strong><?php echo __('Lifespan'); ?></strong></label>
 		<div class="preview-pane">
 			<?php echo h($tempDir['TempDir']['lifespan']); ?>
-			&nbsp;
-		</div>
- 
-		</div> 
-		<div class="form-group">
-					<label><strong><?php echo __('Deleted'); ?></strong></label>
-		<div class="preview-pane">
-			<?php echo h($tempDir['TempDir']['deleted']); ?>
 			&nbsp;
 		</div>
  

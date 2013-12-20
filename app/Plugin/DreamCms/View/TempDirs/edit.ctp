@@ -1,7 +1,17 @@
 
+<?php $this->startIfEmpty('breadcrumb'); ?>
+						<ul class="breadcrumb">
+							<li>
+								<i class="icon-home home-icon"></i>
+								<a href="#"><?php echo __('Home'); ?></a>
+							</li>
+							<li class="active"><?php echo __('Temporary Dirs'); ?></li>
+						</ul><!-- .breadcrumb -->
+<?php $this->end(); ?>
+
 <div class="row">
 	<div class="col-sm-12">
-		<h2><?php echo __('Edit Temp Dir'); ?></h2>
+		<h2><?php echo __('Edit Temporary Dir'); ?></h2>
 		<div class="tempDirs form">
 			<?php echo $this->Form->create('TempDir', array('role' => 'form')); ?> 
 				<fieldset>
@@ -13,9 +23,6 @@
 					</div><!-- .form-group -->
 					<div class="form-group">
 						<?php echo $this->Form->input('lifespan', array('class' => 'form-control')); ?>
-					</div><!-- .form-group -->
-					<div class="form-group">
-						<?php echo $this->Form->input('deleted', array('class' => 'form-control')); ?>
 					</div><!-- .form-group -->
 
 					<?php echo $this->Form->submit(__('Submit'), array('class' => 'btn btn-large btn-primary')); ?>
