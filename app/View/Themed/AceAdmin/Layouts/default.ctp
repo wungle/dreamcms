@@ -123,7 +123,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 					</div><!-- /.page-content -->
 				</div><!-- /.main-content -->
 
-<?php echo $this->element('common/ace_settings'); ?> 
+<?php //echo $this->element('common/ace_settings'); ?> 
 
 			</div><!-- /.main-container-inner -->
 
