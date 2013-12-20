@@ -1,5 +1,6 @@
 
-<?php $this->startIfEmpty('breadcrumb'); ?>						<ul class="breadcrumb">
+<?php $this->startIfEmpty('breadcrumb'); ?>
+						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home home-icon"></i>
 								<a href="#"><?php echo __('Home'); ?></a>
@@ -29,15 +30,11 @@
 										<div class="table-responsive">
 											<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 												<thead>
-													<tr>
-														<th><?php echo $this->Paginator->sort('id'); ?></th> 
+													<tr> 
 														<th><?php echo $this->Paginator->sort('parent_id'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('name'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('url'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('published'); ?></th> 
-														<th class="hidden-480"><?php echo $this->Paginator->sort('deleted'); ?></th> 
-														<th class="hidden-480"><?php echo $this->Paginator->sort('lft'); ?></th> 
-														<th class="hidden-480"><?php echo $this->Paginator->sort('rght'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('created'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('modified'); ?></th> 
  
@@ -50,16 +47,12 @@
 												<tbody>
 <?php foreach ($cmsMenus as $cmsMenu): ?>
 													<tr>
-														<td><?php echo h($cmsMenu['CmsMenu']['id']); ?>&nbsp;</td>
 														<td>
-															<?php echo $this->Html->link($cmsMenu['ParentCmsMenu']['name'], array('controller' => 'cms_menus', 'action' => 'view', $cmsMenu['ParentCmsMenu']['id'])); ?>
+															<?php echo $this->Html->link('<i class="'. $cmsMenu['ParentCmsMenu']['icon'] .'"></i>&nbsp; ' . $cmsMenu['ParentCmsMenu']['name'], array('controller' => 'cms_menus', 'action' => 'view', $cmsMenu['ParentCmsMenu']['id']), array('escape' => false)); ?>
 														</td>
-														<td class="hidden-480"><?php echo h($cmsMenu['CmsMenu']['name']); ?>&nbsp;</td>
+														<td class="hidden-480"><i class="<?php echo h($cmsMenu['CmsMenu']['icon']); ?>"></i>&nbsp; <?php echo h($cmsMenu['CmsMenu']['name']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($cmsMenu['CmsMenu']['url']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($cmsMenu['CmsMenu']['published']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($cmsMenu['CmsMenu']['deleted']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($cmsMenu['CmsMenu']['lft']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($cmsMenu['CmsMenu']['rght']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($cmsMenu['CmsMenu']['created']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($cmsMenu['CmsMenu']['modified']); ?>&nbsp;</td>
 														<td class="center">

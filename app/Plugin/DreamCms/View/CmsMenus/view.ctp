@@ -1,4 +1,14 @@
 
+<?php $this->startIfEmpty('breadcrumb'); ?>
+						<ul class="breadcrumb">
+							<li>
+								<i class="icon-home home-icon"></i>
+								<a href="#"><?php echo __('Home'); ?></a>
+							</li>
+							<li class="active"><?php echo __('Cms Menus'); ?></li>
+						</ul><!-- .breadcrumb -->
+<?php $this->end(); ?>
+
 <div class="row">
 	<div class="col-sm-12">
 		<h2><?php  echo __('Cms Menu'); ?></h2>
@@ -15,6 +25,14 @@
 					<label><strong><?php echo __('Parent Cms Menu'); ?></strong></label>
 		<div class="preview-pane">
 			<?php echo $this->Html->link($cmsMenu['ParentCmsMenu']['name'], array('controller' => 'cms_menus', 'action' => 'view', $cmsMenu['ParentCmsMenu']['id']), array('class' => '')); ?>
+			&nbsp;
+		</div>
+ 
+		</div> 
+		<div class="form-group">
+					<label><strong><?php echo __('Icon'); ?></strong></label>
+		<div class="preview-pane">
+			<i class="<?php echo h($cmsMenu['CmsMenu']['icon']); ?>"></i>
 			&nbsp;
 		</div>
  
@@ -39,30 +57,6 @@
 					<label><strong><?php echo __('Published'); ?></strong></label>
 		<div class="preview-pane">
 			<?php echo h($cmsMenu['CmsMenu']['published']); ?>
-			&nbsp;
-		</div>
- 
-		</div> 
-		<div class="form-group">
-					<label><strong><?php echo __('Deleted'); ?></strong></label>
-		<div class="preview-pane">
-			<?php echo h($cmsMenu['CmsMenu']['deleted']); ?>
-			&nbsp;
-		</div>
- 
-		</div> 
-		<div class="form-group">
-					<label><strong><?php echo __('Lft'); ?></strong></label>
-		<div class="preview-pane">
-			<?php echo h($cmsMenu['CmsMenu']['lft']); ?>
-			&nbsp;
-		</div>
- 
-		</div> 
-		<div class="form-group">
-					<label><strong><?php echo __('Rght'); ?></strong></label>
-		<div class="preview-pane">
-			<?php echo h($cmsMenu['CmsMenu']['rght']); ?>
 			&nbsp;
 		</div>
  
