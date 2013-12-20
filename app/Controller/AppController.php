@@ -31,6 +31,11 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 
+	public $components = array(
+		'Session',
+		'Dreamcms.GarbageRemover'
+	);
+
 	public function beforeFilter()
 	{
 		// Load the website settings..
