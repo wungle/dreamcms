@@ -1,6 +1,6 @@
 <?php
 App::uses('DreamCmsAppModel', 'DreamCms.Model');
-App::uses('Security', 'Component');
+App::uses('Security', 'Utility');
 /**
  * Admin Model
  *
