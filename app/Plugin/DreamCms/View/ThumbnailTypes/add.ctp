@@ -1,4 +1,14 @@
 
+<?php $this->startIfEmpty('breadcrumb'); ?>
+						<ul class="breadcrumb">
+							<li>
+								<i class="icon-home home-icon"></i>
+								<a href="#"><?php echo __('Home'); ?></a>
+							</li>
+							<li class="active"><?php echo __('Thumbnail Types'); ?></li>
+						</ul><!-- .breadcrumb -->
+<?php $this->end(); ?>
+
 <div class="row">
 	<div class="col-sm-12">
 		<h2><?php echo __('Add Thumbnail Type'); ?></h2>
@@ -15,10 +25,7 @@
 						<?php echo $this->Form->input('height', array('class' => 'form-control')); ?>
 					</div><!-- .form-group -->
 					<div class="form-group">
-						<?php echo $this->Form->input('method', array('class' => 'form-control')); ?>
-					</div><!-- .form-group -->
-					<div class="form-group">
-						<?php echo $this->Form->input('deleted', array('class' => 'form-control')); ?>
+						<?php echo $this->Form->input('method', array('options' => array('Scale' => 'Scale', 'Crop' => 'Crop'), 'class' => 'form-control')); ?>
 					</div><!-- .form-group -->
 
 					<?php echo $this->Form->submit(__('Submit'), array('class' => 'btn btn-large btn-primary')); ?>

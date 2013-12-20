@@ -1,5 +1,6 @@
 
-<?php $this->startIfEmpty('breadcrumb'); ?>						<ul class="breadcrumb">
+<?php $this->startIfEmpty('breadcrumb'); ?>
+						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home home-icon"></i>
 								<a href="#"><?php echo __('Home'); ?></a>
@@ -7,6 +8,7 @@
 							<li class="active"><?php echo __('Thumbnail Types'); ?></li>
 						</ul><!-- .breadcrumb -->
 <?php $this->end(); ?>
+
 						<div class="page-header">
 							<h1>
 								<?php echo __('Thumbnail Types'); ?>							</h1>
@@ -30,12 +32,10 @@
 											<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 												<thead>
 													<tr>
-														<th><?php echo $this->Paginator->sort('id'); ?></th> 
 														<th><?php echo $this->Paginator->sort('name'); ?></th> 
-														<th class="hidden-480"><?php echo $this->Paginator->sort('width'); ?></th> 
+														<th><?php echo $this->Paginator->sort('width'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('height'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('method'); ?></th> 
-														<th class="hidden-480"><?php echo $this->Paginator->sort('deleted'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('created'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('modified'); ?></th> 
  
@@ -48,12 +48,10 @@
 												<tbody>
 <?php foreach ($thumbnailTypes as $thumbnailType): ?>
 													<tr>
-														<td><?php echo h($thumbnailType['ThumbnailType']['id']); ?>&nbsp;</td>
 														<td><?php echo h($thumbnailType['ThumbnailType']['name']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($thumbnailType['ThumbnailType']['width']); ?>&nbsp;</td>
+														<td><?php echo h($thumbnailType['ThumbnailType']['width']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($thumbnailType['ThumbnailType']['height']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($thumbnailType['ThumbnailType']['method']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($thumbnailType['ThumbnailType']['deleted']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($thumbnailType['ThumbnailType']['created']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($thumbnailType['ThumbnailType']['modified']); ?>&nbsp;</td>
 														<td class="center">
