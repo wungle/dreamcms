@@ -28,6 +28,32 @@ class CmsMenu extends DreamCmsAppModel {
  * @var array
  */
 	public $validate = array(
+		'icon' => array(
+			'minLength' => array(
+				'rule' => array('minLength', 3),
+				'message' => 'Icon has to be at least 3 characters.',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+			'maxLength' => array(
+				'rule' => array('maxLength', 64),
+				'message' => 'Icon can not be exceeded 64 characters.',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+			'notEmpty' => array(
+				'rule' => array('notEmpty'),
+				'message' => 'Icon can not be empty.',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
 		'name' => array(
 			'minLength' => array(
 				'rule' => array('minLength', 3),
@@ -56,8 +82,8 @@ class CmsMenu extends DreamCmsAppModel {
 		),
 		'url' => array(
 			'minLength' => array(
-				'rule' => array('minLength', 3),
-				'message' => 'URL has to be at least 3 characters.',
+				'rule' => array('minLength', 1),
+				'message' => 'URL has to be at least 1 characters.',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
