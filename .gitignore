@@ -21,3 +21,6 @@ Thumbs.db
 #############################
 /app/webroot/files
 /app/webroot/temp
+
+/_design_cms
+/app/webroot/_design_cms
