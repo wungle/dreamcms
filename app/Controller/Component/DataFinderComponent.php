@@ -121,8 +121,8 @@ class DataFinderComponent extends Component
 		if (isset($model->belongsTo) && !empty($model->belongsTo))
 			foreach($model->belongsTo as $associated => $opt)
 			{
-				$this->fieldNames[] = $associated . '.' . $model->$associated->displayField;
-				$this->displayNames[] = $associated;
+				$this->fieldNames[] = '"' . $associated . '.' . $model->$associated->displayField . '"';
+				$this->displayNames[] = '"' . $associated . '"';
 			}
 
 		// Get model fields
