@@ -207,6 +207,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 		<?php echo $this->Html->script('ace.min'); ?> 
 
 		<?php echo $this->Html->script('data_finder'); ?> 
+		<?php echo $this->Html->script('dreamcms'); ?> 
 
 
 		<!-- inline scripts related to this page -->
