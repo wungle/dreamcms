@@ -1,5 +1,6 @@
 
-<?php $this->startIfEmpty('breadcrumb'); ?>						<ul class="breadcrumb">
+<?php $this->startIfEmpty('breadcrumb'); ?>
+						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home home-icon"></i>
 								<a href="#"><?php echo __('Home'); ?></a>
@@ -30,18 +31,13 @@
 											<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 												<thead>
 													<tr>
-														<th><?php echo $this->Paginator->sort('id'); ?></th> 
 														<th><?php echo $this->Paginator->sort('group_id'); ?></th> 
-														<th class="hidden-480"><?php echo $this->Paginator->sort('username'); ?></th> 
-														<th class="hidden-480"><?php echo $this->Paginator->sort('password'); ?></th> 
+														<th><?php echo $this->Paginator->sort('username'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('real_name'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('email'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('last_login'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('last_login_ip'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('active'); ?></th> 
-														<th class="hidden-480"><?php echo $this->Paginator->sort('deleted'); ?></th> 
-														<th class="hidden-480"><?php echo $this->Paginator->sort('created'); ?></th> 
-														<th class="hidden-480"><?php echo $this->Paginator->sort('modified'); ?></th> 
  
 														<th class="center">
 															<?php echo __('Actions'); ?> 
@@ -52,20 +48,15 @@
 												<tbody>
 <?php foreach ($admins as $admin): ?>
 													<tr>
-														<td><?php echo h($admin['Admin']['id']); ?>&nbsp;</td>
 														<td>
 															<?php echo $this->Html->link($admin['Group']['name'], array('controller' => 'groups', 'action' => 'view', $admin['Group']['id'])); ?>
 														</td>
-														<td class="hidden-480"><?php echo h($admin['Admin']['username']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($admin['Admin']['password']); ?>&nbsp;</td>
+														<td><?php echo h($admin['Admin']['username']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($admin['Admin']['real_name']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($admin['Admin']['email']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($admin['Admin']['last_login']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($admin['Admin']['last_login_ip']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($admin['Admin']['active']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($admin['Admin']['deleted']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($admin['Admin']['created']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($admin['Admin']['modified']); ?>&nbsp;</td>
 														<td class="center">
 															<?php echo $this->Html->link($this->Html->tag('i', ' ' . __('View'), array('class' => 'icon-eye-open bigger-120')), array('action' => 'view', $admin['Admin']['id']), array('class' => 'btn btn-xs btn-warning dt-btns', 'escape' => false)); ?> &nbsp; 
 															<?php echo $this->Html->link($this->Html->tag('i', ' ' . __('Edit'), array('class' => 'icon-edit bigger-120')), array('action' => 'edit', $admin['Admin']['id']), array('class' => 'btn btn-xs btn-info dt-btns', 'escape' => false)); ?> &nbsp; 
