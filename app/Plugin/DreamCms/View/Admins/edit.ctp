@@ -25,10 +25,10 @@
 						<?php echo $this->Form->input('username', array('class' => 'form-control')); ?>
 					</div><!-- .form-group -->
 					<div class="form-group">
-						<?php echo $this->Form->input('password', array('type' => 'password', 'class' => 'form-control')); ?>
+						<?php echo $this->Form->input('password', array('type' => 'password', 'class' => 'form-control', 'required' => false)); ?>
 					</div><!-- .form-group -->
 					<div class="form-group">
-						<?php echo $this->Form->input('password_confirm', array('type' => 'password', 'class' => 'form-control')); ?>
+						<?php echo $this->Form->input('password_confirm', array('type' => 'password', 'class' => 'form-control', 'required' => false)); ?>
 					</div><!-- .form-group -->
 					<div class="form-group">
 						<?php echo $this->Form->input('real_name', array('class' => 'form-control')); ?>
@@ -37,7 +37,7 @@
 						<?php echo $this->Form->input('email', array('class' => 'form-control')); ?>
 					</div><!-- .form-group -->
 					<div class="form-group">
-						<?php echo $this->Form->input('active', array('class' => 'form-control')); ?>
+						<?php echo $this->Form->input('active', array('options' => array('Yes' => 'Yes', 'No' => 'No'), 'class' => 'form-control')); ?>
 					</div><!-- .form-group -->
 
 					<?php echo $this->Form->submit(__('Submit'), array('class' => 'btn btn-large btn-primary')); ?>

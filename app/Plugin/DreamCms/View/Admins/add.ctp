@@ -22,10 +22,10 @@
 						<?php echo $this->Form->input('username', array('class' => 'form-control')); ?>
 					</div><!-- .form-group -->
 					<div class="form-group">
-						<?php echo $this->Form->input('password', array('type' => 'password', 'class' => 'form-control')); ?>
+						<?php echo $this->Form->input('password', array('type' => 'password', 'class' => 'form-control', 'required' => true)); ?>
 					</div><!-- .form-group -->
 					<div class="form-group">
-						<?php echo $this->Form->input('password_confirm', array('type' => 'password', 'class' => 'form-control')); ?>
+						<?php echo $this->Form->input('password_confirm', array('type' => 'password', 'class' => 'form-control', 'required' => true)); ?>
 					</div><!-- .form-group -->
 					<div class="form-group">
 						<?php echo $this->Form->input('real_name', array('class' => 'form-control')); ?>
