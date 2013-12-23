@@ -28,6 +28,7 @@ class DreamcmsAppController extends AppController {
 		'Session',
 		'Text',
 		'Time',
+		'Dreamcms.CoreDreamCms',
 	);
 
 	public function beforeFilter()
@@ -39,6 +40,23 @@ class DreamcmsAppController extends AppController {
 
 		$this->DreamcmsAuth->allow('login');
 		$this->DreamcmsAuth->allow('secret_captcha');
+	}
+
+	public function beforeRender()
+	{
+		parent::beforeRender();
+
+		$this->loadModel('Dreamcms.CmsMenu');
+		$cms_menus = $this->CmsMenu->find(
+			'all',
+			array(
+				'conditions' => array('CmsMenu.parent_id' => '0', 'CmsMenu.published' => 'Yes', 'CmsMenu.deleted' => '0'),
+				'order' => 'CmsMenu.name ASC',
+				'recursive' => 2
+			)
+		);
+
+		$this->set('cms_menus', $cms_menus);
 	}
 }
 
