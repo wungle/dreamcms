@@ -10,7 +10,7 @@
 					<a href="#" class="navbar-brand">
 						<small>
 							<i class="icon-leaf"></i>
-							Ace Admin
+							Dream CMS
 						</small>
 					</a><!-- /.brand -->
 				</div><!-- /.navbar-header -->
