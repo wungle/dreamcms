@@ -37,7 +37,7 @@
 
 					<ul class="nav nav-list">
 						<li>
-							<a href="index.html">
+							<a href="<?php echo $this->Html->url('/dreamcms'); ?>">
 								<i class="icon-dashboard"></i>
 								<span class="menu-text"> Dashboard </span>
 							</a>
@@ -64,8 +64,9 @@
 <?php else : ?>
 								<li>
 <?php endif; ?>
-									<a href="<?php echo h($child['url']); ?>">
+									<a href="<?php echo $this->Html->url($child['url']); ?>">
 										<i class="icon-double-angle-right"></i>
+										<i class="<?php echo h($child['icon']); ?>"></i>&nbsp;
 										<?php echo h($child['name']); ?>
 									</a>
 								</li>
@@ -75,6 +76,12 @@
 						</li>
 <?php endforeach; ?>
 
+						<li>
+							<a href="<?php echo $this->Html->url('/dreamcms/admins/logout'); ?>">
+								<i class="icon-signout"></i>
+								<span class="menu-text"> Logout </span>
+							</a>
+						</li>
 					</ul><!-- /.nav-list -->
 
 					<div class="sidebar-collapse" id="sidebar-collapse">
