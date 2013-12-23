@@ -49,10 +49,8 @@ class DreamcmsAuthenticate extends BlowfishAuthenticate
 
 	private function hasGravatarAccount($email)
 	{
-		$test_url = 'http://www.gravatar.com/' . md5($email) . '.php';
-
 		try {
-			$data = unserialize(@file_get_contents('http://en.gravatar.com/' . md5($email) . '.php'));
+			$data = unserialize(@file_get_contents('http://www.gravatar.com/' . md5($email) . '.php'));
 			
 			if ($data)
 				return true;
