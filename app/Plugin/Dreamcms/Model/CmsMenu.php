@@ -174,4 +174,15 @@ class CmsMenu extends DreamcmsAppModel {
 		)
 	);
 
+	public function getPublishedMenu()
+	{
+		return $this->find(
+			'all',
+			array(
+				'conditions' => array('CmsMenu.parent_id' => '0', 'CmsMenu.published' => 'Yes', 'CmsMenu.deleted' => '0'),
+				'order' => 'CmsMenu.name ASC',
+				'recursive' => 2
+			)
+		);
+	}
 }
