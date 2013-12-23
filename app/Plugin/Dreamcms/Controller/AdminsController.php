@@ -141,6 +141,12 @@ class AdminsController extends DreamcmsAppController {
 			{
 				if ($this->DreamcmsAuth->login())
 				{
+					if ($this->DreamcmsAuth->user('id'))
+					{
+						$this->Admin->id = $this->DreamcmsAuth->user('id');
+						$this->Admin->saveField('last_login', date(DATE_ATOM));
+						$this->Admin->saveField('last_login_ip', $this->request->clientIp());
+					}
 					$this->redirect('/dreamcms');
 				}
 				else
