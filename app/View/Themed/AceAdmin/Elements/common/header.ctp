@@ -226,12 +226,17 @@
 							</ul>
 						</li>
 
+						<?php $current_admin = $this->Session->read('Auth.User'); ?> 
 						<li class="light-blue">
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
-								<img class="nav-user-photo" src="<?php echo $this->Html->url("/theme/AceAdmin/avatars/user.jpg"); ?>" alt="Jason's Photo" />
+<?php if ($current_admin['has_gravatar_account']) : ?>
+								<img class="nav-user-photo" src="<?php echo $current_admin['avatar'] . '?s=40'; ?>" alt="<?php echo h($current_admin['real_name']); ?>'s Photo" />
+<?php else : ?>
+								<img class="nav-user-photo" src="<?php echo $this->Html->url("/theme/AceAdmin/avatars/unknown-user.jpg"); ?>" alt="<?php echo h($current_admin['real_name']); ?>'s Photo" />
+<?php endif; ?> 
 								<span class="user-info">
 									<small>Welcome,</small>
-									Jason
+									<?php echo h($current_admin['real_name']); ?>
 								</span>
 
 								<i class="icon-caret-down"></i>
@@ -245,18 +250,18 @@
 									</a>
 								</li>
 
-								<li>
+								<!--li>
 									<a href="#">
 										<i class="icon-user"></i>
 										Profile
 									</a>
-								</li>
+								</li-->
 
 								<li class="divider"></li>
 
 								<li>
-									<a href="#">
-										<i class="icon-off"></i>
+									<a href="<?php echo $this->Html->url('/dreamcms/admins/logout'); ?>">
+										<i class="icon-signout"></i>
 										Logout
 									</a>
 								</li>
