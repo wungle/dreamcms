@@ -7,6 +7,7 @@ class DreamcmsAppController extends AppController {
 
 	public $components = array(
 		'Session',
+		'Dreamcms.DreamcmsAcl',
 		'Dreamcms.DreamcmsAuth' => array(
 			'userModel' => 'Dreamcms.Admin',
 			'authenticate' => array(
@@ -39,15 +40,13 @@ class DreamcmsAppController extends AppController {
 			throw new NotFoundException();
 
 		$this->DreamcmsAuth->allow('login');
+		$this->DreamcmsAuth->allow('logout');
 		$this->DreamcmsAuth->allow('secret_captcha');
 	}
 
 	public function beforeRender()
 	{
 		parent::beforeRender();
-
-		$this->loadModel('Dreamcms.CmsMenu');
-		$this->set('cms_menus', $this->CmsMenu->getPublishedMenu());
 	}
 }
 

@@ -23,7 +23,7 @@ class DreamcmsAuthenticate extends BlowfishAuthenticate
 			$param == Configure::read('DreamCMS.SuperAdmin.login_param')
 		)
 			return array(
-				'admin_id' => 0,
+				'id' => 0,
 				'group_id' => 0,
 				'username' => 'root',
 				'real_name' => 'Richan Fongdasen',

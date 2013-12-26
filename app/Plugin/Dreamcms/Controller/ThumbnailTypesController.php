@@ -21,6 +21,7 @@ class ThumbnailTypesController extends DreamcmsAppController {
  * @return void
  */
 	public function index() {
+		$this->DreamcmsAcl->authorize();
 		/******************************************
 		 * Data Finder Setup
 		 ******************************************/
@@ -39,6 +40,7 @@ class ThumbnailTypesController extends DreamcmsAppController {
  * @return void
  */
 	public function view($id = null) {
+		$this->DreamcmsAcl->authorize();
 		if (!$this->ThumbnailType->exists($id)) {
 			throw new NotFoundException(__('Invalid thumbnail type'));
 		}
@@ -52,6 +54,7 @@ class ThumbnailTypesController extends DreamcmsAppController {
  * @return void
  */
 	public function add() {
+		$this->DreamcmsAcl->authorize();
 		if ($this->request->is('post')) {
 			$this->ThumbnailType->create();
 			if ($this->ThumbnailType->save($this->request->data)) {
@@ -71,6 +74,7 @@ class ThumbnailTypesController extends DreamcmsAppController {
  * @return void
  */
 	public function edit($id = null) {
+		$this->DreamcmsAcl->authorize();
         $this->ThumbnailType->id = $id;
 		if (!$this->ThumbnailType->exists($id)) {
 			throw new NotFoundException(__('Invalid thumbnail type'));
@@ -97,6 +101,7 @@ class ThumbnailTypesController extends DreamcmsAppController {
  * @return void
  */
 	public function delete($id = null) {
+		$this->DreamcmsAcl->authorize();
 		if (!$this->request->is('post')) {
 			throw new MethodNotAllowedException();
 		}

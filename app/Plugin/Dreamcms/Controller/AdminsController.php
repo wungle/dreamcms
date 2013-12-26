@@ -22,6 +22,7 @@ class AdminsController extends DreamcmsAppController {
  * @return void
  */
 	public function index() {
+		$this->DreamcmsAcl->authorize();
 		/******************************************
 		 * Data Finder Setup
 		 ******************************************/
@@ -40,6 +41,7 @@ class AdminsController extends DreamcmsAppController {
  * @return void
  */
 	public function view($id = null) {
+		$this->DreamcmsAcl->authorize();
 		if (!$this->Admin->exists($id)) {
 			throw new NotFoundException(__('Invalid admin'));
 		}
@@ -53,14 +55,21 @@ class AdminsController extends DreamcmsAppController {
  * @return void
  */
 	public function add() {
+		$this->DreamcmsAcl->authorize();
 		if ($this->request->is('post')) {
 			$this->Admin->create();
 			if ($this->Admin->save($this->request->data)) {
+				$this->DreamcmsAcl->saveAcl($this->request->data, array('Admin' => array('id' => $this->Admin->id)));
 				$this->Session->setFlash(__('The admin has been saved'), 'flash/success');
 				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The admin could not be saved. Please, try again.'), 'flash/error');
 			}
+		}
+		else
+		{
+			$first_group = $this->Group->getFirstGroup();
+			$this->request->data = $this->DreamcmsAcl->getGroupAcl($first_group);
 		}
 		$groups = $this->Admin->Group->find('list');
 		$this->set(compact('groups'));
@@ -74,12 +83,14 @@ class AdminsController extends DreamcmsAppController {
  * @return void
  */
 	public function edit($id = null) {
+		$this->DreamcmsAcl->authorize();
         $this->Admin->id = $id;
 		if (!$this->Admin->exists($id)) {
 			throw new NotFoundException(__('Invalid admin'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Admin->save($this->request->data)) {
+				$this->DreamcmsAcl->saveAcl($this->request->data);
 				$this->Session->setFlash(__('The admin has been saved'), 'flash/success');
 				$this->redirect(array('action' => 'index'));
 			} else {
@@ -89,6 +100,7 @@ class AdminsController extends DreamcmsAppController {
 			$options = array('conditions' => array('Admin.' . $this->Admin->primaryKey => $id));
 			$data = $this->Admin->find('first', $options);
 			unset($data['Admin']['password']);
+			$data = Set::merge($data, $this->DreamcmsAcl->getAdminAcl($data));
 			$this->request->data = $data;
 		}
 		$groups = $this->Admin->Group->find('list');
@@ -104,6 +116,7 @@ class AdminsController extends DreamcmsAppController {
  * @return void
  */
 	public function delete($id = null) {
+		$this->DreamcmsAcl->authorize();
 		if (!$this->request->is('post')) {
 			throw new MethodNotAllowedException();
 		}
@@ -117,6 +130,28 @@ class AdminsController extends DreamcmsAppController {
 		}
 		$this->Session->setFlash(__('Admin was not deleted'), 'flash/error');
 		$this->redirect(array('action' => 'index'));
+	}
+
+/**
+ * reset_acl method
+ *
+ * @throws NotFoundException, ForbiddenException
+ * @param string $group_id
+ * @return void
+ */
+	public function reset_acl($group_id)
+	{
+		$this->DreamcmsAcl->authorize();
+		if (!$this->request->is("ajax"))
+			throw new ForbiddenException("Access forbidden");
+
+		if (!$this->Group->exists($group_id))
+			throw new NotFoundException(__('Invalid group'));
+
+		$this->layout = 'blank';
+		$group = $this->Group->findOneById(intval($group_id));
+		
+		$this->request->data = $this->DreamcmsAcl->getGroupAcl($group);
 	}
 
 /**

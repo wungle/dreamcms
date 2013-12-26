@@ -16,6 +16,17 @@ class Admin extends DreamcmsAppModel {
 	public $displayField = 'username';
 
 /**
+ * Act as - Model's behaviors
+ *
+ * @var array
+ */
+	public $actsAs = array(
+		'Acl' => array(
+			'type' => 'requester'
+		)
+	);
+
+/**
  * Validation rules
  *
  * @var array
@@ -199,6 +210,22 @@ class Admin extends DreamcmsAppModel {
 			'order' => ''
 		)
 	);
+
+	public function parentNode() {
+		if (!$this->id && empty($this->data)) {
+			return null;
+		}
+		if (isset($this->data['Admin']['group_id'])) {
+			$groupId = $this->data['Admin']['group_id'];
+		} else {
+			$groupId = $this->field('group_id');
+		}
+		if (!$groupId) {
+			return null;
+		} else {
+			return array('Group' => array('id' => $groupId));
+		}
+	}
 
 	public function beforeSave($options = array())
 	{

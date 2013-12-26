@@ -21,3 +21,9 @@
 	padding: 8px;
 	border: 1px solid #ddd;
 }
+
+.dreamcms-acl-group {
+	border: 1px solid #ddd;
+	padding: 1em;
+	margin-bottom: .8em;
+}

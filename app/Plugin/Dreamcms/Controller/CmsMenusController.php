@@ -31,6 +31,7 @@ class CmsMenusController extends DreamcmsAppController {
  * @return void
  */
 	public function index() {
+		$this->DreamcmsAcl->authorize();
 		/******************************************
 		 * Data Finder Setup
 		 ******************************************/
@@ -49,6 +50,7 @@ class CmsMenusController extends DreamcmsAppController {
  * @return void
  */
 	public function view($id = null) {
+		$this->DreamcmsAcl->authorize();
 		if (!$this->CmsMenu->exists($id)) {
 			throw new NotFoundException(__('Invalid cms menu'));
 		}
@@ -62,6 +64,7 @@ class CmsMenusController extends DreamcmsAppController {
  * @return void
  */
 	public function add() {
+		$this->DreamcmsAcl->authorize();
 		if ($this->request->is('post')) {
 			$this->CmsMenu->create();
 			if ($this->CmsMenu->save($this->request->data)) {
@@ -94,6 +97,7 @@ class CmsMenusController extends DreamcmsAppController {
  * @return void
  */
 	public function edit($id = null) {
+		$this->DreamcmsAcl->authorize();
         $this->CmsMenu->id = $id;
 		if (!$this->CmsMenu->exists($id)) {
 			throw new NotFoundException(__('Invalid cms menu'));
@@ -134,6 +138,7 @@ class CmsMenusController extends DreamcmsAppController {
  * @return void
  */
 	public function delete($id = null) {
+		$this->DreamcmsAcl->authorize();
 		if (!$this->request->is('post')) {
 			throw new MethodNotAllowedException();
 		}

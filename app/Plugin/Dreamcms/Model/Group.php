@@ -15,6 +15,17 @@ class Group extends DreamcmsAppModel {
 	public $displayField = 'name';
 
 /**
+ * Act as - Model's behaviors
+ *
+ * @var array
+ */
+	public $actsAs = array(
+		'Acl' => array(
+			'type' => 'requester'
+		)
+	);
+
+/**
  * Validation rules
  *
  * @var array
@@ -80,5 +91,33 @@ class Group extends DreamcmsAppModel {
 			'counterQuery' => ''
 		)
 	);
+
+	public function parentNode() {
+		return null;
+	}
+
+	public function getFirstGroup()
+	{
+		return $this->find(
+			'first',
+			array(
+				'conditions' => array('Group.deleted' => 0),
+				'order' => 'Group.name ASC',
+				'limit' => 1
+			)
+		);
+	}
+
+	public function findOneById($id)
+	{
+		return $this->find(
+			'first',
+			array(
+				'conditions' => array('Group.deleted' => 0, 'Group.id' => intval($id)),
+				'order' => 'Group.id ASC',
+				'limit' => 1
+			)
+		);
+	}
 
 }

@@ -21,6 +21,7 @@ class GroupsController extends DreamcmsAppController {
  * @return void
  */
 	public function index() {
+		$this->DreamcmsAcl->authorize();
 		/******************************************
 		 * Data Finder Setup
 		 ******************************************/
@@ -39,6 +40,7 @@ class GroupsController extends DreamcmsAppController {
  * @return void
  */
 	public function view($id = null) {
+		$this->DreamcmsAcl->authorize();
 		if (!$this->Group->exists($id)) {
 			throw new NotFoundException(__('Invalid group'));
 		}
@@ -52,9 +54,11 @@ class GroupsController extends DreamcmsAppController {
  * @return void
  */
 	public function add() {
+		$this->DreamcmsAcl->authorize();
 		if ($this->request->is('post')) {
 			$this->Group->create();
 			if ($this->Group->save($this->request->data)) {
+				$this->DreamcmsAcl->saveAcl($this->request->data, array('Group' => array('id' => $this->Group->id)));
 				$this->Session->setFlash(__('The group has been saved'), 'flash/success');
 				$this->redirect(array('action' => 'index'));
 			} else {
@@ -71,12 +75,14 @@ class GroupsController extends DreamcmsAppController {
  * @return void
  */
 	public function edit($id = null) {
+		$this->DreamcmsAcl->authorize();
         $this->Group->id = $id;
 		if (!$this->Group->exists($id)) {
 			throw new NotFoundException(__('Invalid group'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Group->save($this->request->data)) {
+				$this->DreamcmsAcl->saveAcl($this->request->data);
 				$this->Session->setFlash(__('The group has been saved'), 'flash/success');
 				$this->redirect(array('action' => 'index'));
 			} else {
@@ -84,7 +90,9 @@ class GroupsController extends DreamcmsAppController {
 			}
 		} else {
 			$options = array('conditions' => array('Group.' . $this->Group->primaryKey => $id));
-			$this->request->data = $this->Group->find('first', $options);
+			$data = $this->Group->find('first', $options);
+			$data = Set::merge($data, $this->DreamcmsAcl->getGroupAcl($data));
+			$this->request->data = $data;
 		}
 	}
 
@@ -97,6 +105,7 @@ class GroupsController extends DreamcmsAppController {
  * @return void
  */
 	public function delete($id = null) {
+		$this->DreamcmsAcl->authorize();
 		if (!$this->request->is('post')) {
 			throw new MethodNotAllowedException();
 		}

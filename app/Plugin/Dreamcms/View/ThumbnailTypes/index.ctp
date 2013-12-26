@@ -19,7 +19,7 @@
 								<?php echo $this->element('common/data_finder'); ?> 
 							</div>
 							<div class="col-sm-6" align="right">
-								<?php echo $this->Html->link($this->Html->tag('i', ' ' . __('New Thumbnail Type'), array('class' => 'icon-plus bigger-120')), array('action' => 'add'), array('class' => 'btn btn-info dt-btns', 'escape' => false)); ?> &nbsp; 
+								<?php if (isset($current_acl['create']) && $current_acl['create']) echo $this->Html->link($this->Html->tag('i', ' ' . __('New Thumbnail Type'), array('class' => 'icon-plus bigger-120')), array('action' => 'add'), array('class' => 'btn btn-info dt-btns', 'escape' => false)); ?> &nbsp; 
 							</div>
 						</div>
 
@@ -55,9 +55,9 @@
 														<td class="hidden-480"><?php echo h($thumbnailType['ThumbnailType']['created']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($thumbnailType['ThumbnailType']['modified']); ?>&nbsp;</td>
 														<td class="center">
-															<?php echo $this->Html->link($this->Html->tag('i', ' ' . __('View'), array('class' => 'icon-eye-open bigger-120')), array('action' => 'view', $thumbnailType['ThumbnailType']['id']), array('class' => 'btn btn-xs btn-warning dt-btns', 'escape' => false)); ?> &nbsp; 
-															<?php echo $this->Html->link($this->Html->tag('i', ' ' . __('Edit'), array('class' => 'icon-edit bigger-120')), array('action' => 'edit', $thumbnailType['ThumbnailType']['id']), array('class' => 'btn btn-xs btn-info dt-btns', 'escape' => false)); ?> &nbsp; 
-															<?php echo $this->Form->postLink($this->Html->tag('i', ' ' . __('Delete'), array('class' => 'icon-trash bigger-120')), array('action' => 'delete', $thumbnailType['ThumbnailType']['id']), array('class' => 'btn btn-xs btn-danger dt-btns', 'escape' => false), __('Are you sure you want to delete # %s?', $thumbnailType['ThumbnailType']['id'])); ?> &nbsp; 
+															<?php if (isset($current_acl['read']) && $current_acl['read']) echo $this->Html->link($this->Html->tag('i', ' ' . __('View'), array('class' => 'icon-eye-open bigger-120')), array('action' => 'view', $thumbnailType['ThumbnailType']['id']), array('class' => 'btn btn-xs btn-warning dt-btns', 'escape' => false)); ?> &nbsp; 
+															<?php if (isset($current_acl['update']) && $current_acl['update']) echo $this->Html->link($this->Html->tag('i', ' ' . __('Edit'), array('class' => 'icon-edit bigger-120')), array('action' => 'edit', $thumbnailType['ThumbnailType']['id']), array('class' => 'btn btn-xs btn-info dt-btns', 'escape' => false)); ?> &nbsp; 
+															<?php if (isset($current_acl['delete']) && $current_acl['delete']) echo $this->Form->postLink($this->Html->tag('i', ' ' . __('Delete'), array('class' => 'icon-trash bigger-120')), array('action' => 'delete', $thumbnailType['ThumbnailType']['id']), array('class' => 'btn btn-xs btn-danger dt-btns', 'escape' => false), __('Are you sure you want to delete # %s?', $thumbnailType['ThumbnailType']['id'])); ?> &nbsp; 
 														</td>
 													</tr>
 <?php endforeach; ?>

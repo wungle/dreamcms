@@ -20,7 +20,12 @@ class CmsMenu extends DreamcmsAppModel {
  *
  * @var array
  */
-	public $actsAs = array('Tree');
+	public $actsAs = array(
+		'Tree',
+		'Acl' => array(
+			'type' => 'controlled'
+		)
+	);
 
 /**
  * Validation rules
@@ -173,6 +178,23 @@ class CmsMenu extends DreamcmsAppModel {
 			'counterQuery' => ''
 		)
 	);
+
+	public function parentNode()
+	{
+		if (!$this->id && empty($this->data)) {
+			return null;
+		}
+		if (isset($this->data['CmsMenu']['parent_id'])) {
+			$parentId = $this->data['CmsMenu']['parent_id'];
+		} else {
+			$parentId = $this->field('parent_id');
+		}
+		if (!$parentId) {
+			return null;
+		} else {
+			return array('CmsMenu' => array('id' => $parentId));
+		}
+	}
 
 	public function getPublishedMenu()
 	{
