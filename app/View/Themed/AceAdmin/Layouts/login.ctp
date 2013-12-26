@@ -109,6 +109,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 
 
 		<!-- ace scripts -->
+		<?php echo $this->Html->script('dreamcms'); ?>  
 
 
 		<!-- inline scripts related to this page -->

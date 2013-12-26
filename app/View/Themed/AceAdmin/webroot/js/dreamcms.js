@@ -1,7 +1,18 @@
 var DreamCMS = {
+	captchaReloadCount: 0,
+
 	init: function(){
+		DreamCMS.refreshCaptcha();
 		DreamCMS.initSelect2();
 		DreamCMS.adminResetAcl();
+	},
+
+	refreshCaptcha: function() {
+		$('.secret-captcha-reload').click(function(){
+			DreamCMS.captchaReloadCount = DreamCMS.captchaReloadCount + 1;
+			$('.secret-captcha').attr('src', '/secret/captcha/' + DreamCMS.captchaReloadCount);
+			console.log('captchaReloadCount: ' + DreamCMS.captchaReloadCount);
+		});
 	},
 
 	initSelect2: function() {
