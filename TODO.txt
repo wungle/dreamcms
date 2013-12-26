@@ -1,0 +1,14 @@
+Web Menu
+Contact us
+Files
+Pages
+Photos
+Videos
+Email Templates
+Photo Contest Plugin
+CMS Audit Trails - Logable behavior
+Cacheable behavior
+Online source code editor
+Tagable behavior
+Google Analytics Report
+
