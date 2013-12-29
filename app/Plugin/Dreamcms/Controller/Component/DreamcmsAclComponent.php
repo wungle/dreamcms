@@ -223,6 +223,28 @@ class DreamcmsAclComponent extends AclComponent
 		}
 	}
 
+	public function denyNewAcoFromAllAro($aco)
+	{
+		$groups = $this->controller->Group->find(
+			'all',
+			array(
+				'conditions' => array('Group.deleted' => 0),
+				'recursive' => 0
+			)
+		);
+		$admins = $this->controller->Admin->find(
+			'all',
+			array(
+				'conditions' => array('Admin.deleted' => 0),
+				'recursive' => 0
+			)
+		);
+		foreach ($groups as $aro)
+			$this->deny($aro, $aco, '*');
+		foreach ($admins as $aro)
+			$this->deny($aro, $aco, '*');
+	}
+
 	public function authorize()
 	{
 		if (!$this->isAuthorized())
