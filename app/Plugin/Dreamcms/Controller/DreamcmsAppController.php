@@ -8,6 +8,7 @@ class DreamcmsAppController extends AppController {
 	public $components = array(
 		'Session',
 		'Dreamcms.DreamcmsAcl',
+		'Dreamcms.Translator',
 		'Dreamcms.DreamcmsAuth' => array(
 			'userModel' => 'Dreamcms.Admin',
 			'authenticate' => array(
@@ -30,6 +31,7 @@ class DreamcmsAppController extends AppController {
 		'Text',
 		'Time',
 		'Dreamcms.CoreDreamCms',
+		'Dreamcms.DreamcmsForm',
 	);
 
 	public function beforeFilter()
