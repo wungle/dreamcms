@@ -3,11 +3,12 @@ Files
 Pages
 Photos
 Videos
-Email Templates
 Photo Contest Plugin
+Google Analytics Report
 CMS Audit Trails - Logable behavior
 Cacheable behavior
+
+
+Email Templates
 Online source code editor
 Tagable behavior
-Google Analytics Report
-
