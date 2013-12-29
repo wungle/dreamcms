@@ -17,7 +17,7 @@
  */
 ?>
 
-<?php echo "<?php \$this->startIfEmpty('breadcrumb'); ?>"; ?>
+<?php echo "<?php \$this->startIfEmpty('breadcrumb'); ?>"; ?> 
 						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home home-icon"></i>
@@ -25,7 +25,7 @@
 							</li>
 							<li class="active"><?php echo "<?php echo __('{$pluralHumanName}'); ?>"; ?></li>
 						</ul><!-- .breadcrumb -->
-<?php echo "<?php \$this->end(); ?>"; ?>
+<?php echo "<?php \$this->end(); ?>"; ?> 
 
 						<div class="page-header">
 							<h1>

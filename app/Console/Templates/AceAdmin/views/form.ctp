@@ -17,6 +17,16 @@
  */
 ?>
 
+<?php echo "<?php \$this->startIfEmpty('breadcrumb'); ?>"; ?> 
+						<ul class="breadcrumb">
+							<li>
+								<i class="icon-home home-icon"></i>
+								<a href="#"><?php echo "<?php echo __('Home'); ?>"; ?></a>
+							</li>
+							<li class="active"><?php echo "<?php echo __('{$pluralHumanName}'); ?>"; ?></li>
+						</ul><!-- .breadcrumb -->
+<?php echo "<?php \$this->end(); ?>"; ?> 
+
 <div class="row">
 	<div class="col-sm-12">
 		<h2><?php printf("<?php echo __('%s %s'); ?>", Inflector::humanize($action), $singularHumanName); ?></h2>
