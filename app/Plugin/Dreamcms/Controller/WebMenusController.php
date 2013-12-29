@@ -21,6 +21,7 @@ class WebMenusController extends DreamcmsAppController {
  * @return void
  */
 	public function index() {
+		$this->DreamcmsAcl->authorize();
 		/******************************************
 		 * Data Finder Setup
 		 ******************************************/
@@ -40,6 +41,7 @@ class WebMenusController extends DreamcmsAppController {
  * @return void
  */
 	public function view($id = null) {
+		$this->DreamcmsAcl->authorize();
 		if (!$this->WebMenu->exists($id)) {
 			throw new NotFoundException(__('Invalid web menu'));
 		}
@@ -54,6 +56,7 @@ class WebMenusController extends DreamcmsAppController {
  * @return void
  */
 	public function add() {
+		$this->DreamcmsAcl->authorize();
 		$this->WebMenu->setLanguage(Configure::read('Config.language'));
 		if ($this->request->is('post')) {
 			$this->Translator->init($this->WebMenu, $this->request->data);
@@ -74,6 +77,7 @@ class WebMenusController extends DreamcmsAppController {
  * @return void
  */
 	public function edit($id = null) {
+		$this->DreamcmsAcl->authorize();
         $this->WebMenu->id = $id;
 		if (!$this->WebMenu->exists($id)) {
 			throw new NotFoundException(__('Invalid web menu'));
@@ -103,6 +107,7 @@ class WebMenusController extends DreamcmsAppController {
  * @return void
  */
 	public function delete($id = null) {
+		$this->DreamcmsAcl->authorize();
 		if (!$this->request->is('post')) {
 			throw new MethodNotAllowedException();
 		}
