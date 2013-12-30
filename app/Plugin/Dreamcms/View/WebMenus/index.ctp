@@ -35,6 +35,7 @@
 														<th><?php echo $this->Paginator->sort('parent_id'); ?></th> 
 														<th><?php echo $this->Paginator->sort('name'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('url'); ?></th> 
+														<th class="hidden-480"><?php echo $this->Paginator->sort('priority'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('published'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('created'); ?></th> 
 														<th class="hidden-480"><?php echo $this->Paginator->sort('modified'); ?></th> 
@@ -53,6 +54,7 @@
 														</td>
 														<td class="hidden-480"><?php echo h($webMenu['WebMenu']['name']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($webMenu['WebMenu']['url']); ?>&nbsp;</td>
+														<td class="hidden-480"><?php echo h($webMenu['WebMenu']['priority']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($webMenu['WebMenu']['published']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($webMenu['WebMenu']['created']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($webMenu['WebMenu']['modified']); ?>&nbsp;</td>

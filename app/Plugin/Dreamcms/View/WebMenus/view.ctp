@@ -46,6 +46,14 @@
  
 		</div> 
 		<div class="form-group">
+					<label><strong><?php echo __('Priority'); ?></strong></label>
+		<div class="preview-pane">
+			<?php echo h($webMenu['WebMenu']['priority']); ?>
+			&nbsp;
+		</div>
+ 
+		</div> 
+		<div class="form-group">
 					<label><strong><?php echo __('Published'); ?></strong></label>
 		<div class="preview-pane">
 			<?php echo h($webMenu['WebMenu']['published']); ?>

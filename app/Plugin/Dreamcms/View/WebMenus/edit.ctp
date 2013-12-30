@@ -50,6 +50,9 @@
 					?>
 
 					<div class="form-group">
+						<?php echo $this->Form->input('priority', array('class' => 'form-control')); ?>
+					</div><!-- .form-group -->
+					<div class="form-group">
 						<?php echo $this->Form->input('published', array('options' => array('Yes' => 'Yes', 'No' => 'No'), 'class' => 'form-control')); ?>
 					</div><!-- .form-group -->
 

@@ -100,6 +100,24 @@ class WebMenu extends DreamcmsAppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
+		'priority' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				'message' => 'Priority can contains only numeric characters.',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+			'notEmpty' => array(
+				'rule' => array('notEmpty'),
+				'message' => 'Priority can not be empty.',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
 		'published' => array(
 			'inList' => array(
 				'rule' => array('inList', array('Yes', 'No')),
