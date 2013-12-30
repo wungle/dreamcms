@@ -79,7 +79,8 @@ class TranslatorComponent extends Component
 		foreach ($this->model->actsAs['Translate'] as $field => $translate)
 		{
 			unset($this->processedData[$this->model->name][$field]); // is this necessary ??
-			$this->processedData[$this->model->name][$field] = $this->data[$this->model->name][$field][$this->defaultLanguage];
+			if (isset($this->data[$this->model->name][$field][$this->defaultLanguage]))
+				$this->processedData[$this->model->name][$field] = $this->data[$this->model->name][$field][$this->defaultLanguage];
 			$this->translateFields[] = $field;
 		}
 	}
@@ -91,6 +92,9 @@ class TranslatorComponent extends Component
 
 		foreach ($this->translateFields as $field)
 		{
+			if (!isset($this->data[$this->model->name][$field]))
+				continue;
+
 			foreach ($this->data[$this->model->name][$field] as $locale => $value)
 			{
 				if (!$this->doValidate(
@@ -118,9 +122,9 @@ class TranslatorComponent extends Component
 
 		$this->model->setLanguage($this->defaultLanguage);
 		$this->model->create($this->processedData);
-		$this->model->save($this->processedData);
+		$this->model->save($this->processedData, false);
 
-		if (!$this->processedData[$this->model->name][$this->model->primaryKey])
+		if (!isset($this->processedData[$this->model->name][$this->model->primaryKey]))
 			$this->processedData[$this->model->name][$this->model->primaryKey] = $this->model->id;
 
 		$lastData = null;
@@ -128,7 +132,8 @@ class TranslatorComponent extends Component
 		foreach ($this->localeList as $locale)
 		{
 			foreach ($this->translateFields as $field)
-				$this->processedData[$this->model->name][$field] = $this->data[$this->model->name][$field][$locale];
+				if (isset($this->data[$this->model->name][$field][$locale]))
+					$this->processedData[$this->model->name][$field] = $this->data[$this->model->name][$field][$locale];
 
 			if ($locale == $this->defaultLanguage)
 			{
@@ -138,7 +143,7 @@ class TranslatorComponent extends Component
 
 			$this->model->create($this->processedData);
 			$this->model->setLanguage($locale);
-			$this->model->save($this->processedData);
+			$this->model->save($this->processedData, false);
 		}
 
 		// Save in default language for the last time - for a better associated data
@@ -146,7 +151,7 @@ class TranslatorComponent extends Component
 		{
 			$this->model->setLanguage($this->defaultLanguage);
 			$this->model->create($lastData);
-			$this->model->save($lastData);
+			$this->model->save($lastData, false);
 		}
 
 		return true;
