@@ -5,13 +5,13 @@
 								<i class="icon-home home-icon"></i>
 								<a href="#"><?php echo __('Home'); ?></a>
 							</li>
-							<li class="active"><?php echo __('Web Menus'); ?></li>
+							<li class="active"><?php echo __($this->Routeable->humanizeController()); ?></li>
 						</ul><!-- .breadcrumb -->
 <?php $this->end(); ?>
 
 						<div class="page-header">
 							<h1>
-								<?php echo __('Web Menus'); ?>							</h1>
+								<?php echo __($this->Routeable->humanizeController()); ?>							</h1>
 						</div><!-- /.page-header -->
 
 						<div>
@@ -19,7 +19,7 @@
 								<?php echo $this->element('common/data_finder'); ?> 
 							</div>
 							<div class="col-sm-6" align="right">
-								<?php if (isset($current_acl['create']) && $current_acl['create']) echo $this->Html->link($this->Html->tag('i', ' ' . __('New Web Menu'), array('class' => 'icon-plus bigger-120')), array('action' => 'add'), array('class' => 'btn btn-info dt-btns', 'escape' => false)); ?> &nbsp; 
+								<?php if (isset($current_acl['create']) && $current_acl['create']) echo $this->Html->link($this->Html->tag('i', ' ' . __('New ' . $this->Routeable->singularizeController()), array('class' => 'icon-plus bigger-120')), array('action' => 'add'), array('class' => 'btn btn-info dt-btns', 'escape' => false)); ?> &nbsp; 
 							</div>
 						</div>
 
@@ -50,7 +50,7 @@
 <?php foreach ($webMenus as $webMenu): ?>
 													<tr>
 														<td>
-															<?php echo $this->Html->link($webMenu['ParentWebMenu']['name'], array('controller' => 'web_menus', 'action' => 'view', $webMenu['ParentWebMenu']['id'])); ?>
+															<?php echo $this->Html->link($webMenu['ParentWebMenu']['name'], array('action' => 'view', $webMenu['ParentWebMenu']['id'])); ?>
 														</td>
 														<td class="hidden-480"><?php echo h($webMenu['WebMenu']['name']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($webMenu['WebMenu']['url']); ?>&nbsp;</td>

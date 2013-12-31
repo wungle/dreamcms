@@ -190,4 +190,30 @@ class WebMenu extends DreamcmsAppModel {
 	{
 		$this->locale = $locale;
 	}
+
+	public function getFirstWebMenu($conditions = array())
+	{
+		$conditions = Set::merge($conditions, array('WebMenu.deleted' => 0));
+		return $this->find(
+			'first',
+			array(
+				'conditions' => $conditions,
+				'order' => 'WebMenu.lft ASC',
+				'limit' => 1
+			)
+		);
+	}
+
+	public function findOneById($id, $conditions = array())
+	{
+		$conditions = Set::merge($conditions, array('WebMenu.deleted' => 0, 'WebMenu.id' => intval($id)));
+		return $this->find(
+			'first',
+			array(
+				'conditions' => $conditions,
+				'order' => 'WebMenu.id ASC',
+				'limit' => 1
+			)
+		);
+	}
 }

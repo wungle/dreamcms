@@ -5,13 +5,13 @@
 								<i class="icon-home home-icon"></i>
 								<a href="#"><?php echo __('Home'); ?></a>
 							</li>
-							<li class="active"><?php echo __('Web Menus'); ?></li>
+							<li class="active"><?php echo __($this->Routeable->humanizeController()); ?></li>
 						</ul><!-- .breadcrumb -->
 <?php $this->end(); ?>
 
 <div class="row">
 	<div class="col-sm-12">
-		<h2><?php  echo __('Web Menu'); ?></h2>
+		<h2><?php  echo __($this->Routeable->humanizeController()); ?></h2>
 
 		<div class="form-group">
 					<label><strong><?php echo __('Id'); ?></strong></label>
@@ -22,9 +22,9 @@
  
 		</div> 
 		<div class="form-group">
-					<label><strong><?php echo __('Parent Web Menu'); ?></strong></label>
+					<label><strong><?php echo __('Parent '. $this->Routeable->singularizeController()); ?></strong></label>
 		<div class="preview-pane">
-			<?php echo $this->Html->link($webMenu['ParentWebMenu']['name'], array('controller' => 'web_menus', 'action' => 'view', $webMenu['ParentWebMenu']['id']), array('class' => '')); ?>
+			<?php echo $this->Html->link($webMenu['ParentWebMenu']['name'], array('action' => 'view', $webMenu['ParentWebMenu']['id']), array('class' => '')); ?>
 			&nbsp;
 		</div>
  
