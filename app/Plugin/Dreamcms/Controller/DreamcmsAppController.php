@@ -33,6 +33,7 @@ class DreamcmsAppController extends AppController {
 		'Time',
 		'Dreamcms.CoreDreamCms',
 		'Dreamcms.DreamcmsForm',
+		'Dreamcms.Routeable',
 	);
 
 	public function beforeFilter()
