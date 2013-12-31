@@ -133,7 +133,7 @@ class WebMenusController extends DreamcmsAppController {
 		if (!$this->WebMenu->exists()) {
 			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 		}
-		$conditions = Set::merge(array('WebMenu.deleted' => 0), $this->Routeable->getFindConditions());
+		$conditions = Set::merge(array('WebMenu.' . $this->WebMenu->primaryKey => $id, 'WebMenu.deleted' => 0), $this->Routeable->getFindConditions());
 		$webMenu = $this->Translator->findFirst($this->WebMenu, array('conditions' => $conditions));
 		if (!$webMenu)
 			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));

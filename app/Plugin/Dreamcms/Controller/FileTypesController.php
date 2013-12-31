@@ -131,7 +131,7 @@ class FileTypesController extends DreamcmsAppController {
 			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 		}
 
-		$conditions = Set::merge(array('FileType.deleted' => 0), $this->Routeable->getFindConditions());
+		$conditions = Set::merge(array('FileType.' . $this->FileType->primaryKey => $id, 'FileType.deleted' => 0), $this->Routeable->getFindConditions());
 		$fileType = $this->FileType->find('first', array('conditions' => $conditions));
 		if (!$fileType)
 			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
