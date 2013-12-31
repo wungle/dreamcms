@@ -1,5 +1,7 @@
 <?php
 
+App::uses("FileUtility", 'Dreamcms.Lib');
+
 class UploadableBehavior extends ModelBehavior
 {
 
@@ -9,32 +11,6 @@ class UploadableBehavior extends ModelBehavior
  * @var array
  */
 	protected $config;
-
-/**
- * fileCategories
- *
- * @var array
- */
-	protected $fileCategories = array(
-		'Image' => array(
-			'bmp', 'gif', 'jpe', 'jpeg', 'jpg', 'png', 'svg', 'webp', 
-		),
-		'Document' => array(
-			'doc', 'docx', 'epub', 'pdf', 'ppt', 'pptx', 'xls', 'xlsx', 
-		),
-		'Archive' => array(
-			'7z', 'bz2', 'gz', 'jar', 'rar', 'tar', 'tar.gz', 'tar.bz2', 'tgz', 'zip', 
-		),
-		'Video' => array(
-			'3gp', 'asf', 'avi', 'divx', 'flv', 'mkv', 'mov', 'mp4', 'mpeg', 'mpg', 'ogv', 'rm', 'rmvb', 'swf', 'vid', 'webm', 'wmv', 'xvid',
-		),
-		'Audio' => array(
-			'aac', 'mid', 'midi', 'mogg', 'mp3', 'ogg', 'wav', 'wave', 'wma',
-		),
-		'Other' => array(
-			'csv', 'torrent', 'txt', 'xml',
-		)
-	);
 
 /**
  * Languages
@@ -166,7 +142,7 @@ class UploadableBehavior extends ModelBehavior
 			if ($this->hasTranslateBehavior($Model))
 				$savePath .= strtolower($Model->locale) . '/';
 
-			$this->prepareSavePath($savePath);
+			FileUtility::createDirectory($savePath);
 
 			$record_id = isset($data[$Model->alias][$Model->primaryKey]) ? $data[$Model->alias][$Model->primaryKey] : $Model->getNextAutoIncrementValue();
 
@@ -184,10 +160,10 @@ class UploadableBehavior extends ModelBehavior
 					$this->deleteUploadedFiles($Model, $oldData);
 			}
 
-			$data[$Model->alias]['extension'] = $this->getFileExtension($data[$Model->alias][$field]['name']);
+			$data[$Model->alias]['extension'] = FileUtility::getFileExtension($data[$Model->alias][$field]['name']);
 			$data[$Model->alias]['size'] = @filesize($data[$Model->alias][$field]['tmp_name']);
 			$data[$Model->alias]['mime_type'] = isset($data[$Model->alias][$field]['type']) ? $data[$Model->alias][$field]['type'] : 'unknown';
-			$data[$Model->alias]['category'] = $this->getFileCategory($data[$Model->alias]['extension']);
+			$data[$Model->alias]['category'] = FileUtility::getFileCategory($data[$Model->alias]['extension']);
 
 			if ($data[$Model->alias]['category'] == 'Image')
 			{
@@ -205,8 +181,8 @@ class UploadableBehavior extends ModelBehavior
 				$record_id . '_' . strtolower(Inflector::slug(trim($data[$Model->alias][$Model->displayField]), '_')) . '_' . $data[$Model->alias]['width'] . 'x' . $data[$Model->alias]['height'] . '.' . $data[$Model->alias]['extension'] :
 				$record_id . '_' . strtolower(Inflector::slug(trim($data[$Model->alias][$Model->displayField]), '_')) . '.' . $data[$Model->alias]['extension'];
 
-			move_uploaded_file($data[$Model->alias][$field]['tmp_name'], WWW_ROOT . $this->stripBeginingSlashes($savePath) . $filename);
-			@chmod(WWW_ROOT . $this->stripBeginingSlashes($savePath) . $filename, 0666);
+			move_uploaded_file($data[$Model->alias][$field]['tmp_name'], WWW_ROOT . FileUtility::stripBeginingSlashes($savePath) . $filename);
+			@chmod(WWW_ROOT . FileUtility::stripBeginingSlashes($savePath) . $filename, 0666);
 
 			$data[$Model->alias][$field] = $savePath . $filename;
 		}
@@ -292,7 +268,7 @@ class UploadableBehavior extends ModelBehavior
 			if (!isset($data[$Model->alias][$field]))
 				continue;
 
-			$file = WWW_ROOT . $this->stripBeginingSlashes($data[$Model->alias][$field]);
+			$file = WWW_ROOT . FileUtility::stripBeginingSlashes($data[$Model->alias][$field]);
 			if (file_exists($file))
 				@unlink($file);
 		}
@@ -335,76 +311,6 @@ class UploadableBehavior extends ModelBehavior
 
 		return false;
 	}
-
-/**
- * Strip beginning slashes of a path
- *
- * @param string $path
- * @return string
- */
-	protected function stripBeginingSlashes($path) {
-		while ((substr($path, 0, 1) == '/') || (substr($path, 0, 1) == '\\'))
-			$path = substr($path, 1);
-		return $path;
-	}
-
-/**
- * Prepare save path
- *
- * @param string $path
- * @return boolean
- */
-	protected function prepareSavePath($path) {
-		$tmp = explode("/", $path);
-		$test = WWW_ROOT;
-		foreach ($tmp as $temp)
-		{
-			if (strlen(trim($temp)) == 0)
-				continue;
-
-			$test .= trim($temp) . "/";
-			if (!file_exists($test))
-			{
-				@mkdir($test, 0777, true);
-				@chmod($test, 0777);
-			}
-		}
-
-		return true;
-	}
-
-/**
- * Get a file's extension
- *
- * @param string $filename
- * @return string
- */
-	protected function getFileExtension($filename) {
-		$pathInfo = pathinfo($filename);
-		$result = (!empty($pathInfo) && !empty($pathInfo['extension'])) ? $pathInfo['extension'] : '';
-
-		if (substr($filename, -7) == '.tar.gz')
-			$result = 'tar.gz';
-		elseif (substr($filename, -8) == '.tar.bz2')
-			$result = 'tar.bz2';
-
-		return $result;
-	}
-
-/**
- * Get a file's category
- *
- * @param string $extension
- * @return string
- */
-	protected function getFileCategory($extension) {
-		foreach ($this->fileCategories as $category => $extensions)
-			if (in_array($extension, $extensions))
-				return $category;
-
-		return 'Unknown';
-	}
-
 }
 
 ?>
