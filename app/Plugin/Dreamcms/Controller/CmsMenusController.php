@@ -78,6 +78,7 @@ class CmsMenusController extends DreamcmsAppController {
 		$parentCmsMenus = $this->CmsMenu->find(
 			'list',
 			array(
+				'fields' => array('CmsMenu.id', 'CmsMenu.name'),
 				'conditions' => array(
 					'CmsMenu.parent_id' => 0,
 					'CmsMenu.published' => 'Yes'
@@ -85,7 +86,7 @@ class CmsMenusController extends DreamcmsAppController {
 				'order' => 'CmsMenu.name ASC'
 			)
 		);
-		$parentCmsMenus = array_merge(array(0 => 'No Parent'), $parentCmsMenus);
+		$parentCmsMenus = Set::merge(array(0 => 'No Parent'), $parentCmsMenus);
 		$this->set(compact('parentCmsMenus'));
 		$this->set('iconList', $this->Icon->getIconList());
 	}
@@ -117,6 +118,7 @@ class CmsMenusController extends DreamcmsAppController {
 		$parentCmsMenus = $this->CmsMenu->find(
 			'list',
 			array(
+				'fields' => array('CmsMenu.id', 'CmsMenu.name'),
 				'conditions' => array(
 					'CmsMenu.parent_id' => 0,
 					'CmsMenu.published' => 'Yes',
@@ -125,7 +127,7 @@ class CmsMenusController extends DreamcmsAppController {
 				'order' => 'CmsMenu.name ASC'
 			)
 		);
-		$parentCmsMenus = array_merge(array(0 => 'No Parent'), $parentCmsMenus);
+		$parentCmsMenus = Set::merge(array(0 => 'No Parent'), $parentCmsMenus);
 		$this->set(compact('parentCmsMenus'));
 		$this->set('iconList', $this->Icon->getIconList());
 	}
