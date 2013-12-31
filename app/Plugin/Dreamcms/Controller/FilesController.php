@@ -49,16 +49,14 @@ class FilesController extends DreamcmsAppController {
 		$this->DataFinder->setupConditions();
 
 		$this->File->setLanguage(Configure::read('Config.language'));
-		$this->File->recursive = 1;
+		$this->File->recursive = 0;
 		
 		$paginate = $this->paginate;
 		$paginate['fields'] = array(
-			'File.id', 'File.file_type_id', 'File.name', 'File.description', 'File.url', 'File.priority', 'File.filename', 
-			'File.extension', 'File.size', 'File.mime_type', 'File.category', 'File.width', 'File.height', 'File.published', 
+			'File.id', 'File.file_type_id', 'File.name', 'File.url', 'File.priority', 'File.published', 
 			'File.deleted', 'File.created', 'File.modified', 'FileType.id', 'FileType.parent_id', 'FileType.name'
 		);
-		$paginate['conditions'] = Set::merge(array('File.deleted' => 0), $this->Routeable->getTreeListConditions());
-		$paginate['recursive'] = 1;
+		$paginate['conditions'] = Set::merge(array('File.deleted' => 0), $this->Routeable->getAssociatedFindConditions('File.file_type_id'));
 		$this->paginate = $paginate;
 
 		$this->File->bindModel(array('belongsTo' => array('FileType')));
@@ -79,7 +77,7 @@ class FilesController extends DreamcmsAppController {
 		}
 		$this->File->setLanguage(Configure::read('Config.language'));
 
-		$conditions = Set::merge(array('File.' . $this->File->primaryKey => $id, 'File.deleted' => 0), $this->Routeable->getTreeListConditions());
+		$conditions = Set::merge(array('File.' . $this->File->primaryKey => $id, 'File.deleted' => 0), $this->Routeable->getAssociatedFindConditions('File.file_type_id'));
 		$options = array('conditions' => $conditions);
 		$file = $this->File->find('first', $options);
 		if (!$file) {
@@ -132,7 +130,7 @@ class FilesController extends DreamcmsAppController {
 				$this->redirect(array('controller' => $this->Routeable->currentController, 'action' => 'index'));
 			}
 		} else {
-			$options = array('conditions' => Set::merge(array('File.' . $this->File->primaryKey => $id, 'File.deleted' => 0), $this->Routeable->getTreeListConditions()));
+			$options = array('conditions' => Set::merge(array('File.' . $this->File->primaryKey => $id, 'File.deleted' => 0), $this->Routeable->getAssociatedFindConditions('File.file_type_id')));
 			$this->request->data = $this->Translator->findFirst($this->File, $options);
 			if (!$this->request->data)
 				throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
@@ -158,7 +156,7 @@ class FilesController extends DreamcmsAppController {
 			throw new NotFoundException(__('Invalid ' .  strtolower($this->Routeable->singularize)));
 		}
 
-		$conditions = Set::merge(array($this->File->alias . '.' . $this->File->primaryKey => $id, 'File.deleted' => 0), $this->Routeable->getTreeListConditions());
+		$conditions = Set::merge(array($this->File->alias . '.' . $this->File->primaryKey => $id, 'File.deleted' => 0), $this->Routeable->getAssociatedFindConditions('File.file_type_id'));
 		$file = $this->Translator->findFirst($this->File, array('conditions' => $conditions));
 		if (!$file)
 			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
