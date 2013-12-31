@@ -23,7 +23,7 @@ class UploadableBehavior extends ModelBehavior
 			'doc', 'docx', 'epub', 'pdf', 'ppt', 'pptx', 'xls', 'xlsx', 
 		),
 		'Archive' => array(
-			'tar', 'gz', 'bz2', 'rar', 'jar', 'tgz', 'zip', '7z', 
+			'7z', 'bz2', 'gz', 'jar', 'rar', 'tar', 'tar.gz', 'tar.bz2', 'tgz', 'zip', 
 		),
 		'Video' => array(
 			'3gp', 'asf', 'avi', 'divx', 'flv', 'mkv', 'mov', 'mp4', 'mpeg', 'mpg', 'ogv', 'rm', 'rmvb', 'swf', 'vid', 'webm', 'wmv', 'xvid',
