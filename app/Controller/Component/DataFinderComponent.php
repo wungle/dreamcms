@@ -12,6 +12,10 @@ class DataFinderComponent extends Component
 
 	public $fieldNames;
 	public $displayNames;
+
+	private $disabledFields = array(
+		'id', 'parent_id', 'deleted', 'lft', 'rght', 'created', 'modified'
+	);
 	
 	// Required in cake 2.0++
 	function __construct(ComponentCollection $collection, $settings = array())
@@ -129,7 +133,7 @@ class DataFinderComponent extends Component
 		$fields = $model->getColumnTypes();
 		foreach ($fields as $key => $val)
 		{
-			if (($key != 'id') && ($key != 'created') && ($key != 'modified'))
+			if (!in_array($key, $this->disabledFields))
 			{
 				$this->fieldNames[] = '"' . $model->alias . '.' . $key . '"';
 				$this->displayNames[] = '"' . Inflector::humanize($key) . '"';
