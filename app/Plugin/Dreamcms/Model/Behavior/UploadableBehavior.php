@@ -117,7 +117,6 @@ class UploadableBehavior extends ModelBehavior
  * @see Model::save()
  */
 	public function beforeSave(Model $Model, $options = array()) {
-		echo 'UploadableBehavior<br />';
 		$rootPath = isset($this->config[$Model->alias]['savePath']) ? $this->config[$Model->alias]['savePath'] : '/files/uploads/';
 
 		if (substr($rootPath, 0, 1) != '/')
