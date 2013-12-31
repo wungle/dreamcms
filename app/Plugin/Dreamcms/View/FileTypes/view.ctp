@@ -5,13 +5,13 @@
 								<i class="icon-home home-icon"></i>
 								<a href="#"><?php echo __('Home'); ?></a>
 							</li>
-							<li class="active"><?php echo __('File Types'); ?></li>
+							<li class="active"><?php echo __($this->Routeable->humanizeController()); ?></li>
 						</ul><!-- .breadcrumb -->
 <?php $this->end(); ?>
 
 <div class="row">
 	<div class="col-sm-12">
-		<h2><?php  echo __('File Type'); ?></h2>
+		<h2><?php  echo __($this->Routeable->singularizeController()); ?></h2>
 
 		<div class="form-group">
 					<label><strong><?php echo __('Id'); ?></strong></label>
@@ -22,9 +22,9 @@
  
 		</div> 
 		<div class="form-group">
-					<label><strong><?php echo __('Parent File Type'); ?></strong></label>
+					<label><strong><?php echo __('Parent '. $this->Routeable->singularizeController()); ?></strong></label>
 		<div class="preview-pane">
-			<?php echo $this->Html->link($fileType['ParentFileType']['name'], array('controller' => 'file_types', 'action' => 'view', $fileType['ParentFileType']['id']), array('class' => '')); ?>
+			<?php echo $this->Html->link($fileType['ParentFileType']['name'], array('action' => 'view', $fileType['ParentFileType']['id']), array('class' => '')); ?>
 			&nbsp;
 		</div>
  

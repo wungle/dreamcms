@@ -15,6 +15,13 @@ class FileTypesController extends DreamcmsAppController {
  */
 	public $components = array('Paginator');
 
+	public function beforeFilter()
+	{
+		parent::beforeFilter();
+
+		$this->Routeable->setParentModel($this->FileType);
+	}
+
 /**
  * index method
  *
@@ -29,6 +36,9 @@ class FileTypesController extends DreamcmsAppController {
 		$this->DataFinder->setupConditions();
 
 		$this->FileType->recursive = 0;
+		$paginate = $this->paginate;
+		$paginate['conditions'] = Set::merge(array('FileType.deleted' => 0), $this->Routeable->getFindConditions());
+		$this->paginate = $paginate;
 		$this->set('fileTypes', $this->paginate());
 	}
 
@@ -42,10 +52,15 @@ class FileTypesController extends DreamcmsAppController {
 	public function view($id = null) {
 		$this->DreamcmsAcl->authorize();
 		if (!$this->FileType->exists($id)) {
-			throw new NotFoundException(__('Invalid file type'));
+			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 		}
-		$options = array('conditions' => array('FileType.' . $this->FileType->primaryKey => $id));
-		$this->set('fileType', $this->FileType->find('first', $options));
+		$conditions = Set::merge(array('FileType.' . $this->FileType->primaryKey => $id, 'FileType.deleted' => 0), $this->Routeable->getFindConditions());
+		$options = array('conditions' => $conditions);
+		$fileType = $this->FileType->find('first', $options);
+		if (!$fileType) {
+			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
+		}
+		$this->set('fileType', $fileType);
 	}
 
 /**
@@ -58,13 +73,14 @@ class FileTypesController extends DreamcmsAppController {
 		if ($this->request->is('post')) {
 			$this->FileType->create();
 			if ($this->FileType->save($this->request->data)) {
-				$this->Session->setFlash(__('The file type has been saved'), 'flash/success');
-				$this->redirect(array('action' => 'index'));
+				$this->Session->setFlash(__('The '. strtolower($this->Routeable->singularize) .' has been saved'), 'flash/success');
+				$this->redirect(array('controller' => $this->Routeable->currentController, 'action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The file type could not be saved. Please, try again.'), 'flash/error');
+				$this->Session->setFlash(__('The '. strtolower($this->Routeable->singularize) .' could not be saved. Please, try again.'), 'flash/error');
 			}
 		}
-		$this->set('parentFileTypes', $this->FileType->generateTreeList());
+		$parentFileTypes = $this->FileType->generateTreeList(Set::merge(array('FileType.deleted' => 0), $this->Routeable->getTreeListConditions()));
+		$this->set('parentFileTypes', $parentFileTypes);
 	}
 
 /**
@@ -78,20 +94,23 @@ class FileTypesController extends DreamcmsAppController {
 		$this->DreamcmsAcl->authorize();
         $this->FileType->id = $id;
 		if (!$this->FileType->exists($id)) {
-			throw new NotFoundException(__('Invalid file type'));
+			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->FileType->save($this->request->data)) {
-				$this->Session->setFlash(__('The file type has been saved'), 'flash/success');
-				$this->redirect(array('action' => 'index'));
+				$this->Session->setFlash(__('The '. strtolower($this->Routeable->singularize) .' has been saved'), 'flash/success');
+				$this->redirect(array('controller' => $this->Routeable->currentController, 'action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The file type could not be saved. Please, try again.'), 'flash/error');
+				$this->Session->setFlash(__('The '. strtolower($this->Routeable->singularize) .' could not be saved. Please, try again.'), 'flash/error');
 			}
 		} else {
-			$options = array('conditions' => array('FileType.' . $this->FileType->primaryKey => $id));
+			$options = array('conditions' => Set::merge(array('FileType.' . $this->FileType->primaryKey => $id, 'FileType.deleted' => 0), $this->Routeable->getFindConditions()));
 			$this->request->data = $this->FileType->find('first', $options);
+			if (!$this->request->data)
+				throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 		}
-		$this->set('parentFileTypes', $this->FileType->generateTreeList());
+		$parentFileTypes = $this->FileType->generateTreeList(Set::merge(array('FileType.deleted' => 0), $this->Routeable->getTreeListConditions()));
+		$this->set('parentFileTypes', $parentFileTypes);
 	}
 
 /**
@@ -109,12 +128,18 @@ class FileTypesController extends DreamcmsAppController {
 		}
 		$this->FileType->id = $id;
 		if (!$this->FileType->exists()) {
-			throw new NotFoundException(__('Invalid file type'));
+			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 		}
+
+		$conditions = Set::merge(array('FileType.deleted' => 0), $this->Routeable->getFindConditions());
+		$fileType = $this->FileType->find('first', array('conditions' => $conditions));
+		if (!$fileType)
+			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
+
 		if ($this->FileType->delete()) {
-			$this->Session->setFlash(__('File type deleted'), 'flash/success');
-			$this->redirect(array('action' => 'index'));
+			$this->Session->setFlash(__($this->Routeable->singularize . ' deleted'), 'flash/success');
+			$this->redirect(array('controller' => $this->Routeable->currentController, 'action' => 'index'));
 		}
-		$this->Session->setFlash(__('File type was not deleted'), 'flash/error');
-		$this->redirect(array('action' => 'index'));
+		$this->Session->setFlash(__($this->Routeable->singularize . ' was not deleted'), 'flash/error');
+		$this->redirect(array('controller' => $this->Routeable->currentController, 'action' => 'index'));
 	}}

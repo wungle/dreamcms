@@ -5,13 +5,13 @@
 								<i class="icon-home home-icon"></i>
 								<a href="#"><?php echo __('Home'); ?></a>
 							</li>
-							<li class="active"><?php echo __('File Types'); ?></li>
+							<li class="active"><?php echo __($this->Routeable->humanizeController()); ?></li>
 						</ul><!-- .breadcrumb -->
 <?php $this->end(); ?>
 
 <div class="row">
 	<div class="col-sm-12">
-		<h2><?php echo __('Edit File Type'); ?></h2>
+		<h2><?php echo __('Edit '. $this->Routeable->singularizeController()); ?></h2>
 		<div class="fileTypes form">
 			<?php echo $this->Form->create('FileType', array('role' => 'form')); ?> 
 				<fieldset>
@@ -21,7 +21,7 @@
 					<div class="form-group">
 						<div class="input select">
 							<?php 
-								$no_parent_option = (isset($root_node) && !empty($root_node)) ? false : true;
+								$no_parent_option = (isset($this->params->params['root_node']) && !empty($this->params->params['root_node'])) ? false : true;
 								echo $this->DreamcmsForm->treeSelect(array(
 									'model' => 'FileType',
 									'field' => 'parent_id',

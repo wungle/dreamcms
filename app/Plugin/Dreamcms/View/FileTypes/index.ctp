@@ -5,13 +5,13 @@
 								<i class="icon-home home-icon"></i>
 								<a href="#"><?php echo __('Home'); ?></a>
 							</li>
-							<li class="active"><?php echo __('File Types'); ?></li>
+							<li class="active"><?php echo __($this->Routeable->humanizeController()); ?></li>
 						</ul><!-- .breadcrumb -->
 <?php $this->end(); ?>
 
 						<div class="page-header">
 							<h1>
-								<?php echo __('File Types'); ?>							</h1>
+								<?php echo __($this->Routeable->humanizeController()); ?>							</h1>
 						</div><!-- /.page-header -->
 
 						<div>
@@ -19,7 +19,7 @@
 								<?php echo $this->element('common/data_finder'); ?> 
 							</div>
 							<div class="col-sm-6" align="right">
-								<?php if (isset($current_acl['create']) && $current_acl['create']) echo $this->Html->link($this->Html->tag('i', ' ' . __('New File Type'), array('class' => 'icon-plus bigger-120')), array('action' => 'add'), array('class' => 'btn btn-info dt-btns', 'escape' => false)); ?> &nbsp; 
+								<?php if (isset($current_acl['create']) && $current_acl['create']) echo $this->Html->link($this->Html->tag('i', ' ' . __('New '. $this->Routeable->singularizeController()), array('class' => 'icon-plus bigger-120')), array('action' => 'add'), array('class' => 'btn btn-info dt-btns', 'escape' => false)); ?> &nbsp; 
 							</div>
 						</div>
 
@@ -49,7 +49,7 @@
 <?php foreach ($fileTypes as $fileType): ?>
 													<tr>
 														<td>
-															<?php echo $this->Html->link($fileType['ParentFileType']['name'], array('controller' => 'file_types', 'action' => 'view', $fileType['ParentFileType']['id'])); ?>
+															<?php echo $this->Html->link($fileType['ParentFileType']['name'], array('action' => 'view', $fileType['ParentFileType']['id'])); ?>
 														</td>
 														<td class="hidden-480"><?php echo h($fileType['FileType']['name']); ?>&nbsp;</td>
 														<td class="hidden-480"><?php echo h($fileType['FileType']['description']); ?>&nbsp;</td>

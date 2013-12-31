@@ -164,4 +164,30 @@ class FileType extends DreamcmsAppModel {
 		)
 	);
 
+	public function getFirstFileType($conditions = array())
+	{
+		$conditions = Set::merge($conditions, array('FileType.deleted' => 0));
+		return $this->find(
+			'first',
+			array(
+				'conditions' => $conditions,
+				'order' => 'FileType.lft ASC',
+				'limit' => 1
+			)
+		);
+	}
+
+	public function findOneById($id, $conditions = array())
+	{
+		$conditions = Set::merge($conditions, array('FileType.deleted' => 0, 'FileType.id' => intval($id)));
+		return $this->find(
+			'first',
+			array(
+				'conditions' => $conditions,
+				'order' => 'FileType.id ASC',
+				'limit' => 1
+			)
+		);
+	}
+
 }
