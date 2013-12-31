@@ -44,20 +44,6 @@ class UploadableBehavior extends ModelBehavior
 	protected $languages;
 
 /**
- * parentModel
- *
- * @var Model Object
- */
-	protected $parentModel;
-
-/**
- * parentRecord
- *
- * @var Model Object
- */
-	protected $parentRecord;
-
-/**
  * Setup Callback
  *
  * $config = array(
