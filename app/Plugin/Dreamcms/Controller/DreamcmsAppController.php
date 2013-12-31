@@ -9,6 +9,7 @@ class DreamcmsAppController extends AppController {
 		'Session',
 		'Dreamcms.DreamcmsAcl',
 		'Dreamcms.Translator',
+		'Dreamcms.Routeable',
 		'Dreamcms.DreamcmsAuth' => array(
 			'userModel' => 'Dreamcms.Admin',
 			'authenticate' => array(
