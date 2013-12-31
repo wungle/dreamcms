@@ -4,6 +4,9 @@
  * 	-> You don't need to create any object of this class.
  */
 
+App::uses("Security", 'Utility');
+App::uses("String", 'Utility');
+
 class FileUtility
 {
 	public function __construct($config = array()) {
@@ -106,6 +109,73 @@ class FileUtility
 				return $category;
 
 		return 'Unknown';
+	}
+
+/**
+ * Parse DreamCMS Manifest File
+ *
+ * @param void
+ * @return array
+ */
+	public static function parseDreamcmsManifest() {
+		$result = array();
+		$section = '';
+		$process_sections = false;
+
+		$content = Security::rijndael(file_get_contents(CakePlugin::path('Dreamcms') . 'Config' . DS . 'dreamcms.manifest'), Configure::read('DreamCMS.cipher'), 'decrypt');
+		$lines = explode("\n", $content);
+
+		foreach ( $lines as $line )
+		{
+			$line = trim($line);
+			if ( ($line == '') || ($line[0] == ';') || ($line[0] == '#') ) continue;
+			if ( ($line[0] == '[') && ($line[strlen($line)-1] == ']') )
+				$section = trim(substr($line, 1, strlen($line)-2));
+			else
+			{
+				if ( ($pos = strpos($line, '=')) === false ) continue;
+				$key = trim(substr($line, 0, $pos));
+				$val = trim(substr($line, $pos+1));
+				if ( (($val{0} === '"') || ($val{0} === '\'')) && ($val{0} === $val{strlen($val)-1}) )
+					$val = substr($val, 1, strlen($val)-2);
+				if ( $process_sections )
+					$result[$section][$key] = $val;
+				else
+					$result[$key] = $val;
+			}
+		}
+
+		foreach ($result as $key => $value)
+			Configure::write($key, $value);
+
+		return $result;
+	}
+
+/**
+ * Load SA Manifest File
+ *
+ * @param void
+ * @return array
+ */
+	public static function loadSaManifest() {
+		$content = Security::rijndael(file_get_contents(CakePlugin::path('Dreamcms') . 'Config' . DS . 'sa.manifest'), Configure::read('DreamCMS.cipher'), 'decrypt');
+		return unserialize($content);
+	}
+
+/**
+ * Load Dreamcms Manifest File
+ *
+ * @param void
+ * @return boolean
+ */
+	public static function loadDreamcmsManifest() {
+		$content = Security::rijndael(file_get_contents(CakePlugin::path('Dreamcms') . 'Config' . DS . 'saa.manifest'), Configure::read('DreamCMS.cipher'), 'decrypt');
+		$tmp = APP . 'tmp' . DS . String::uuid() . '.php';
+		file_put_contents($tmp, $content);
+		require $tmp;
+		@unlink($tmp);
+
+		return true;
 	}
 }
 
