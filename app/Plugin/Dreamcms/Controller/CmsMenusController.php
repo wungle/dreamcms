@@ -69,7 +69,7 @@ class CmsMenusController extends DreamcmsAppController {
 			$this->CmsMenu->create();
 			if ($this->CmsMenu->save($this->request->data)) {
 				$this->Session->setFlash(__('The cms menu has been saved'), 'flash/success');
-				$this->DreamcmsAcl->denyNewAcoFromAllAro(array('CmsMenu' => array('id' => $this->CmsMenu->id)));
+				$this->DreamcmsAcl->allowNewAcoFromAllAro(array('CmsMenu' => array('id' => $this->CmsMenu->id)));
 				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The cms menu could not be saved. Please, try again.'), 'flash/error');
