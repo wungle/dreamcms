@@ -19,7 +19,13 @@
 						<?php echo $this->Form->input('id', array('class' => 'form-control')); ?>
 					</div><!-- .form-group -->
 					<div class="form-group">
-						<?php echo $this->Form->input('path', array('class' => 'form-control')); ?>
+						<?php echo $this->Form->label('path'); ?> 
+						<div class="input-group">
+							<span class="input-group-addon">
+								<i class="icon-folder-open"></i>&nbsp; <b>WWW_ROOT</b>/
+							</span>
+							<?php echo $this->Form->input('path', array('class' => 'form-control', 'label' => false)); ?> 
+						</div>
 					</div><!-- .form-group -->
 					<div class="form-group">
 						<?php echo $this->Form->input('lifespan', array('class' => 'form-control')); ?>
