@@ -251,16 +251,42 @@ class File extends DreamcmsAppModel {
  */
 	public $belongsTo = array(
 		'FileType' => array(
-			'className' => 'FileType',
+			'className' => 'Dreamcms.FileType',
 			'foreignKey' => 'file_type_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
+			//'conditions' => '',
+			//'fields' => '',
+			//'order' => ''
 		)
 	);
 
 	public function setLanguage($locale)
 	{
 		$this->locale = $locale;
+	}
+
+	public function getFirstFile($conditions = array())
+	{
+		$conditions = Set::merge($conditions, array('File.deleted' => 0));
+		return $this->find(
+			'first',
+			array(
+				'conditions' => $conditions,
+				'order' => 'File.lft ASC',
+				'limit' => 1
+			)
+		);
+	}
+
+	public function findOneById($id, $conditions = array())
+	{
+		$conditions = Set::merge($conditions, array('File.deleted' => 0, 'File.id' => intval($id)));
+		return $this->find(
+			'first',
+			array(
+				'conditions' => $conditions,
+				'order' => 'File.id ASC',
+				'limit' => 1
+			)
+		);
 	}
 }

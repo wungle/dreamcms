@@ -25,6 +25,16 @@ class FilesController extends DreamcmsAppController {
  */
 	public $components = array('Paginator');
 
+	public function beforeFilter()
+	{
+		parent::beforeFilter();
+
+		$this->loadModel('Dreamcms.File');
+		$this->loadModel('Dreamcms.FileType');
+
+		$this->Routeable->setParentModel($this->FileType);
+	}
+
 /**
  * index method
  *
@@ -39,8 +49,20 @@ class FilesController extends DreamcmsAppController {
 		$this->DataFinder->setupConditions();
 
 		$this->File->setLanguage(Configure::read('Config.language'));
-		$this->File->recursive = 0;
-		$this->set('files', $this->paginate());
+		$this->File->recursive = 1;
+		
+		$paginate = $this->paginate;
+		$paginate['fields'] = array(
+			'File.id', 'File.file_type_id', 'File.name', 'File.description', 'File.url', 'File.priority', 'File.filename', 
+			'File.extension', 'File.size', 'File.mime_type', 'File.category', 'File.width', 'File.height', 'File.published', 
+			'File.deleted', 'File.created', 'File.modified', 'FileType.id', 'FileType.parent_id', 'FileType.name'
+		);
+		$paginate['conditions'] = Set::merge(array('File.deleted' => 0), $this->Routeable->getTreeListConditions());
+		$paginate['recursive'] = 1;
+		$this->paginate = $paginate;
+
+		$this->File->bindModel(array('belongsTo' => array('FileType')));
+		$this->set('files', $this->paginate($this->File));
 	}
 
 /**
@@ -53,11 +75,17 @@ class FilesController extends DreamcmsAppController {
 	public function view($id = null) {
 		$this->DreamcmsAcl->authorize();
 		if (!$this->File->exists($id)) {
-			throw new NotFoundException(__('Invalid file'));
+			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 		}
 		$this->File->setLanguage(Configure::read('Config.language'));
-		$options = array('conditions' => array('File.' . $this->File->primaryKey => $id));
-		$this->set('file', $this->File->find('first', $options));
+
+		$conditions = Set::merge(array('File.' . $this->File->primaryKey => $id, 'File.deleted' => 0), $this->Routeable->getTreeListConditions());
+		$options = array('conditions' => $conditions);
+		$file = $this->File->find('first', $options);
+		if (!$file) {
+			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
+		}
+		$this->set('file', $file);
 	}
 
 /**
@@ -72,11 +100,12 @@ class FilesController extends DreamcmsAppController {
 			$this->Translator->init($this->File, $this->request->data);
 			if ($this->Translator->validate()) {
 				$this->Translator->save();
-				$this->Session->setFlash(__('The file has been saved'), 'flash/success');
-				$this->redirect(array('action' => 'index'));
+				$this->Session->setFlash(__('The '. strtolower($this->Routeable->singularize) .' has been saved'), 'flash/success');
+				$this->redirect(array('controller' => $this->Routeable->currentController, 'action' => 'index'));
 			}
 		}
-		$this->set('fileTypes', $this->FileType->generateTreeList());
+		$fileTypes = $this->FileType->generateTreeList(Set::merge(array('FileType.deleted' => 0), $this->Routeable->getTreeListConditions()));
+		$this->set('fileTypes', $fileTypes);
 	}
 
 /**
@@ -88,22 +117,25 @@ class FilesController extends DreamcmsAppController {
  */
 	public function edit($id = null) {
 		$this->DreamcmsAcl->authorize();
-		$this->set('fileTypes', $this->FileType->generateTreeList());
+		$fileTypes = $this->FileType->generateTreeList(Set::merge(array('FileType.deleted' => 0), $this->Routeable->getTreeListConditions()));
+		$this->set('fileTypes', $fileTypes);
         $this->File->id = $id;
 		if (!$this->File->exists($id)) {
-			throw new NotFoundException(__('Invalid file'));
+			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 		}
 		$this->File->setLanguage(Configure::read('Config.language'));
 		if ($this->request->is('post') || $this->request->is('put')) {
 			$this->Translator->init($this->File, $this->request->data);
 			if ($this->Translator->validate()) {
 				$this->Translator->save();
-				$this->Session->setFlash(__('The file has been saved'), 'flash/success');
-				$this->redirect(array('action' => 'index'));
+				$this->Session->setFlash(__('The '. strtolower($this->Routeable->singularize) .' has been saved'), 'flash/success');
+				$this->redirect(array('controller' => $this->Routeable->currentController, 'action' => 'index'));
 			}
 		} else {
-			$options = array('conditions' => array('File.' . $this->File->primaryKey => $id));
+			$options = array('conditions' => Set::merge(array('File.' . $this->File->primaryKey => $id, 'File.deleted' => 0), $this->Routeable->getTreeListConditions()));
 			$this->request->data = $this->Translator->findFirst($this->File, $options);
+			if (!$this->request->data)
+				throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 		}
 		
 	}
@@ -123,13 +155,19 @@ class FilesController extends DreamcmsAppController {
 		}
 		$this->File->id = $id;
 		if (!$this->File->exists()) {
-			throw new NotFoundException(__('Invalid file'));
+			throw new NotFoundException(__('Invalid ' .  strtolower($this->Routeable->singularize)));
 		}
+
+		$conditions = Set::merge(array($this->File->alias . '.' . $this->File->primaryKey => $id, 'File.deleted' => 0), $this->Routeable->getTreeListConditions());
+		$file = $this->Translator->findFirst($this->File, array('conditions' => $conditions));
+		if (!$file)
+			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
+
 		if ($this->File->delete()) {
-			$this->Session->setFlash(__('File deleted'), 'flash/success');
-			$this->redirect(array('action' => 'index'));
+			$this->Session->setFlash(__($this->Routeable->singularize . ' deleted'), 'flash/success');
+			$this->redirect(array('controller' => $this->Routeable->currentController, 'action' => 'index'));
 		}
-		$this->Session->setFlash(__('File was not deleted'), 'flash/error');
-		$this->redirect(array('action' => 'index'));
+		$this->Session->setFlash(__($this->Routeable->singularize . ' was not deleted'), 'flash/error');
+		$this->redirect(array('controller' => $this->Routeable->currentController, 'action' => 'index'));
 	}
 }
