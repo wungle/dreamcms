@@ -29,5 +29,18 @@ App::uses('Model', 'Model');
  *
  * @package       app.Model
  */
-class AppModel extends Model {
+class AppModel extends Model
+{
+	public $locale = "en-US";
+	
+	public function setLanguage($locale)
+	{
+		$this->locale = $locale;
+	}
+	
+	public function getNextAutoIncrementValue()
+	{
+		$data = $this->query("SHOW TABLE STATUS LIKE '{$this->useTable}'");
+		return $data[0]["TABLES"]["Auto_increment"];
+	}
 }

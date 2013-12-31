@@ -5,6 +5,7 @@ var DreamCMS = {
 		DreamCMS.refreshCaptcha();
 		DreamCMS.initSelect2();
 		DreamCMS.adminResetAcl();
+		DreamCMS.initFileInput();
 	},
 
 	refreshCaptcha: function() {
@@ -36,6 +37,21 @@ var DreamCMS = {
 				data = $.trim(data);
 				$('#AdminACLTable').empty().html(data);
 			});
+		});
+	},
+
+	initFileInput: function() {
+		$('.ace-fileinput').ace_file_input({
+			no_file:'No File ...',
+			btn_choose:'Choose',
+			btn_change:'Change',
+			droppable:false,
+			onchange:null,
+			thumbnail:false //| true | large
+			//whitelist:'gif|png|jpg|jpeg'
+			//blacklist:'exe|php'
+			//onchange:''
+			//
 		});
 	}
 };

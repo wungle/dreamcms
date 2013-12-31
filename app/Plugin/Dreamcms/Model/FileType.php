@@ -15,7 +15,7 @@ class FileType extends DreamcmsAppModel {
  * @var array
  */
 	public $actsAs = array(
-		'Tree'
+		'Tree',
 	);
 
 /**
