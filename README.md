@@ -50,7 +50,11 @@ $ ./cake schema create --name Dreamcms.Default
 Default DreamCMS Login
 ----------------------
 URL: http://your-dreamcms-installation-path/secret/login
+
+
 Username: admin
+
+
 Password: admin123
 
 ---------------------------------------
