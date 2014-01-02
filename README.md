@@ -27,12 +27,19 @@ Key Features :
 Installation Guide
 ------------------
 * Clone this repository
+
 * copy the `app/Config/core.php.default` file to `app/Config/core.php`
+
 * create your own database config : `app/Config/database.php`
+
 * copy the `app/Model/AppModel.php.default` file to `app/Model/AppModel.php`
+
 * copy the `app/Controller/AppController.php.default` file to `app/Model/AppController.php`
+
 * copy the `app/Plugin/Dreamcms/Config/routes.php.default` file to `app/Plugin/Dreamcms/Config/routes.php`
+
 * Please make sure your temporary directory is writable: `chmod -R 0777 app/tmp`
+
 * Well done, you're ready to go now !!
 
 
@@ -51,9 +58,7 @@ Default DreamCMS Login
 ----------------------
 URL: http://your-dreamcms-installation-path/secret/login
 
-
 Username: admin
-
 
 Password: admin123
 
