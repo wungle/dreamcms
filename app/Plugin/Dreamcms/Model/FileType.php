@@ -166,7 +166,7 @@ class FileType extends DreamcmsAppModel {
 
 	public function getFirstFileType($conditions = array())
 	{
-		$conditions = Set::merge($conditions, array('FileType.deleted' => 0));
+		$conditions = Set::merge($conditions, array('FileType.deleted' => '0'));
 		return $this->find(
 			'first',
 			array(
@@ -179,7 +179,7 @@ class FileType extends DreamcmsAppModel {
 
 	public function findOneById($id, $conditions = array())
 	{
-		$conditions = Set::merge($conditions, array('FileType.deleted' => 0, 'FileType.id' => intval($id)));
+		$conditions = Set::merge($conditions, array('FileType.deleted' => '0', 'FileType.id' => intval($id)));
 		return $this->find(
 			'first',
 			array(

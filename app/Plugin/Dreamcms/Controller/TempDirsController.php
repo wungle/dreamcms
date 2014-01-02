@@ -29,6 +29,9 @@ class TempDirsController extends DreamcmsAppController {
 		$this->DataFinder->setupConditions();
 
 		$this->TempDir->recursive = 0;
+		$paginate = $this->paginate;
+		$paginate['conditions'] = array('TempDir.deleted' => '0');
+		$this->paginate = $paginate;
 		$this->set('tempDirs', $this->paginate());
 	}
 
@@ -44,8 +47,11 @@ class TempDirsController extends DreamcmsAppController {
 		if (!$this->TempDir->exists($id)) {
 			throw new NotFoundException(__('Invalid temp dir'));
 		}
-		$options = array('conditions' => array('TempDir.' . $this->TempDir->primaryKey => $id));
-		$this->set('tempDir', $this->TempDir->find('first', $options));
+		$options = array('conditions' => array('TempDir.deleted' => '0', 'TempDir.' . $this->TempDir->primaryKey => $id));
+		$tempDir = $this->TempDir->find('first', $options);
+		if (!$tempDir)
+			throw new NotFoundException(__('Invalid temp dir'));
+		$this->set('tempDir', $tempDir);
 	}
 
 /**
@@ -87,8 +93,11 @@ class TempDirsController extends DreamcmsAppController {
 				$this->Session->setFlash(__('The temp dir could not be saved. Please, try again.'), 'flash/error');
 			}
 		} else {
-			$options = array('conditions' => array('TempDir.' . $this->TempDir->primaryKey => $id));
+			$options = array('conditions' => array('TempDir.deleted' => '0', 'TempDir.' . $this->TempDir->primaryKey => $id));
 			$this->request->data = $this->TempDir->find('first', $options);
+
+			if (!$this->request->data)
+				throw new NotFoundException(__('Invalid temp dir'));
 		}
 	}
 
@@ -109,7 +118,19 @@ class TempDirsController extends DreamcmsAppController {
 		if (!$this->TempDir->exists()) {
 			throw new NotFoundException(__('Invalid temp dir'));
 		}
-		if ($this->TempDir->delete()) {
+
+		$tempDir = $this->TempDir->find('first', array('fields' => array('TempDir.id', 'TempDir.deleted'), 'conditions' => array('TempDir.id' => $id, 'TempDir.deleted' => '0')));
+		if (!$tempDir)
+			throw new NotFoundException(__('Invalid temp dir'));
+
+		if ((Configure::read('DreamCMS.permanent_delete') == 'Yes') && $this->TempDir->delete()) {
+			$this->Session->setFlash(__('Temp dir deleted'), 'flash/success');
+			$this->redirect(array('action' => 'index'));
+		}
+		elseif (Configure::read('DreamCMS.permanent_delete') == 'No') {
+			$tempDir['TempDir']['deleted'] = '1';
+			$this->TempDir->create($tempDir);
+			$this->TempDir->save($tempDir);
 			$this->Session->setFlash(__('Temp dir deleted'), 'flash/success');
 			$this->redirect(array('action' => 'index'));
 		}

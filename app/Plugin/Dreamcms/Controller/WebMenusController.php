@@ -38,7 +38,7 @@ class WebMenusController extends DreamcmsAppController {
 		$this->WebMenu->setLanguage(Configure::read('Config.language'));
 		$this->WebMenu->recursive = 0;
 		$paginate = $this->paginate;
-		$paginate['conditions'] = Set::merge(array('WebMenu.deleted' => 0), $this->Routeable->getFindConditions());
+		$paginate['conditions'] = Set::merge(array('WebMenu.deleted' => '0'), $this->Routeable->getFindConditions());
 		$this->paginate = $paginate;
 		$this->set('webMenus', $this->paginate());
 	}
@@ -56,7 +56,7 @@ class WebMenusController extends DreamcmsAppController {
 			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 		}
 		$this->WebMenu->setLanguage(Configure::read('Config.language'));
-		$conditions = Set::merge(array('WebMenu.' . $this->WebMenu->primaryKey => $id, 'WebMenu.deleted' => 0), $this->Routeable->getFindConditions());
+		$conditions = Set::merge(array('WebMenu.' . $this->WebMenu->primaryKey => $id, 'WebMenu.deleted' => '0'), $this->Routeable->getFindConditions());
 		$options = array('conditions' => $conditions);
 		$webMenu = $this->WebMenu->find('first', $options);
 		if (!$webMenu) {
@@ -81,7 +81,7 @@ class WebMenusController extends DreamcmsAppController {
 				$this->redirect(array('controller' => $this->Routeable->currentController, 'action' => 'index'));
 			}
 		}
-		$parentWebMenus = $this->WebMenu->generateTreeList(Set::merge(array('WebMenu.deleted' => 0), $this->Routeable->getTreeListConditions()));
+		$parentWebMenus = $this->WebMenu->generateTreeList(Set::merge(array('WebMenu.deleted' => '0'), $this->Routeable->getTreeListConditions()));
 		$this->set('parentWebMenus', $parentWebMenus);
 	}
 
@@ -107,12 +107,12 @@ class WebMenusController extends DreamcmsAppController {
 				$this->redirect(array('controller' => $this->Routeable->currentController, 'action' => 'index'));
 			}
 		} else {
-			$options = array('conditions' => Set::merge(array('WebMenu.' . $this->WebMenu->primaryKey => $id, 'WebMenu.deleted' => 0), $this->Routeable->getFindConditions()));
+			$options = array('conditions' => Set::merge(array('WebMenu.' . $this->WebMenu->primaryKey => $id, 'WebMenu.deleted' => '0'), $this->Routeable->getFindConditions()));
 			$this->request->data = $this->Translator->findFirst($this->WebMenu, $options);
 			if (!$this->request->data)
 				throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 		}
-		$parentWebMenus = $this->WebMenu->generateTreeList(Set::merge(array('WebMenu.deleted' => 0), $this->Routeable->getTreeListConditions()));
+		$parentWebMenus = $this->WebMenu->generateTreeList(Set::merge(array('WebMenu.deleted' => '0'), $this->Routeable->getTreeListConditions()));
 		$this->set('parentWebMenus', $parentWebMenus);
 	}
 
@@ -133,12 +133,18 @@ class WebMenusController extends DreamcmsAppController {
 		if (!$this->WebMenu->exists()) {
 			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 		}
-		$conditions = Set::merge(array('WebMenu.' . $this->WebMenu->primaryKey => $id, 'WebMenu.deleted' => 0), $this->Routeable->getFindConditions());
-		$webMenu = $this->Translator->findFirst($this->WebMenu, array('conditions' => $conditions));
+		$webMenu = $this->WebMenu->find('first', array('fields' => array('WebMenu.id', 'WebMenu.deleted'), 'conditions' => array('WebMenu.id' => $id, 'WebMenu.deleted' => '0')));
 		if (!$webMenu)
 			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 
-		if ($this->WebMenu->delete()) {
+		if ((Configure::read('DreamCMS.permanent_delete') == 'Yes') && $this->WebMenu->delete()) {
+			$this->Session->setFlash(__($this->Routeable->singularize . ' deleted'), 'flash/success');
+			$this->redirect(array('controller' => $this->Routeable->currentController, 'action' => 'index'));
+		}
+		elseif (Configure::read('DreamCMS.permanent_delete') == 'No') {
+			$webMenu['WebMenu']['deleted'] = '1';
+			$this->WebMenu->create($webMenu);
+			$this->WebMenu->save($webMenu);
 			$this->Session->setFlash(__($this->Routeable->singularize . ' deleted'), 'flash/success');
 			$this->redirect(array('controller' => $this->Routeable->currentController, 'action' => 'index'));
 		}

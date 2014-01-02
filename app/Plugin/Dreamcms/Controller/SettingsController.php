@@ -29,6 +29,9 @@ class SettingsController extends DreamcmsAppController {
 		$this->DataFinder->setupConditions();
 
 		$this->Setting->recursive = 0;
+		$paginate = $this->paginate;
+		$paginate['conditions'] = array('Setting.deleted' => '0');
+		$this->paginate = $paginate;
 		$this->set('settings', $this->paginate());
 	}
 
@@ -44,8 +47,11 @@ class SettingsController extends DreamcmsAppController {
 		if (!$this->Setting->exists($id)) {
 			throw new NotFoundException(__('Invalid setting'));
 		}
-		$options = array('conditions' => array('Setting.' . $this->Setting->primaryKey => $id));
-		$this->set('setting', $this->Setting->find('first', $options));
+		$options = array('conditions' => array('Setting.deleted' => '0', 'Setting.' . $this->Setting->primaryKey => $id));
+		$setting = $this->Setting->find('first', $options);
+		if (!$setting)
+			throw new NotFoundException(__('Invalid setting'));
+		$this->set('setting', $setting);
 	}
 
 /**
@@ -87,8 +93,11 @@ class SettingsController extends DreamcmsAppController {
 				$this->Session->setFlash(__('The setting could not be saved. Please, try again.'), 'flash/error');
 			}
 		} else {
-			$options = array('conditions' => array('Setting.' . $this->Setting->primaryKey => $id));
+			$options = array('conditions' => array('Setting.deleted' => '0', 'Setting.' . $this->Setting->primaryKey => $id));
 			$this->request->data = $this->Setting->find('first', $options);
+
+			if (!$this->request->data)
+				throw new NotFoundException(__('Invalid language'));
 		}
 	}
 
@@ -109,7 +118,19 @@ class SettingsController extends DreamcmsAppController {
 		if (!$this->Setting->exists()) {
 			throw new NotFoundException(__('Invalid setting'));
 		}
-		if ($this->Setting->delete()) {
+
+		$setting = $this->Setting->find('first', array('fields' => array('Setting.id', 'Setting.deleted'), 'conditions' => array('Setting.id' => $id, 'Setting.deleted' => '0')));
+		if (!$setting)
+			throw new NotFoundException(__('Invalid setting'));
+
+		if ((Configure::read('DreamCMS.permanent_delete') == 'Yes') && $this->Setting->delete()) {
+			$this->Session->setFlash(__('Setting deleted'), 'flash/success');
+			$this->redirect(array('action' => 'index'));
+		}
+		elseif (Configure::read('DreamCMS.permanent_delete') == 'No') {
+			$setting['Setting']['deleted'] = '1';
+			$this->Setting->create($setting);
+			$this->Setting->save($setting);
 			$this->Session->setFlash(__('Setting deleted'), 'flash/success');
 			$this->redirect(array('action' => 'index'));
 		}

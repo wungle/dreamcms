@@ -193,7 +193,7 @@ class WebMenu extends DreamcmsAppModel {
 
 	public function getFirstWebMenu($conditions = array())
 	{
-		$conditions = Set::merge($conditions, array('WebMenu.deleted' => 0));
+		$conditions = Set::merge($conditions, array('WebMenu.deleted' => '0'));
 		return $this->find(
 			'first',
 			array(
@@ -206,7 +206,7 @@ class WebMenu extends DreamcmsAppModel {
 
 	public function findOneById($id, $conditions = array())
 	{
-		$conditions = Set::merge($conditions, array('WebMenu.deleted' => 0, 'WebMenu.id' => intval($id)));
+		$conditions = Set::merge($conditions, array('WebMenu.deleted' => '0', 'WebMenu.id' => intval($id)));
 		return $this->find(
 			'first',
 			array(

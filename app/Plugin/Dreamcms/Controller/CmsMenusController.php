@@ -39,6 +39,9 @@ class CmsMenusController extends DreamcmsAppController {
 		$this->DataFinder->setupConditions();
 
 		$this->CmsMenu->recursive = 0;
+		$paginate = $this->paginate;
+		$paginate['conditions'] = array('CmsMenu.deleted' => '0');
+		$this->paginate = $paginate;
 		$this->set('cmsMenus', $this->paginate());
 	}
 
@@ -54,8 +57,11 @@ class CmsMenusController extends DreamcmsAppController {
 		if (!$this->CmsMenu->exists($id)) {
 			throw new NotFoundException(__('Invalid cms menu'));
 		}
-		$options = array('conditions' => array('CmsMenu.' . $this->CmsMenu->primaryKey => $id));
-		$this->set('cmsMenu', $this->CmsMenu->find('first', $options));
+		$options = array('conditions' => array('CmsMenu.deleted' => '0', 'CmsMenu.' . $this->CmsMenu->primaryKey => $id));
+		$cmsMenu = $this->CmsMenu->find('first', $options);
+		if (!$cmsMenu)
+			throw new NotFoundException(__('Invalid cms menu'));
+		$this->set('cmsMenu', $cmsMenu);
 	}
 
 /**
@@ -80,13 +86,14 @@ class CmsMenusController extends DreamcmsAppController {
 			array(
 				'fields' => array('CmsMenu.id', 'CmsMenu.name'),
 				'conditions' => array(
-					'CmsMenu.parent_id' => 0,
+					'CmsMenu.deleted' => '0',
+					'CmsMenu.parent_id' => '0',
 					'CmsMenu.published' => 'Yes'
 				),
 				'order' => 'CmsMenu.name ASC'
 			)
 		);
-		$parentCmsMenus = Set::merge(array(0 => 'No Parent'), $parentCmsMenus);
+		$parentCmsMenus = Set::merge(array('0' => 'No Parent'), $parentCmsMenus);
 		$this->set(compact('parentCmsMenus'));
 		$this->set('iconList', $this->Icon->getIconList());
 	}
@@ -112,15 +119,18 @@ class CmsMenusController extends DreamcmsAppController {
 				$this->Session->setFlash(__('The cms menu could not be saved. Please, try again.'), 'flash/error');
 			}
 		} else {
-			$options = array('conditions' => array('CmsMenu.' . $this->CmsMenu->primaryKey => $id));
+			$options = array('conditions' => array('CmsMenu.deleted' => '0', 'CmsMenu.' . $this->CmsMenu->primaryKey => $id));
 			$this->request->data = $this->CmsMenu->find('first', $options);
+			if (!$this->request->data)
+				throw new NotFoundException(__('Invalid cms menu'));
 		}
 		$parentCmsMenus = $this->CmsMenu->find(
 			'list',
 			array(
 				'fields' => array('CmsMenu.id', 'CmsMenu.name'),
 				'conditions' => array(
-					'CmsMenu.parent_id' => 0,
+					'CmsMenu.deleted' => '0',
+					'CmsMenu.parent_id' => '0',
 					'CmsMenu.published' => 'Yes',
 					'CmsMenu.id !=' => $this->request->data['CmsMenu']['id']
 				),
@@ -149,7 +159,19 @@ class CmsMenusController extends DreamcmsAppController {
 		if (!$this->CmsMenu->exists()) {
 			throw new NotFoundException(__('Invalid cms menu'));
 		}
-		if ($this->CmsMenu->delete()) {
+
+		$cmsMenu = $this->CmsMenu->find('first', array('fields' => array('CmsMenu.id', 'CmsMenu.deleted'), 'conditions' => array('CmsMenu.id' => $id, 'CmsMenu.deleted' => '0')));
+		if (!$cmsMenu)
+			throw new NotFoundException(__('Invalid cms menu'));
+
+		if ((Configure::read('DreamCMS.permanent_delete') == 'Yes') && $this->CmsMenu->delete()) {
+			$this->Session->setFlash(__('Cms menu deleted'), 'flash/success');
+			$this->redirect(array('action' => 'index'));
+		}
+		elseif (Configure::read('DreamCMS.permanent_delete') == 'No') {
+			$cmsMenu['CmsMenu']['deleted'] = '1';
+			$this->CmsMenu->create($cmsMenu);
+			$this->CmsMenu->save($cmsMenu);
 			$this->Session->setFlash(__('Cms menu deleted'), 'flash/success');
 			$this->redirect(array('action' => 'index'));
 		}

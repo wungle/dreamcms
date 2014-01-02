@@ -29,6 +29,9 @@ class LanguagesController extends DreamcmsAppController {
 		$this->DataFinder->setupConditions();
 
 		$this->Language->recursive = 0;
+		$paginate = $this->paginate;
+		$paginate['conditions'] = array('Language.deleted' => '0');
+		$this->paginate = $paginate;
 		$this->set('languages', $this->paginate());
 	}
 
@@ -44,8 +47,11 @@ class LanguagesController extends DreamcmsAppController {
 		if (!$this->Language->exists($id)) {
 			throw new NotFoundException(__('Invalid language'));
 		}
-		$options = array('conditions' => array('Language.' . $this->Language->primaryKey => $id));
-		$this->set('language', $this->Language->find('first', $options));
+		$options = array('conditions' => array('Language.deleted' => '0', 'Language.' . $this->Language->primaryKey => $id));
+		$language = $this->Language->find('first', $options);
+		if (!$language)
+			throw new NotFoundException(__('Invalid language'));
+		$this->set('language', $language);
 	}
 
 /**
@@ -87,8 +93,11 @@ class LanguagesController extends DreamcmsAppController {
 				$this->Session->setFlash(__('The language could not be saved. Please, try again.'), 'flash/error');
 			}
 		} else {
-			$options = array('conditions' => array('Language.' . $this->Language->primaryKey => $id));
+			$options = array('conditions' => array('Language.deleted' => '0', 'Language.' . $this->Language->primaryKey => $id));
 			$this->request->data = $this->Language->find('first', $options);
+
+			if (!$this->request->data)
+				throw new NotFoundException(__('Invalid language'));
 		}
 	}
 
@@ -109,7 +118,19 @@ class LanguagesController extends DreamcmsAppController {
 		if (!$this->Language->exists()) {
 			throw new NotFoundException(__('Invalid language'));
 		}
-		if ($this->Language->delete()) {
+
+		$language = $this->Language->find('first', array('fields' => array('Language.id', 'Language.deleted'), 'conditions' => array('Language.id' => $id, 'Language.deleted' => '0')));
+		if (!$language)
+			throw new NotFoundException(__('Invalid language'));
+
+		if ((Configure::read('DreamCMS.permanent_delete') == 'Yes') && $this->Language->delete()) {
+			$this->Session->setFlash(__('Language deleted'), 'flash/success');
+			$this->redirect(array('action' => 'index'));
+		}
+		elseif (Configure::read('DreamCMS.permanent_delete') == 'No') {
+			$language['Language']['deleted'] = '1';
+			$this->Language->create($language);
+			$this->Language->save($language);
 			$this->Session->setFlash(__('Language deleted'), 'flash/success');
 			$this->redirect(array('action' => 'index'));
 		}

@@ -56,7 +56,7 @@ class FilesController extends DreamcmsAppController {
 			'File.id', 'File.file_type_id', 'File.name', 'File.url', 'File.priority', 'File.published', 
 			'File.deleted', 'File.created', 'File.modified', 'FileType.id', 'FileType.parent_id', 'FileType.name'
 		);
-		$paginate['conditions'] = Set::merge(array('File.deleted' => 0), $this->Routeable->getAssociatedFindConditions('File.file_type_id'));
+		$paginate['conditions'] = Set::merge(array('File.deleted' => '0'), $this->Routeable->getAssociatedFindConditions('File.file_type_id'));
 		$this->paginate = $paginate;
 
 		$this->File->bindModel(array('belongsTo' => array('FileType')));
@@ -77,7 +77,7 @@ class FilesController extends DreamcmsAppController {
 		}
 		$this->File->setLanguage(Configure::read('Config.language'));
 
-		$conditions = Set::merge(array('File.' . $this->File->primaryKey => $id, 'File.deleted' => 0), $this->Routeable->getAssociatedFindConditions('File.file_type_id'));
+		$conditions = Set::merge(array('File.' . $this->File->primaryKey => $id, 'File.deleted' => '0'), $this->Routeable->getAssociatedFindConditions('File.file_type_id'));
 		$options = array('conditions' => $conditions);
 		$file = $this->File->find('first', $options);
 		if (!$file) {
@@ -102,7 +102,7 @@ class FilesController extends DreamcmsAppController {
 				$this->redirect(array('controller' => $this->Routeable->currentController, 'action' => 'index'));
 			}
 		}
-		$fileTypes = $this->FileType->generateTreeList(Set::merge(array('FileType.deleted' => 0), $this->Routeable->getTreeListConditions()));
+		$fileTypes = $this->FileType->generateTreeList(Set::merge(array('FileType.deleted' => '0'), $this->Routeable->getTreeListConditions()));
 		$this->set('fileTypes', $fileTypes);
 	}
 
@@ -115,7 +115,7 @@ class FilesController extends DreamcmsAppController {
  */
 	public function edit($id = null) {
 		$this->DreamcmsAcl->authorize();
-		$fileTypes = $this->FileType->generateTreeList(Set::merge(array('FileType.deleted' => 0), $this->Routeable->getTreeListConditions()));
+		$fileTypes = $this->FileType->generateTreeList(Set::merge(array('FileType.deleted' => '0'), $this->Routeable->getTreeListConditions()));
 		$this->set('fileTypes', $fileTypes);
         $this->File->id = $id;
 		if (!$this->File->exists($id)) {
@@ -130,7 +130,7 @@ class FilesController extends DreamcmsAppController {
 				$this->redirect(array('controller' => $this->Routeable->currentController, 'action' => 'index'));
 			}
 		} else {
-			$options = array('conditions' => Set::merge(array('File.' . $this->File->primaryKey => $id, 'File.deleted' => 0), $this->Routeable->getAssociatedFindConditions('File.file_type_id')));
+			$options = array('conditions' => Set::merge(array('File.' . $this->File->primaryKey => $id, 'File.deleted' => '0'), $this->Routeable->getAssociatedFindConditions('File.file_type_id')));
 			$this->request->data = $this->Translator->findFirst($this->File, $options);
 			if (!$this->request->data)
 				throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
@@ -156,12 +156,18 @@ class FilesController extends DreamcmsAppController {
 			throw new NotFoundException(__('Invalid ' .  strtolower($this->Routeable->singularize)));
 		}
 
-		$conditions = Set::merge(array($this->File->alias . '.' . $this->File->primaryKey => $id, 'File.deleted' => 0), $this->Routeable->getAssociatedFindConditions('File.file_type_id'));
-		$file = $this->Translator->findFirst($this->File, array('conditions' => $conditions));
+		$file = $this->File->find('first', array('fields' => array('File.id', 'File.deleted'), 'conditions' => array('File.id' => $id, 'File.deleted' => '0')));
 		if (!$file)
 			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 
-		if ($this->File->delete()) {
+		if ((Configure::read('DreamCMS.permanent_delete') == 'Yes') && $this->File->delete()) {
+			$this->Session->setFlash(__($this->Routeable->singularize . ' deleted'), 'flash/success');
+			$this->redirect(array('controller' => $this->Routeable->currentController, 'action' => 'index'));
+		}
+		elseif (Configure::read('DreamCMS.permanent_delete') == 'No') {
+			$file['File']['deleted'] = '1';
+			$this->File->create($file);
+			$this->File->save($file);
 			$this->Session->setFlash(__($this->Routeable->singularize . ' deleted'), 'flash/success');
 			$this->redirect(array('controller' => $this->Routeable->currentController, 'action' => 'index'));
 		}

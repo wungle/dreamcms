@@ -18,7 +18,7 @@ class DreamcmsAuthenticate extends BlowfishAuthenticate
 		$result['avatar'] = 'http://www.gravatar.com/avatar/' . md5($result['email']);
 		$result['has_gravatar_account'] = $this->hasGravatarAccount($result['email']);
 
-		return $result;
+		return ($result['deleted'] == '0') ? $result : false;
 	}
 
 	private function hasGravatarAccount($email)

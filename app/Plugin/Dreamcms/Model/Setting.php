@@ -83,7 +83,7 @@ class Setting extends DreamcmsAppModel {
     
     public function loadSettings()
     {
-		$temp = $this->find('all', array('order' => 'Setting.name ASC'));
+		$temp = $this->find('all', array('conditions' => array('Setting.deleted' => '0'), 'order' => 'Setting.name ASC'));
 		return array(
 			'Setting' => Set::combine(
 				$temp,
@@ -102,7 +102,7 @@ class Setting extends DreamcmsAppModel {
     {
 		$temp = array(
 			'Setting' => Set::combine(
-				$this->find('all', array('conditions' => array('Setting.deleted' => 0), 'order' => 'Setting.name ASC')),
+				$this->find('all', array('conditions' => array('Setting.deleted' => '0'), 'order' => 'Setting.name ASC')),
 				'{n}.Setting.name',
 				'{n}.Setting.value'
 			)

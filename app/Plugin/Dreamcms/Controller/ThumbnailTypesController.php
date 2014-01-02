@@ -29,6 +29,9 @@ class ThumbnailTypesController extends DreamcmsAppController {
 		$this->DataFinder->setupConditions();
 
 		$this->ThumbnailType->recursive = 0;
+		$paginate = $this->paginate;
+		$paginate['conditions'] = array('ThumbnailType.deleted' => '0');
+		$this->paginate = $paginate;
 		$this->set('thumbnailTypes', $this->paginate());
 	}
 
@@ -44,8 +47,11 @@ class ThumbnailTypesController extends DreamcmsAppController {
 		if (!$this->ThumbnailType->exists($id)) {
 			throw new NotFoundException(__('Invalid thumbnail type'));
 		}
-		$options = array('conditions' => array('ThumbnailType.' . $this->ThumbnailType->primaryKey => $id));
-		$this->set('thumbnailType', $this->ThumbnailType->find('first', $options));
+		$options = array('conditions' => array('ThumbnailType.deleted' => '0', 'ThumbnailType.' . $this->ThumbnailType->primaryKey => $id));
+		$thumbnailType = $this->ThumbnailType->find('first', $options);
+		if (!$thumbnailType)
+			throw new NotFoundException(__('Invalid thumbnail type'));
+		$this->set('thumbnailType', $thumbnailType);
 	}
 
 /**
@@ -87,8 +93,11 @@ class ThumbnailTypesController extends DreamcmsAppController {
 				$this->Session->setFlash(__('The thumbnail type could not be saved. Please, try again.'), 'flash/error');
 			}
 		} else {
-			$options = array('conditions' => array('ThumbnailType.' . $this->ThumbnailType->primaryKey => $id));
+			$options = array('conditions' => array('ThumbnailType.deleted' => '0', 'ThumbnailType.' . $this->ThumbnailType->primaryKey => $id));
 			$this->request->data = $this->ThumbnailType->find('first', $options);
+
+			if (!$this->request->data)
+				throw new NotFoundException(__('Invalid thumbnail type'));
 		}
 	}
 
@@ -109,7 +118,19 @@ class ThumbnailTypesController extends DreamcmsAppController {
 		if (!$this->ThumbnailType->exists()) {
 			throw new NotFoundException(__('Invalid thumbnail type'));
 		}
-		if ($this->ThumbnailType->delete()) {
+
+		$thumbnailType = $this->ThumbnailType->find('first', array('fields' => array('ThumbnailType.id', 'ThumbnailType.deleted'), 'conditions' => array('ThumbnailType.id' => $id, 'ThumbnailType.deleted' => '0')));
+		if (!$thumbnailType)
+			throw new NotFoundException(__('Invalid thumbnail type'));
+
+		if ((Configure::read('DreamCMS.permanent_delete') == 'Yes') && $this->ThumbnailType->delete()) {
+			$this->Session->setFlash(__('Thumbnail type deleted'), 'flash/success');
+			$this->redirect(array('action' => 'index'));
+		}
+		elseif (Configure::read('DreamCMS.permanent_delete') == 'No') {
+			$thumbnailType['ThumbnailType']['deleted'] = '1';
+			$this->ThumbnailType->create($thumbnailType);
+			$this->ThumbnailType->save($thumbnailType);
 			$this->Session->setFlash(__('Thumbnail type deleted'), 'flash/success');
 			$this->redirect(array('action' => 'index'));
 		}

@@ -26,7 +26,7 @@ class GarbageRemoverComponent extends Component
 		$this->tempDirs = $this->controller->TempDir->find(
 			'all',
 			array(
-				'conditions' => array('TempDir.deleted' => 0)
+				'conditions' => array('TempDir.deleted' => '0')
 			)
 		);
 	}

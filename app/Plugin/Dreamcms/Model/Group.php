@@ -101,7 +101,7 @@ class Group extends DreamcmsAppModel {
 		return $this->find(
 			'first',
 			array(
-				'conditions' => array('Group.deleted' => 0),
+				'conditions' => array('Group.deleted' => '0'),
 				'order' => 'Group.name ASC',
 				'limit' => 1
 			)
@@ -113,7 +113,7 @@ class Group extends DreamcmsAppModel {
 		return $this->find(
 			'first',
 			array(
-				'conditions' => array('Group.deleted' => 0, 'Group.id' => intval($id)),
+				'conditions' => array('Group.deleted' => '0', 'Group.id' => intval($id)),
 				'order' => 'Group.id ASC',
 				'limit' => 1
 			)

@@ -29,6 +29,9 @@ class GroupsController extends DreamcmsAppController {
 		$this->DataFinder->setupConditions();
 
 		$this->Group->recursive = 0;
+		$paginate = $this->paginate;
+		$paginate['conditions'] = array('Group.deleted' => '0');
+		$this->paginate = $paginate;
 		$this->set('groups', $this->paginate());
 	}
 
@@ -44,8 +47,11 @@ class GroupsController extends DreamcmsAppController {
 		if (!$this->Group->exists($id)) {
 			throw new NotFoundException(__('Invalid group'));
 		}
-		$options = array('conditions' => array('Group.' . $this->Group->primaryKey => $id));
-		$this->set('group', $this->Group->find('first', $options));
+		$options = array('conditions' => array('Group.deleted' => '0', 'Group.' . $this->Group->primaryKey => $id));
+		$group = $this->Group->find('first', $options);
+		if (!$group)
+			throw new NotFoundException(__('Invalid group'));
+		$this->set('group', $group);
 	}
 
 /**
@@ -89,9 +95,12 @@ class GroupsController extends DreamcmsAppController {
 				$this->Session->setFlash(__('The group could not be saved. Please, try again.'), 'flash/error');
 			}
 		} else {
-			$options = array('conditions' => array('Group.' . $this->Group->primaryKey => $id));
+			$options = array('conditions' => array('Group.deleted' => '0', 'Group.' . $this->Group->primaryKey => $id));
 			$data = $this->Group->find('first', $options);
+			if (!$data)
+				throw new NotFoundException(__('Invalid group'));
 			$data = Set::merge($data, $this->DreamcmsAcl->getGroupAcl($data));
+
 			$this->request->data = $data;
 		}
 	}
@@ -113,7 +122,20 @@ class GroupsController extends DreamcmsAppController {
 		if (!$this->Group->exists()) {
 			throw new NotFoundException(__('Invalid group'));
 		}
-		if ($this->Group->delete()) {
+
+		$group = $this->Group->find('first', array('fields' => array('Group.id', 'Group.deleted'), 'conditions' => array('Group.id' => $id, 'Group.deleted' => '0')));
+		if (!$group)
+			throw new NotFoundException(__('Invalid group'));
+
+
+		if ((Configure::read('DreamCMS.permanent_delete') == 'Yes') && $this->Group->delete()) {
+			$this->Session->setFlash(__('Group deleted'), 'flash/success');
+			$this->redirect(array('action' => 'index'));
+		}
+		elseif (Configure::read('DreamCMS.permanent_delete') == 'No') {
+			$group['Group']['deleted'] = '1';
+			$this->Group->create($group);
+			$this->Group->save($group);
 			$this->Session->setFlash(__('Group deleted'), 'flash/success');
 			$this->redirect(array('action' => 'index'));
 		}

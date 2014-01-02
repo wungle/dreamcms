@@ -289,7 +289,7 @@ class UploadableBehavior extends ModelBehavior
 			'list',
 			array(
 				'fields' => array('UploadableLanguage.name', 'UploadableLanguage.locale'),
-				'conditions' => array('UploadableLanguage.deleted' => 0),
+				'conditions' => array('UploadableLanguage.deleted' => '0'),
 				'order' => 'UploadableLanguage.name ASC',
 				'recursive' => 0
 			)

@@ -32,7 +32,7 @@ class DreamcmsAclComponent extends AclComponent
 			array(
 				'conditions' => array(
 					'CmsMenu.published' => 'Yes',
-					'CmsMenu.deleted' => 0,
+					'CmsMenu.deleted' => '0',
 					'CmsMenu.url' => $this->url
 				),
 				'order' => 'CmsMenu.lft DESC',
@@ -49,7 +49,7 @@ class DreamcmsAclComponent extends AclComponent
 			'first',
 			array(
 				'conditions' => array(
-					'Group.deleted' => 0,
+					'Group.deleted' => '0',
 					'Group.id' => $this->admin['Admin']['group_id']
 				),
 				'limit' => 1,
@@ -228,14 +228,14 @@ class DreamcmsAclComponent extends AclComponent
 		$groups = $this->controller->Group->find(
 			'all',
 			array(
-				'conditions' => array('Group.deleted' => 0),
+				'conditions' => array('Group.deleted' => '0'),
 				'recursive' => 0
 			)
 		);
 		$admins = $this->controller->Admin->find(
 			'all',
 			array(
-				'conditions' => array('Admin.deleted' => 0),
+				'conditions' => array('Admin.deleted' => '0'),
 				'recursive' => 0
 			)
 		);
@@ -250,14 +250,14 @@ class DreamcmsAclComponent extends AclComponent
 		$groups = $this->controller->Group->find(
 			'all',
 			array(
-				'conditions' => array('Group.deleted' => 0),
+				'conditions' => array('Group.deleted' => '0'),
 				'recursive' => 0
 			)
 		);
 		$admins = $this->controller->Admin->find(
 			'all',
 			array(
-				'conditions' => array('Admin.deleted' => 0),
+				'conditions' => array('Admin.deleted' => '0'),
 				'recursive' => 0
 			)
 		);

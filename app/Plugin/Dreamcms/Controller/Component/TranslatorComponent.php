@@ -36,7 +36,7 @@ class TranslatorComponent extends Component
 			'list',
 			array(
 				'fields' => array('Language.name', 'Language.locale'),
-				'conditions' => array('Language.deleted' => 0),
+				'conditions' => array('Language.deleted' => '0'),
 				'order' => 'Language.name ASC'
 			)
 		);
@@ -55,6 +55,11 @@ class TranslatorComponent extends Component
 
 	public function findFirst(&$model, $params)
 	{
+		if (!isset($params['conditions']))
+			$params['conditions'] = array();
+
+		$params['conditions'] = Set::merge($params['conditions'], array($model->alias . '.deleted' => '0'));
+
 		$result = $model->find("first", $params);
 		
 		foreach ($model->actsAs["Translate"] as $field => $translate)
