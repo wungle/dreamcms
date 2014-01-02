@@ -72,6 +72,9 @@ class RouteableComponent extends Component
 
 	public function getAssociatedFindConditions($index)
 	{
+		if (!$this->rootNode)
+			return array();
+		
 		$result = $this->parentModel->find(
 			'list',
 			array(
