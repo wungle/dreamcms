@@ -1,0 +1,5 @@
+#!/bin/bash
+
+./cake schema generate --name Dreamcms.Default
+./cake schema dump --name Default --write default.sql --plugin Dreamcms
+
