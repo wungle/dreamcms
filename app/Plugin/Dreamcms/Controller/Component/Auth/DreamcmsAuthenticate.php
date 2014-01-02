@@ -15,10 +15,13 @@ class DreamcmsAuthenticate extends BlowfishAuthenticate
 	{
 		$result = DreamcmsSA::authenticate($this, $request, $response) ? DreamcmsSA::authenticate($this, $request, $response) : parent::authenticate($request, $response);
 
-		$result['avatar'] = 'http://www.gravatar.com/avatar/' . md5($result['email']);
-		$result['has_gravatar_account'] = $this->hasGravatarAccount($result['email']);
+		if (isset($result['email']))
+		{
+			$result['avatar'] = 'http://www.gravatar.com/avatar/' . md5($result['email']);
+			$result['has_gravatar_account'] = $this->hasGravatarAccount($result['email']);
+		}
 
-		return ($result['deleted'] == '0') ? $result : false;
+		return (isset($result['deleted']) && ($result['deleted'] == '0')) ? $result : false;
 	}
 
 	private function hasGravatarAccount($email)
