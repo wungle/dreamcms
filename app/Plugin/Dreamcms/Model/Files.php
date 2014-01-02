@@ -7,7 +7,14 @@ App::uses('TranslateBehavior', 'Model.Behavior');
  *
  * @property FileType $FileType
  */
-class File extends DreamcmsAppModel {
+class Files extends DreamcmsAppModel {
+
+/**
+ * Use Table
+ *
+ * @var string
+ */
+	public $useTable = "files";
 
 /**
  * Act as
@@ -25,16 +32,16 @@ class File extends DreamcmsAppModel {
  			'fields' => array('filename')
 		),
 		'Translate' => array(
-			'name' => 'nameTranslation',
-			'description' => 'descriptionTranslation',
-			'url' => 'urlTranslation',
-			'filename' => 'filenameTranslation',
-			'extension' => 'extensionTranslation',
-			'size' => 'sizeTranslation',
-			'mime_type' => 'mimeTypeTranslation',
-			'category' => 'categoryTranslation',
-			'width' => 'widthTranslation',
-			'height' => 'heightTranslation'
+			'name' => 'fileNameTranslation',
+			'description' => 'fileDescriptionTranslation',
+			'url' => 'fileUrlTranslation',
+			'filename' => 'fileFilenameTranslation',
+			'extension' => 'fileExtensionTranslation',
+			'size' => 'fileSizeTranslation',
+			'mime_type' => 'fileMimeTypeTranslation',
+			'category' => 'fileCategoryTranslation',
+			'width' => 'fileWidthTranslation',
+			'height' => 'fileHeightTranslation'
 		),
 	);
 
@@ -266,12 +273,12 @@ class File extends DreamcmsAppModel {
 
 	public function getFirstFile($conditions = array())
 	{
-		$conditions = Set::merge($conditions, array('File.deleted' => '0'));
+		$conditions = Set::merge($conditions, array('Files.deleted' => '0'));
 		return $this->find(
 			'first',
 			array(
 				'conditions' => $conditions,
-				'order' => 'File.lft ASC',
+				'order' => 'Files.lft ASC',
 				'limit' => 1
 			)
 		);
@@ -279,12 +286,12 @@ class File extends DreamcmsAppModel {
 
 	public function findOneById($id, $conditions = array())
 	{
-		$conditions = Set::merge($conditions, array('File.deleted' => '0', 'File.id' => intval($id)));
+		$conditions = Set::merge($conditions, array('Files.deleted' => '0', 'Files.id' => intval($id)));
 		return $this->find(
 			'first',
 			array(
 				'conditions' => $conditions,
-				'order' => 'File.id ASC',
+				'order' => 'Files.id ASC',
 				'limit' => 1
 			)
 		);

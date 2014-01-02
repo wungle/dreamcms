@@ -13,7 +13,7 @@
 	<div class="col-sm-12">
 		<h2><?php echo __('Edit ' . $this->Routeable->singularizeController()); ?></h2>
 		<div class="files form">
-			<?php echo $this->Form->create('File', array('role' => 'form', 'enctype' => 'multipart/form-data')); ?> 
+			<?php echo $this->Form->create('Files', array('role' => 'form', 'enctype' => 'multipart/form-data')); ?> 
 				<fieldset>
 					<div class="form-group">
 						<?php echo $this->Form->input('id', array('class' => 'form-control')); ?>
@@ -22,11 +22,11 @@
 						<div class="input select">
 							<?php 
 								echo $this->DreamcmsForm->treeSelect(array(
-									'model' => 'File',
+									'model' => 'Files',
 									'field' => 'file_type_id',
 									'class' => 'form-control',
 									'tree' => $fileTypes,
-									'current' => $this->request->data['File']['file_type_id']
+									'current' => $this->request->data['Files']['file_type_id']
 								)); 
 							?>
 						</div>
@@ -37,7 +37,7 @@
 							'common/translated_items',
 							array(
 								'localeList' => $localeList,
-								'modelName' => 'File',
+								'modelName' => 'Files',
 								'elements' => array(
 									'name' => array('class' => 'form-control'),
 									'description' => array('type' => 'textarea', 'class' => 'form-control', 'rows' => 5),

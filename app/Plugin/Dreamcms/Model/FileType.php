@@ -149,8 +149,8 @@ class FileType extends DreamcmsAppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		'File' => array(
-			'className' => 'File',
+		'Files' => array(
+			'className' => 'Dreamcms.Files',
 			'foreignKey' => 'file_type_id',
 			'dependent' => false,
 			'conditions' => '',

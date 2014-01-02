@@ -16,8 +16,8 @@ class WebMenu extends DreamcmsAppModel {
 	public $actsAs = array(
 		'Tree',
 		'Translate' => array(
-			'name' => 'nameTranslation',
-			'url' => 'urlTranslation'
+			'name' => 'webMenuNameTranslation',
+			'url' => 'webMenuUrlTranslation'
 		)
 	);
 

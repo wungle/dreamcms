@@ -52,16 +52,16 @@
 														<td>
 															<?php echo $this->Html->link($file['FileType']['name'], array('controller' => 'file_types', 'action' => 'view', $file['FileType']['id'])); ?>
 														</td>
-														<td class="hidden-480"><?php echo h($file['File']['name']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($file['File']['url']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($file['File']['priority']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($file['File']['published']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($file['File']['created']); ?>&nbsp;</td>
-														<td class="hidden-480"><?php echo h($file['File']['modified']); ?>&nbsp;</td>
+														<td class="hidden-480"><?php echo h($file['Files']['name']); ?>&nbsp;</td>
+														<td class="hidden-480"><?php echo h($file['Files']['url']); ?>&nbsp;</td>
+														<td class="hidden-480"><?php echo h($file['Files']['priority']); ?>&nbsp;</td>
+														<td class="hidden-480"><?php echo h($file['Files']['published']); ?>&nbsp;</td>
+														<td class="hidden-480"><?php echo h($file['Files']['created']); ?>&nbsp;</td>
+														<td class="hidden-480"><?php echo h($file['Files']['modified']); ?>&nbsp;</td>
 														<td class="center">
-															<?php if (isset($current_acl['read']) && $current_acl['read']) echo $this->Html->link($this->Html->tag('i', ' ' . __('View'), array('class' => 'icon-eye-open bigger-120')), array('action' => 'view', $file['File']['id']), array('class' => 'btn btn-xs btn-warning dt-btns', 'escape' => false)); ?> &nbsp; 
-															<?php if (isset($current_acl['update']) && $current_acl['update']) echo $this->Html->link($this->Html->tag('i', ' ' . __('Edit'), array('class' => 'icon-edit bigger-120')), array('action' => 'edit', $file['File']['id']), array('class' => 'btn btn-xs btn-info dt-btns', 'escape' => false)); ?> &nbsp; 
-															<?php if (isset($current_acl['delete']) && $current_acl['delete']) echo $this->Form->postLink($this->Html->tag('i', ' ' . __('Delete'), array('class' => 'icon-trash bigger-120')), array('action' => 'delete', $file['File']['id']), array('class' => 'btn btn-xs btn-danger dt-btns', 'escape' => false), __('Are you sure you want to delete # %s?', $file['File']['id'])); ?> &nbsp; 
+															<?php if (isset($current_acl['read']) && $current_acl['read']) echo $this->Html->link($this->Html->tag('i', ' ' . __('View'), array('class' => 'icon-eye-open bigger-120')), array('action' => 'view', $file['Files']['id']), array('class' => 'btn btn-xs btn-warning dt-btns', 'escape' => false)); ?> &nbsp; 
+															<?php if (isset($current_acl['update']) && $current_acl['update']) echo $this->Html->link($this->Html->tag('i', ' ' . __('Edit'), array('class' => 'icon-edit bigger-120')), array('action' => 'edit', $file['Files']['id']), array('class' => 'btn btn-xs btn-info dt-btns', 'escape' => false)); ?> &nbsp; 
+															<?php if (isset($current_acl['delete']) && $current_acl['delete']) echo $this->Form->postLink($this->Html->tag('i', ' ' . __('Delete'), array('class' => 'icon-trash bigger-120')), array('action' => 'delete', $file['Files']['id']), array('class' => 'btn btn-xs btn-danger dt-btns', 'escape' => false), __('Are you sure you want to delete # %s?', $file['Files']['id'])); ?> &nbsp; 
 														</td>
 													</tr>
 <?php endforeach; ?>
