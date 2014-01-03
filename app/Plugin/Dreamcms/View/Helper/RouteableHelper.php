@@ -12,6 +12,10 @@ class RouteableHelper extends AppHelper {
 		$params = $this->params->params;
 		if (isset($params['controllerAlias']))
 			$params['controller'] = $params['controllerAlias'];
+
+		if (isset($params['controllerAlias']) && ($params['plugin'] != 'dreamcms'))
+			$params['plugin'] = 'dreamcms';
+
 		$this->params->params = $params;
 	}
 

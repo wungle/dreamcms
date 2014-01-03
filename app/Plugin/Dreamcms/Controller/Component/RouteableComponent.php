@@ -9,6 +9,7 @@ class RouteableComponent extends Component
 	private $rootNode;
 
 	public $currentController;
+	public $currentPlugin;
 	public $humanize;
 	public $singularize;
 
@@ -40,6 +41,7 @@ class RouteableComponent extends Component
 			);
 		}
 		$this->currentController = isset($this->controller->params->params['controllerAlias']) ? $this->controller->params->params['controllerAlias'] : $this->controller->params->params['controller'];
+		$this->currentPlugin = isset($this->controller->params->params['controllerAlias']) ? 'dreamcms' : $this->controller->params->params['plugin'];
 		$this->humanize = Inflector::humanize($this->currentController);
 		$this->singularize = Inflector::singularize($this->humanize);
 	}
