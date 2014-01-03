@@ -108,3 +108,5 @@ CakeLog::config('error', array(
 
 CakePlugin::load('DebugKit', array('bootstrap' => false, 'routes' => false));
 CakePlugin::load('Dreamcms', array('bootstrap' => false, 'routes' => true));
+
+CakePlugin::load('PhotoGalleries', array('bootstrap' => false, 'routes' => false));
