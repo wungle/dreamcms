@@ -1,5 +1,7 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
+App::uses('TreeBehavior', 'Model.Behavior');
+App::uses('TranslateBehavior', 'Model.Behavior');
 /**
  * WebMenu Model
  *

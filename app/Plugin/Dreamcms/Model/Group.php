@@ -1,5 +1,6 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
+App::uses('AclBehavior', 'Model.Behavior');
 /**
  * Group Model
  *
