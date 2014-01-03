@@ -5,4 +5,25 @@ require_once "core.php";
 Router::connect('/secret/captcha/*', array('plugin' => 'Dreamcms', 'controller' => 'SimpleCaptcha', 'action' => 'secret_captcha'));
 Router::connect('/secret/login/*', array('plugin' => 'Dreamcms', 'controller' => 'Admins', 'action' => 'login'));
 
+
+// ===========================================================================
+// ADMIN ROUTING EXAMPLES
+// ===========================================================================
+
+//Admin Routing Example for Dreamcms.WebMenus
+//Router::connect('/dreamcms/top_menus', array('plugin' => 'dreamcms', 'controller' => 'web_menus', 'action' => 'index', 'root_node' => 1, 'controllerAlias' => 'top_menus'));
+//Router::connect('/dreamcms/top_menus/:action/*', array('plugin' => 'dreamcms', 'controller' => 'web_menus', 'root_node' => 1, 'controllerAlias' => 'top_menus'));
+
+//Admin Routing Example for Dreamcms.FileTypes
+//Router::connect('/dreamcms/annual_report_years', array('plugin' => 'dreamcms', 'controller' => 'file_types', 'action' => 'index', 'root_node' => 1, 'controllerAlias' => 'annual_report_years'));
+//Router::connect('/dreamcms/annual_report_years/:action/*', array('plugin' => 'dreamcms', 'controller' => 'file_types', 'root_node' => 1, 'controllerAlias' => 'annual_report_years'));
+
+//Admin Routing Example for Dreamcms.Files
+//Router::connect('/dreamcms/annual_reports', array('plugin' => 'dreamcms', 'controller' => 'files', 'action' => 'index', 'root_node' => 1, 'controllerAlias' => 'annual_reports'));
+//Router::connect('/dreamcms/annual_reports/:action/*', array('plugin' => 'dreamcms', 'controller' => 'files', 'root_node' => 1, 'controllerAlias' => 'annual_reports'));
+
+//Admin Routing Examples for PhotoGalleries.PhotoAlbums
+//Router::connect('/dreamcms/album_ones', array('plugin' => 'photo_galleries', 'controller' => 'photo_albums', 'action' => 'index', 'root_node' => 1, 'controllerAlias' => 'album_ones', 'prefix' => 'dreamcms'));
+//Router::connect('/dreamcms/album_ones/:action/*', array('plugin' => 'photo_galleries', 'controller' => 'photo_albums', 'root_node' => 1, 'controllerAlias' => 'album_ones', 'prefix' => 'dreamcms'));
+
 ?>
