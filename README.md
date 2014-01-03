@@ -45,11 +45,18 @@ Installation Guide
 
 ---------------------------------------
 
-Database Installation
----------------------
+Database Installation for Core DreamCMS
+---------------------------------------
 ```sh
 $ cd app/Console
 $ ./cake schema create --name Dreamcms.Default
+```
+
+Database Installation for Photo Galleries
+-----------------------------------------
+```sh
+$ cd app/Console
+$ ./cake schema create --name PhotoGalleries.Default
 ```
 
 ---------------------------------------
