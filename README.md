@@ -10,6 +10,7 @@ Here is the list of features currently available in DreamCMS:
 * CMS Menu management
 * Files & File Types management
 * Languages management
+* Photos & Photo Albums management
 * Thumbnail Types management
 * Web Settings / Configurations
 * Web Menu management
@@ -20,6 +21,7 @@ Key Features :
 * Embedded ACL (Access Control List)
 * Routable feature for : File Types, Files, Web Menu
 * Uploadable Behavior
+* Thumbnailable Behavior
 
 ---------------------------------------
 
