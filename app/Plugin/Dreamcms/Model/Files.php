@@ -1,7 +1,8 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
-App::uses('UploadableBehavior', 'Dreamcms.Model.Behavior');
+App::uses('ThumbnailableBehavior', 'Dreamcms.Model.Behavior');
 App::uses('TranslateBehavior', 'Model.Behavior');
+App::uses('UploadableBehavior', 'Dreamcms.Model.Behavior');
 /**
  * File Model
  *
@@ -31,6 +32,21 @@ class Files extends DreamcmsAppModel {
 			//'savePath' => 'path-to-save-the-uploaded-files',
  			'fields' => array('filename')
 		),
+
+		// Uncomment the lines below to enable thumbnailable behavior in this model.
+		//'Dreamcms.Thumbnailable' => array(
+			/**
+				savePath have to be inside of the WWW_ROOT directory
+				ex : /files/thumbnails/
+				the exact savePath would be WWW_ROOT/files/thumbnails/
+			**/
+			//'savePath' => 'path-to-save-the-uploaded-files',
+		//	'fields' => array(
+		//		'filename' => 'Thumbnails'
+		//	)
+		//),
+
+
 		'Translate' => array(
 			'name' => 'fileNameTranslation',
 			'description' => 'fileDescriptionTranslation',

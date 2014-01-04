@@ -1,7 +1,8 @@
 <?php
 App::uses('PhotoGalleriesAppModel', 'PhotoGalleries.Model');
-App::uses('UploadableBehavior', 'Dreamcms.Model.Behavior');
+App::uses('ThumbnailableBehavior', 'Dreamcms.Model.Behavior');
 App::uses('TranslateBehavior', 'Model.Behavior');
+App::uses('UploadableBehavior', 'Dreamcms.Model.Behavior');
 /**
  * Photo Model
  *
@@ -24,6 +25,17 @@ class Photo extends PhotoGalleriesAppModel {
 			//'savePath' => 'path-to-save-the-uploaded-files',
  			'fields' => array('filename')
 		),
+		'Dreamcms.Thumbnailable' => array(
+			/**
+				savePath have to be inside of the WWW_ROOT directory
+				ex : /files/thumbnails/
+				the exact savePath would be WWW_ROOT/files/thumbnails/
+			**/
+			//'savePath' => 'path-to-save-the-uploaded-files',
+			'fields' => array(
+				'filename' => 'Thumbnails'
+			)
+		),
 		'Translate' => array(
 			'name' => 'photoNameTranslation',
 			'description' => 'photoDescriptionTranslation'
@@ -36,6 +48,20 @@ class Photo extends PhotoGalleriesAppModel {
  * @var string
  */
 	public $displayField = 'name';
+
+/**
+ * Thumbnail model
+ *
+ * @var string
+ */
+	public $thumbnailModel = "PhotoGalleries.PhotoThumbnail";
+
+/**
+ * Thumbnail table
+ *
+ * @var string
+ */
+	public $thumbnailTable = "photo_thumbnails";
 
 /**
  * Translate model
