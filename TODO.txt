@@ -1,11 +1,11 @@
 Contact us
 Pages
-Photos
-Videos
-Photo Contest Plugin
+Video Galleries Plugin
+Youtube Videos Plugin
+Photo Contest Plugin - For developing Facebook Tab Application
 Google Analytics Report
 CMS Audit Trails - Logable behavior
-Cacheable behavior
+Cacheable
 
 
 Email Templates
