@@ -20,7 +20,7 @@ class DreamcmsAclComponent extends AclComponent
 	}
 
 	// called before Controller::beforeFilter()
-	public function initialize(&$controller)
+	public function initialize(Controller $controller)
 	{
 		$this->controller = &$controller;
 		$this->action = $this->controller->params->params['action'];
@@ -69,18 +69,18 @@ class DreamcmsAclComponent extends AclComponent
     }
 
 	// called after Controller::beforeFilter(), but before the controller executes the current action handler.
-	public function startup(&$controller)
+	public function startup(Controller $controller)
 	{
 	}
 
 	// called after the controller executes the requested action's logic but before the controller's renders views and layout.
-	public function beforeRender(&$controller)
+	public function beforeRender(Controller $controller)
 	{
 		$this->controller->set('current_acl', $this->getCurrentAcl());
 	}
 
 	// called after Controller::render() and before the output is printed to the browser
-	public function shutdown(&$controller)
+	public function shutdown(Controller $controller)
 	{
 	}
 

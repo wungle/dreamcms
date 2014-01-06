@@ -330,7 +330,7 @@ class ThumbnailableBehavior extends ModelBehavior
  * @param Model $Model Model the callback was run on.
  * @return boolean
  */
-	public function beforeDelete(Model $Model) {
+	public function beforeDelete(Model $Model, $cascade = true) {
 		$locale = (isset($Model->locale) && !empty($Model->locale)) ? $Model->locale : 'en-US';
 		$RuntimeModel = $this->thumbnailModel($Model);
 

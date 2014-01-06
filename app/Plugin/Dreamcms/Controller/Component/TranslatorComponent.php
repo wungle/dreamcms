@@ -20,14 +20,14 @@ class TranslatorComponent extends Component
 	}
 
 	// called before Controller::beforeFilter()
-	public function initialize(&$controller)
+	public function initialize(Controller $controller)
 	{
 		$this->controller = &$controller;
 		$this->model = null;
     }
 
 	// called after Controller::beforeFilter(), but before the controller executes the current action handler.
-	public function startup(&$controller)
+	public function startup(Controller $controller)
 	{
 		$this->defaultLanguage = Configure::read('Config.language');
 
@@ -43,16 +43,16 @@ class TranslatorComponent extends Component
 	}
 
 	// called after the controller executes the requested action's logic but before the controller's renders views and layout.
-	public function beforeRender(&$controller)
+	public function beforeRender(Controller $controller)
 	{
 	}
 
 	// called after Controller::render() and before the output is printed to the browser
-	public function shutdown(&$controller)
+	public function shutdown(Controller $controller)
 	{
 	}
 
-	public function findFirst(&$model, $params = array())
+	public function findFirst(Controller $model, $params = array())
 	{
 		$result = $model->find("first", $params);
 		
@@ -67,7 +67,7 @@ class TranslatorComponent extends Component
 		return $result;
 	}
 
-	public function init(&$model, $data)
+	public function init(Controller $model, $data)
 	{
 		$this->data = $data;
 		$this->model = &$model;

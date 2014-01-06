@@ -20,13 +20,13 @@ class RouteableComponent extends Component
 	}
 
 	// called before Controller::beforeFilter()
-	public function initialize(&$controller)
+	public function initialize(Controller $controller)
 	{
 		$this->controller = &$controller;
     }
 
 	// called after Controller::beforeFilter(), but before the controller executes the current action handler.
-	public function startup(&$controller)
+	public function startup(Controller $controller)
 	{
 		if (isset($this->controller->params->params['root_node']) && $this->parentModel)
 		{
@@ -46,12 +46,12 @@ class RouteableComponent extends Component
 	}
 
 	// called after the controller executes the requested action's logic but before the controller's renders views and layout.
-	public function beforeRender(&$controller)
+	public function beforeRender(Controller $controller)
 	{
 	}
 
 	// called after Controller::render() and before the output is printed to the browser
-	public function shutdown(&$controller)
+	public function shutdown(Controller $controller)
 	{
 	}
 

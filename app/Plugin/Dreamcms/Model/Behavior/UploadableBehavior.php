@@ -209,7 +209,7 @@ class UploadableBehavior extends ModelBehavior
  * @param Model $Model Model the callback was run on.
  * @return boolean
  */
-	public function beforeDelete(Model $Model) {
+	public function beforeDelete(Model $Model, $cascade = true) {
 		if ($this->hasTranslateBehavior($Model))
 		{
 			$this->fetchLanguages();

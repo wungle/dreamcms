@@ -1,4 +1,6 @@
 <?php
+App::uses('SessionComponent', 'Controller/Component');
+
 /**
  * Script para la generación de CAPTCHAS
  *
@@ -150,7 +152,7 @@ class SimpleCaptcha {
         $this->resourcesPath = $current_dir . 'simple_captcha';
     }
 
-    public function setCakeSession(&$session)
+    public function setCakeSession(SessionComponent $session)
     {
         $this->cakeSession = &$session;
     }
