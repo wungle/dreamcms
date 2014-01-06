@@ -22,6 +22,7 @@ Key Features :
 * Routable feature for : File Types, Files, Web Menu
 * Uploadable Behavior
 * Thumbnailable Behavior
+* Cacheable Model
 
 ---------------------------------------
 
@@ -36,7 +37,7 @@ Installation Guide
 
 * copy the `app/Model/AppModel.php.default` file to `app/Model/AppModel.php`
 
-* copy the `app/Controller/AppController.php.default` file to `app/Model/AppController.php`
+* copy the `app/Controller/AppController.php.default` file to `app/Controller/AppController.php`
 
 * copy the `app/Plugin/Dreamcms/Config/routes.php.default` file to `app/Plugin/Dreamcms/Config/routes.php`
 
