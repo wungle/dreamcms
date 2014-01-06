@@ -289,7 +289,6 @@ class Files extends DreamcmsAppModel {
 
 	public function getFirstFile($conditions = array())
 	{
-		$conditions = Set::merge($conditions, array('Files.deleted' => '0'));
 		return $this->find(
 			'first',
 			array(
@@ -302,7 +301,7 @@ class Files extends DreamcmsAppModel {
 
 	public function findOneById($id, $conditions = array())
 	{
-		$conditions = Set::merge($conditions, array('Files.deleted' => '0', 'Files.id' => intval($id)));
+		$conditions = Set::merge($conditions, array('Files.id' => intval($id)));
 		return $this->find(
 			'first',
 			array(

@@ -229,7 +229,6 @@ class Photo extends PhotoGalleriesAppModel {
 
 	public function getFirstPhoto($conditions = array())
 	{
-		$conditions = Set::merge($conditions, array('Photo.deleted' => '0'));
 		return $this->find(
 			'first',
 			array(
@@ -242,7 +241,7 @@ class Photo extends PhotoGalleriesAppModel {
 
 	public function findOneById($id, $conditions = array())
 	{
-		$conditions = Set::merge($conditions, array('Photo.deleted' => '0', 'Photo.id' => intval($id)));
+		$conditions = Set::merge($conditions, array('Photo.id' => intval($id)));
 		return $this->find(
 			'first',
 			array(

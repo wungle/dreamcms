@@ -29,9 +29,6 @@ class ThumbnailTypesController extends DreamcmsAppController {
 		$this->DataFinder->setupConditions();
 
 		$this->ThumbnailType->recursive = 0;
-		$paginate = $this->paginate;
-		$paginate['conditions'] = array('ThumbnailType.deleted' => '0');
-		$this->paginate = $paginate;
 		$this->set('thumbnailTypes', $this->paginate());
 	}
 
@@ -47,7 +44,7 @@ class ThumbnailTypesController extends DreamcmsAppController {
 		if (!$this->ThumbnailType->exists($id)) {
 			throw new NotFoundException(__('Invalid thumbnail type'));
 		}
-		$options = array('conditions' => array('ThumbnailType.deleted' => '0', 'ThumbnailType.' . $this->ThumbnailType->primaryKey => $id));
+		$options = array('conditions' => array('ThumbnailType.' . $this->ThumbnailType->primaryKey => $id));
 		$thumbnailType = $this->ThumbnailType->find('first', $options);
 		if (!$thumbnailType)
 			throw new NotFoundException(__('Invalid thumbnail type'));
@@ -93,7 +90,7 @@ class ThumbnailTypesController extends DreamcmsAppController {
 				$this->Session->setFlash(__('The thumbnail type could not be saved. Please, try again.'), 'flash/error');
 			}
 		} else {
-			$options = array('conditions' => array('ThumbnailType.deleted' => '0', 'ThumbnailType.' . $this->ThumbnailType->primaryKey => $id));
+			$options = array('conditions' => array('ThumbnailType.' . $this->ThumbnailType->primaryKey => $id));
 			$this->request->data = $this->ThumbnailType->find('first', $options);
 
 			if (!$this->request->data)
@@ -119,7 +116,7 @@ class ThumbnailTypesController extends DreamcmsAppController {
 			throw new NotFoundException(__('Invalid thumbnail type'));
 		}
 
-		$thumbnailType = $this->ThumbnailType->find('first', array('fields' => array('ThumbnailType.id', 'ThumbnailType.deleted'), 'conditions' => array('ThumbnailType.id' => $id, 'ThumbnailType.deleted' => '0')));
+		$thumbnailType = $this->ThumbnailType->find('first', array('fields' => array('ThumbnailType.id', 'ThumbnailType.deleted'), 'conditions' => array('ThumbnailType.id' => $id)));
 		if (!$thumbnailType)
 			throw new NotFoundException(__('Invalid thumbnail type'));
 

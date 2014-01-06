@@ -29,9 +29,6 @@ class TempDirsController extends DreamcmsAppController {
 		$this->DataFinder->setupConditions();
 
 		$this->TempDir->recursive = 0;
-		$paginate = $this->paginate;
-		$paginate['conditions'] = array('TempDir.deleted' => '0');
-		$this->paginate = $paginate;
 		$this->set('tempDirs', $this->paginate());
 	}
 
@@ -47,7 +44,7 @@ class TempDirsController extends DreamcmsAppController {
 		if (!$this->TempDir->exists($id)) {
 			throw new NotFoundException(__('Invalid temp dir'));
 		}
-		$options = array('conditions' => array('TempDir.deleted' => '0', 'TempDir.' . $this->TempDir->primaryKey => $id));
+		$options = array('conditions' => array('TempDir.' . $this->TempDir->primaryKey => $id));
 		$tempDir = $this->TempDir->find('first', $options);
 		if (!$tempDir)
 			throw new NotFoundException(__('Invalid temp dir'));
@@ -93,7 +90,7 @@ class TempDirsController extends DreamcmsAppController {
 				$this->Session->setFlash(__('The temp dir could not be saved. Please, try again.'), 'flash/error');
 			}
 		} else {
-			$options = array('conditions' => array('TempDir.deleted' => '0', 'TempDir.' . $this->TempDir->primaryKey => $id));
+			$options = array('conditions' => array('TempDir.' . $this->TempDir->primaryKey => $id));
 			$this->request->data = $this->TempDir->find('first', $options);
 
 			if (!$this->request->data)
@@ -119,7 +116,7 @@ class TempDirsController extends DreamcmsAppController {
 			throw new NotFoundException(__('Invalid temp dir'));
 		}
 
-		$tempDir = $this->TempDir->find('first', array('fields' => array('TempDir.id', 'TempDir.deleted'), 'conditions' => array('TempDir.id' => $id, 'TempDir.deleted' => '0')));
+		$tempDir = $this->TempDir->find('first', array('fields' => array('TempDir.id', 'TempDir.deleted'), 'conditions' => array('TempDir.id' => $id)));
 		if (!$tempDir)
 			throw new NotFoundException(__('Invalid temp dir'));
 

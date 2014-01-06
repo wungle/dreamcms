@@ -201,7 +201,7 @@ class CmsMenu extends DreamcmsAppModel {
 		return $this->find(
 			'all',
 			array(
-				'conditions' => array('CmsMenu.parent_id' => '0', 'CmsMenu.published' => 'Yes', 'CmsMenu.deleted' => '0'),
+				'conditions' => array('CmsMenu.parent_id' => '0', 'CmsMenu.published' => 'Yes'),
 				'order' => 'CmsMenu.name ASC',
 				'recursive' => 2
 			)

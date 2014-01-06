@@ -38,7 +38,7 @@ class PhotoAlbumsController extends PhotoGalleriesAppController {
 		$this->PhotoAlbum->setLanguage(Configure::read('Config.language'));
 		$this->PhotoAlbum->recursive = 0;
 		$paginate = $this->paginate;
-		$paginate['conditions'] = Set::merge(array('PhotoAlbum.deleted' => '0'), $this->Routeable->getFindConditions());
+		$paginate['conditions'] = $this->Routeable->getFindConditions();
 		$this->paginate = $paginate;
 		$this->set('photoAlbums', $this->paginate());
 	}
@@ -56,7 +56,7 @@ class PhotoAlbumsController extends PhotoGalleriesAppController {
 			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 		}
 		$this->PhotoAlbum->setLanguage(Configure::read('Config.language'));
-		$conditions = Set::merge(array('PhotoAlbum.' . $this->PhotoAlbum->primaryKey => $id, 'PhotoAlbum.deleted' => '0'), $this->Routeable->getFindConditions());
+		$conditions = Set::merge(array('PhotoAlbum.' . $this->PhotoAlbum->primaryKey => $id), $this->Routeable->getFindConditions());
 		$options = array('conditions' => $conditions);
 		$photoAlbum = $this->PhotoAlbum->find('first', $options);
 		if (!$photoAlbum) {
@@ -81,7 +81,7 @@ class PhotoAlbumsController extends PhotoGalleriesAppController {
 				$this->redirect(array('plugin' => $this->Routeable->currentPlugin, 'controller' => $this->Routeable->currentController, 'action' => 'index'));
 			}
 		}
-		$parentPhotoAlbums = $this->PhotoAlbum->generateTreeList(Set::merge(array('PhotoAlbum.deleted' => '0'), $this->Routeable->getTreeListConditions()));
+		$parentPhotoAlbums = $this->PhotoAlbum->generateTreeList($this->Routeable->getTreeListConditions());
 		$this->set('parentPhotoAlbums', $parentPhotoAlbums);
 	}
 
@@ -107,12 +107,12 @@ class PhotoAlbumsController extends PhotoGalleriesAppController {
 				$this->redirect(array('plugin' => $this->Routeable->currentPlugin, 'controller' => $this->Routeable->currentController, 'action' => 'index'));
 			}
 		} else {
-			$options = array('conditions' => Set::merge(array('PhotoAlbum.' . $this->PhotoAlbum->primaryKey => $id, 'PhotoAlbum.deleted' => '0'), $this->Routeable->getFindConditions()));
+			$options = array('conditions' => Set::merge(array('PhotoAlbum.' . $this->PhotoAlbum->primaryKey => $id), $this->Routeable->getFindConditions()));
 			$this->request->data = $this->Translator->findFirst($this->PhotoAlbum, $options);
 			if (!$this->request->data)
 				throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 		}
-		$parentPhotoAlbums = $this->PhotoAlbum->generateTreeList(Set::merge(array('PhotoAlbum.deleted' => '0'), $this->Routeable->getTreeListConditions()));
+		$parentPhotoAlbums = $this->PhotoAlbum->generateTreeList($this->Routeable->getTreeListConditions());
 		$this->set('parentPhotoAlbums', $parentPhotoAlbums);
 	}
 
@@ -134,7 +134,7 @@ class PhotoAlbumsController extends PhotoGalleriesAppController {
 			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 		}
 
-		$photoAlbum = $this->PhotoAlbum->find('first', array('fields' => array('PhotoAlbum.id', 'PhotoAlbum.deleted'), 'conditions' => array('PhotoAlbum.id' => $id, 'PhotoAlbum.deleted' => '0')));
+		$photoAlbum = $this->PhotoAlbum->find('first', array('fields' => array('PhotoAlbum.id', 'PhotoAlbum.deleted'), 'conditions' => array('PhotoAlbum.id' => $id)));
 		if (!$photoAlbum)
 			throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 

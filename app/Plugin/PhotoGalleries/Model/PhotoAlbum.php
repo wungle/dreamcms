@@ -191,7 +191,6 @@ class PhotoAlbum extends PhotoGalleriesAppModel {
 
 	public function getFirstPhotoAlbum($conditions = array())
 	{
-		$conditions = Set::merge($conditions, array('PhotoAlbum.deleted' => '0'));
 		return $this->find(
 			'first',
 			array(
@@ -204,7 +203,7 @@ class PhotoAlbum extends PhotoGalleriesAppModel {
 
 	public function findOneById($id, $conditions = array())
 	{
-		$conditions = Set::merge($conditions, array('PhotoAlbum.deleted' => '0', 'PhotoAlbum.id' => intval($id)));
+		$conditions = Set::merge($conditions, array('PhotoAlbum.id' => intval($id)));
 		return $this->find(
 			'first',
 			array(

@@ -23,12 +23,7 @@ class GarbageRemoverComponent extends Component
 	public function startup(&$controller)
 	{
 		$this->controller->loadModel('Dreamcms.TempDir');
-		$this->tempDirs = $this->controller->TempDir->find(
-			'all',
-			array(
-				'conditions' => array('TempDir.deleted' => '0')
-			)
-		);
+		$this->tempDirs = $this->controller->TempDir->find('all');
 	}
 
 	// called after the controller executes the requested action's logic but before the controller's renders views and layout.

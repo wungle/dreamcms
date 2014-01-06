@@ -29,9 +29,6 @@ class LanguagesController extends DreamcmsAppController {
 		$this->DataFinder->setupConditions();
 
 		$this->Language->recursive = 0;
-		$paginate = $this->paginate;
-		$paginate['conditions'] = array('Language.deleted' => '0');
-		$this->paginate = $paginate;
 		$this->set('languages', $this->paginate());
 	}
 
@@ -47,7 +44,7 @@ class LanguagesController extends DreamcmsAppController {
 		if (!$this->Language->exists($id)) {
 			throw new NotFoundException(__('Invalid language'));
 		}
-		$options = array('conditions' => array('Language.deleted' => '0', 'Language.' . $this->Language->primaryKey => $id));
+		$options = array('conditions' => array('Language.' . $this->Language->primaryKey => $id));
 		$language = $this->Language->find('first', $options);
 		if (!$language)
 			throw new NotFoundException(__('Invalid language'));
@@ -93,7 +90,7 @@ class LanguagesController extends DreamcmsAppController {
 				$this->Session->setFlash(__('The language could not be saved. Please, try again.'), 'flash/error');
 			}
 		} else {
-			$options = array('conditions' => array('Language.deleted' => '0', 'Language.' . $this->Language->primaryKey => $id));
+			$options = array('conditions' => array('Language.' . $this->Language->primaryKey => $id));
 			$this->request->data = $this->Language->find('first', $options);
 
 			if (!$this->request->data)
@@ -119,7 +116,7 @@ class LanguagesController extends DreamcmsAppController {
 			throw new NotFoundException(__('Invalid language'));
 		}
 
-		$language = $this->Language->find('first', array('fields' => array('Language.id', 'Language.deleted'), 'conditions' => array('Language.id' => $id, 'Language.deleted' => '0')));
+		$language = $this->Language->find('first', array('fields' => array('Language.id', 'Language.deleted'), 'conditions' => array('Language.id' => $id)));
 		if (!$language)
 			throw new NotFoundException(__('Invalid language'));
 

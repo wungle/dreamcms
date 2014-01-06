@@ -29,9 +29,6 @@ class GroupsController extends DreamcmsAppController {
 		$this->DataFinder->setupConditions();
 
 		$this->Group->recursive = 0;
-		$paginate = $this->paginate;
-		$paginate['conditions'] = array('Group.deleted' => '0');
-		$this->paginate = $paginate;
 		$this->set('groups', $this->paginate());
 	}
 
@@ -47,7 +44,7 @@ class GroupsController extends DreamcmsAppController {
 		if (!$this->Group->exists($id)) {
 			throw new NotFoundException(__('Invalid group'));
 		}
-		$options = array('conditions' => array('Group.deleted' => '0', 'Group.' . $this->Group->primaryKey => $id));
+		$options = array('conditions' => array('Group.' . $this->Group->primaryKey => $id));
 		$group = $this->Group->find('first', $options);
 		if (!$group)
 			throw new NotFoundException(__('Invalid group'));
@@ -95,7 +92,7 @@ class GroupsController extends DreamcmsAppController {
 				$this->Session->setFlash(__('The group could not be saved. Please, try again.'), 'flash/error');
 			}
 		} else {
-			$options = array('conditions' => array('Group.deleted' => '0', 'Group.' . $this->Group->primaryKey => $id));
+			$options = array('conditions' => array('Group.' . $this->Group->primaryKey => $id));
 			$data = $this->Group->find('first', $options);
 			if (!$data)
 				throw new NotFoundException(__('Invalid group'));
@@ -123,7 +120,7 @@ class GroupsController extends DreamcmsAppController {
 			throw new NotFoundException(__('Invalid group'));
 		}
 
-		$group = $this->Group->find('first', array('fields' => array('Group.id', 'Group.deleted'), 'conditions' => array('Group.id' => $id, 'Group.deleted' => '0')));
+		$group = $this->Group->find('first', array('fields' => array('Group.id', 'Group.deleted'), 'conditions' => array('Group.id' => $id)));
 		if (!$group)
 			throw new NotFoundException(__('Invalid group'));
 

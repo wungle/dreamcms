@@ -39,9 +39,6 @@ class CmsMenusController extends DreamcmsAppController {
 		$this->DataFinder->setupConditions();
 
 		$this->CmsMenu->recursive = 0;
-		$paginate = $this->paginate;
-		$paginate['conditions'] = array('CmsMenu.deleted' => '0');
-		$this->paginate = $paginate;
 		$this->set('cmsMenus', $this->paginate());
 	}
 
@@ -57,7 +54,7 @@ class CmsMenusController extends DreamcmsAppController {
 		if (!$this->CmsMenu->exists($id)) {
 			throw new NotFoundException(__('Invalid cms menu'));
 		}
-		$options = array('conditions' => array('CmsMenu.deleted' => '0', 'CmsMenu.' . $this->CmsMenu->primaryKey => $id));
+		$options = array('conditions' => array('CmsMenu.' . $this->CmsMenu->primaryKey => $id));
 		$cmsMenu = $this->CmsMenu->find('first', $options);
 		if (!$cmsMenu)
 			throw new NotFoundException(__('Invalid cms menu'));
@@ -86,7 +83,6 @@ class CmsMenusController extends DreamcmsAppController {
 			array(
 				'fields' => array('CmsMenu.id', 'CmsMenu.name'),
 				'conditions' => array(
-					'CmsMenu.deleted' => '0',
 					'CmsMenu.parent_id' => '0',
 					'CmsMenu.published' => 'Yes'
 				),
@@ -119,7 +115,7 @@ class CmsMenusController extends DreamcmsAppController {
 				$this->Session->setFlash(__('The cms menu could not be saved. Please, try again.'), 'flash/error');
 			}
 		} else {
-			$options = array('conditions' => array('CmsMenu.deleted' => '0', 'CmsMenu.' . $this->CmsMenu->primaryKey => $id));
+			$options = array('conditions' => array('CmsMenu.' . $this->CmsMenu->primaryKey => $id));
 			$this->request->data = $this->CmsMenu->find('first', $options);
 			if (!$this->request->data)
 				throw new NotFoundException(__('Invalid cms menu'));
@@ -129,7 +125,6 @@ class CmsMenusController extends DreamcmsAppController {
 			array(
 				'fields' => array('CmsMenu.id', 'CmsMenu.name'),
 				'conditions' => array(
-					'CmsMenu.deleted' => '0',
 					'CmsMenu.parent_id' => '0',
 					'CmsMenu.published' => 'Yes',
 					'CmsMenu.id !=' => $this->request->data['CmsMenu']['id']
@@ -160,7 +155,7 @@ class CmsMenusController extends DreamcmsAppController {
 			throw new NotFoundException(__('Invalid cms menu'));
 		}
 
-		$cmsMenu = $this->CmsMenu->find('first', array('fields' => array('CmsMenu.id', 'CmsMenu.deleted'), 'conditions' => array('CmsMenu.id' => $id, 'CmsMenu.deleted' => '0')));
+		$cmsMenu = $this->CmsMenu->find('first', array('fields' => array('CmsMenu.id', 'CmsMenu.deleted'), 'conditions' => array('CmsMenu.id' => $id)));
 		if (!$cmsMenu)
 			throw new NotFoundException(__('Invalid cms menu'));
 

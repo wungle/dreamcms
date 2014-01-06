@@ -32,7 +32,6 @@ class DreamcmsAclComponent extends AclComponent
 			array(
 				'conditions' => array(
 					'CmsMenu.published' => 'Yes',
-					'CmsMenu.deleted' => '0',
 					'CmsMenu.url' => $this->url
 				),
 				'order' => 'CmsMenu.lft DESC',
@@ -49,7 +48,6 @@ class DreamcmsAclComponent extends AclComponent
 			'first',
 			array(
 				'conditions' => array(
-					'Group.deleted' => '0',
 					'Group.id' => $this->admin['Admin']['group_id']
 				),
 				'limit' => 1,
@@ -225,20 +223,9 @@ class DreamcmsAclComponent extends AclComponent
 
 	public function denyNewAcoFromAllAro($aco)
 	{
-		$groups = $this->controller->Group->find(
-			'all',
-			array(
-				'conditions' => array('Group.deleted' => '0'),
-				'recursive' => 0
-			)
-		);
-		$admins = $this->controller->Admin->find(
-			'all',
-			array(
-				'conditions' => array('Admin.deleted' => '0'),
-				'recursive' => 0
-			)
-		);
+		$groups = $this->controller->Group->find('all', array('recursive' => 0));
+		$admins = $this->controller->Admin->find('all', array('recursive' => 0));
+
 		foreach ($groups as $aro)
 			$this->deny($aro, $aco, '*');
 		foreach ($admins as $aro)
@@ -247,20 +234,9 @@ class DreamcmsAclComponent extends AclComponent
 
 	public function allowNewAcoFromAllAro($aco)
 	{
-		$groups = $this->controller->Group->find(
-			'all',
-			array(
-				'conditions' => array('Group.deleted' => '0'),
-				'recursive' => 0
-			)
-		);
-		$admins = $this->controller->Admin->find(
-			'all',
-			array(
-				'conditions' => array('Admin.deleted' => '0'),
-				'recursive' => 0
-			)
-		);
+		$groups = $this->controller->Group->find('all', array('recursive' => 0));
+		$admins = $this->controller->Admin->find('all', array('recursive' => 0));
+
 		foreach ($groups as $aro)
 			$this->allow($aro, $aco, '*');
 		foreach ($admins as $aro)

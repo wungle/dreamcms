@@ -30,9 +30,6 @@ class AdminsController extends DreamcmsAppController {
 		$this->DataFinder->setupConditions();
 
 		$this->Admin->recursive = 0;
-		$paginate = $this->paginate;
-		$paginate['conditions'] = array('Admin.deleted' => '0');
-		$this->paginate = $paginate;
 		$this->set('admins', $this->paginate());
 	}
 
@@ -48,7 +45,7 @@ class AdminsController extends DreamcmsAppController {
 		if (!$this->Admin->exists($id)) {
 			throw new NotFoundException(__('Invalid admin'));
 		}
-		$options = array('conditions' => array('Admin.deleted' => '0', 'Admin.' . $this->Admin->primaryKey => $id));
+		$options = array('conditions' => array('Admin.' . $this->Admin->primaryKey => $id));
 		$admin = $this->Admin->find('first', $options);
 		if (!$admin)
 			throw new NotFoundException(__('Invalid admin'));
@@ -77,7 +74,7 @@ class AdminsController extends DreamcmsAppController {
 			$first_group = $this->Group->getFirstGroup();
 			$this->request->data = $this->DreamcmsAcl->getGroupAcl($first_group);
 		}
-		$groups = $this->Admin->Group->find('list', array('conditions' => array('Group.deleted' => '0')));
+		$groups = $this->Admin->Group->find('list');
 		$this->set(compact('groups'));
 	}
 
@@ -103,7 +100,7 @@ class AdminsController extends DreamcmsAppController {
 				$this->Session->setFlash(__('The admin could not be saved. Please, try again.'), 'flash/error');
 			}
 		} else {
-			$options = array('conditions' => array('Admin.deleted' => '0', 'Admin.' . $this->Admin->primaryKey => $id));
+			$options = array('conditions' => array('Admin.' . $this->Admin->primaryKey => $id));
 			$data = $this->Admin->find('first', $options);
 
 			if (!$data)
@@ -113,7 +110,7 @@ class AdminsController extends DreamcmsAppController {
 			$data = Set::merge($data, $this->DreamcmsAcl->getAdminAcl($data));
 			$this->request->data = $data;
 		}
-		$groups = $this->Admin->Group->find('list', array('conditions' => array('Group.deleted' => '0')));
+		$groups = $this->Admin->Group->find('list');
 		$this->set(compact('groups'));
 	}
 
@@ -135,7 +132,7 @@ class AdminsController extends DreamcmsAppController {
 			throw new NotFoundException(__('Invalid admin'));
 		}
 
-		$admin = $this->Admin->find('first', array('fields' => array('Admin.id', 'Admin.deleted'), 'conditions' => array('Admin.id' => $id, 'Admin.deleted' => '0')));
+		$admin = $this->Admin->find('first', array('fields' => array('Admin.id', 'Admin.deleted'), 'conditions' => array('Admin.id' => $id)));
 		if (!$admin)
 			throw new NotFoundException(__('Invalid admin'));
 

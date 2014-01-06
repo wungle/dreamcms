@@ -35,7 +35,6 @@ class RouteableComponent extends Component
 				array(
 					'conditions' => array(
 						$this->parentModel->alias . '.' . $this->parentModel->primaryKey => $this->controller->params->params['root_node'],
-						$this->parentModel->alias . '.deleted' => '0'
 					)
 				)
 			);
@@ -82,7 +81,6 @@ class RouteableComponent extends Component
 			array(
 				'fields' => array($this->parentModel->alias . '.' . $this->parentModel->primaryKey, $this->parentModel->alias . '.' . $this->parentModel->primaryKey),
 				'conditions' => array(
-					$this->parentModel->alias . '.deleted' => '0',
 					$this->parentModel->alias . '.lft >=' => $this->rootNode[$this->parentModel->alias]['lft'],
 					$this->parentModel->alias . '.rght <=' => $this->rootNode[$this->parentModel->alias]['rght'],
 				),
