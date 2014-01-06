@@ -1,12 +1,13 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
+App::uses('CacheableModel', 'Dreamcms.Model');
 App::uses('AclBehavior', 'Model.Behavior');
 /**
  * Group Model
  *
  * @property Admin $Admin
  */
-class Group extends DreamcmsAppModel {
+class Group extends CacheableModel {
 
 /**
  * Display field

@@ -1,10 +1,11 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
+App::uses('CacheableModel', 'Dreamcms.Model');
 /**
  * ThumbnailType Model
  *
  */
-class ThumbnailType extends DreamcmsAppModel {
+class ThumbnailType extends CacheableModel {
 
 /**
  * Display field

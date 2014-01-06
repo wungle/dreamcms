@@ -1,10 +1,11 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
+App::uses('CacheableModel', 'Dreamcms.Model');
 /**
  * TempDir Model
  *
  */
-class TempDir extends DreamcmsAppModel {
+class TempDir extends CacheableModel {
 
 /**
  * Display field

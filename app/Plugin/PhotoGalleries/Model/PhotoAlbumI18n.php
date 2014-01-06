@@ -1,10 +1,11 @@
 <?php
 App::uses('PhotoGalleriesAppModel', 'PhotoGalleries.Model');
+App::uses('CacheableModel', 'Dreamcms.Model');
 /**
  * PhotoAlbumI18n Model
  *
  */
-class PhotoAlbumI18n extends PhotoGalleriesAppModel {
+class PhotoAlbumI18n extends CacheableModel {
 
 /**
  * Use table

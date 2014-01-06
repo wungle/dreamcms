@@ -1,12 +1,13 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
+App::uses('CacheableModel', 'Dreamcms.Model');
 /**
  * CmsMenu Model
  *
  * @property CmsMenu $ParentCmsMenu
  * @property CmsMenu $ChildCmsMenu
  */
-class CmsMenu extends DreamcmsAppModel {
+class CmsMenu extends CacheableModel {
 
 /**
  * Display field

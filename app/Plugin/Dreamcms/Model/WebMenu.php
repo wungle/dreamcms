@@ -1,5 +1,6 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
+App::uses('CacheableModel', 'Dreamcms.Model');
 App::uses('TreeBehavior', 'Model.Behavior');
 App::uses('TranslateBehavior', 'Model.Behavior');
 /**
@@ -8,7 +9,7 @@ App::uses('TranslateBehavior', 'Model.Behavior');
  * @property WebMenu $ParentWebMenu
  * @property WebMenu $ChildWebMenu
  */
-class WebMenu extends DreamcmsAppModel {
+class WebMenu extends CacheableModel {
 
 /**
  * Act as

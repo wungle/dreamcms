@@ -1,5 +1,6 @@
 <?php
 App::uses('PhotoGalleriesAppModel', 'PhotoGalleries.Model');
+App::uses('CacheableModel', 'Dreamcms.Model');
 App::uses('TreeBehavior', 'Model.Behavior');
 App::uses('TranslateBehavior', 'Model.Behavior');
 /**

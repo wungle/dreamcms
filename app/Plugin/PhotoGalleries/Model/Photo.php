@@ -1,5 +1,6 @@
 <?php
 App::uses('PhotoGalleriesAppModel', 'PhotoGalleries.Model');
+App::uses('CacheableModel', 'Dreamcms.Model');
 App::uses('ThumbnailableBehavior', 'Dreamcms.Model.Behavior');
 App::uses('TranslateBehavior', 'Model.Behavior');
 App::uses('UploadableBehavior', 'Dreamcms.Model.Behavior');
@@ -8,7 +9,7 @@ App::uses('UploadableBehavior', 'Dreamcms.Model.Behavior');
  *
  * @property PhotoAlbum $PhotoAlbum
  */
-class Photo extends PhotoGalleriesAppModel {
+class Photo extends CacheableModel {
 
 /**
  * Act as

@@ -1,10 +1,11 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
+App::uses('CacheableModel', 'Dreamcms.Model');
 /**
  * Setting Model
  *
  */
-class Setting extends DreamcmsAppModel {
+class Setting extends CacheableModel {
 
 /**
  * Display field

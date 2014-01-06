@@ -1,10 +1,11 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
+App::uses('CacheableModel', 'Dreamcms.Model');
 /**
  * Language Model
  *
  */
-class Language extends DreamcmsAppModel {
+class Language extends CacheableModel {
 
 /**
  * Display field

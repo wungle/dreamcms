@@ -1,5 +1,6 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
+App::uses('CacheableModel', 'Dreamcms.Model');
 App::uses('ThumbnailableBehavior', 'Dreamcms.Model.Behavior');
 App::uses('TranslateBehavior', 'Model.Behavior');
 App::uses('UploadableBehavior', 'Dreamcms.Model.Behavior');
@@ -8,7 +9,7 @@ App::uses('UploadableBehavior', 'Dreamcms.Model.Behavior');
  *
  * @property FileType $FileType
  */
-class Files extends DreamcmsAppModel {
+class Files extends CacheableModel {
 
 /**
  * Use Table

@@ -43,13 +43,6 @@ class RouteableHelper extends AppHelper {
 	{
 		return isset($this->params->params['controllerAlias']) ? $this->params->params['controllerAlias'] : $this->params->params['controller'];
 	}
-
-	public function test()
-	{
-		echo '<pre>';
-		print_r($this->params);
-		echo '</pre>';
-	}
 }
 
 ?>

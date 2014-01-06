@@ -1,10 +1,11 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
+App::uses('CacheableModel', 'Dreamcms.Model');
 /**
  * WebMenuI18n Model
  *
  */
-class WebMenuI18n extends DreamcmsAppModel {
+class WebMenuI18n extends CacheableModel {
 
 /**
  * Use table

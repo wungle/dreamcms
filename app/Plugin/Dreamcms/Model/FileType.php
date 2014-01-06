@@ -1,5 +1,6 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
+App::uses('CacheableModel', 'Dreamcms.Model');
 App::uses('TreeBehavior', 'Model.Behavior');
 /**
  * FileType Model
@@ -8,7 +9,7 @@ App::uses('TreeBehavior', 'Model.Behavior');
  * @property FileType $ChildFileType
  * @property File $File
  */
-class FileType extends DreamcmsAppModel {
+class FileType extends CacheableModel {
 
 /**
  * Act as
