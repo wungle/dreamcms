@@ -12,12 +12,18 @@ class DefaultSchema extends CakeSchema {
 		$this->dataGenerator = new DataGenerator();
 	}
 
+	public function __destruct() {
+		$this->dataGenerator->run();
+
+		@parent::__destruct();
+	}
+
 	public function before($event = array()) {
 		return true;
 	}
 
 	public function after($event = array()) {
-		$this->dataGenerator->reportAfter($event);
+		return true;
 	}
 
 	public $photo_album_i18n = array(

@@ -9,32 +9,15 @@ App::uses('Group', 'Dreamcms.Model');
 
 class DataGenerator
 {
-	protected $createdTables;
-	protected $initializedModels;
 
 	public function __construct() {
-		$this->createdTables = array();
-		$this->initializedModels = array();
+		Configure::write('Cache.disable', true);
+		Configure::write('App.SchemaCreate', true);
 	}
 
-	public function reportAfter($event = array()) {
-		if (isset($event['create']))
-		{
-			$this->createdTables[] = $event['create'];
-			$this->check();
-		}
-	}
-
-	protected function check() {
-		if (
-			in_array('photo_albums', $this->createdTables) && in_array('photos', $this->createdTables) &&
-			//in_array('photo_album_i18n', $this->createdTables) && in_array('photo_i18n', $this->createdTables) &&
-			!in_array('CmsMenu', $this->initializedModels) && !in_array('ArosAcos', $this->initializedModels)
-		)
-		{
-			$this->initCmsMenu();
-			$this->initArosAcos();
-		}
+	public function run() {
+		$this->initCmsMenu();
+		$this->initArosAcos();
 	}
 
 	protected function initCmsMenu() {
@@ -95,7 +78,6 @@ class DataGenerator
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
 		}
-		$this->initializedModels[] = 'CmsMenu';
 	}
 
 	protected function initArosAcos() {
@@ -155,7 +137,6 @@ class DataGenerator
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
 		}
-		$this->initializedModels[] = 'ArosAcos';
 	}
 
 	protected function getDefaultValues()
