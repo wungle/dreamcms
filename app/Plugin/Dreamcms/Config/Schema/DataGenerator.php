@@ -1,4 +1,5 @@
 <?php
+App::uses('Configure', 'Core');
 App::uses('ClassRegistry', 'Utility');
 App::uses('Set', 'Utility');
 App::uses('Security', 'Utility');
@@ -13,49 +14,22 @@ App::uses('Setting', 'Dreamcms.Model');
 
 class DataGenerator
 {
-	protected $createdTables;
-	protected $initializedModels;
-
 	public function __construct() {
-		$this->createdTables = array();
-		$this->initializedModels = array();
+		Configure::write('Cache.disable', true);
+		Configure::write('App.SchemaCreate', true);
 	}
 
-	public function reportAfter($event = array()) {
-		if (isset($event['create']))
-		{
-			$this->createdTables[] = $event['create'];
-			$this->check();
-		}
-	}
+	public function run()
+	{
+		$this->initSetting();
+		$this->initLanguage();
+		$this->initIcon();
 
-	protected function check() {
-		if (in_array('admins', $this->createdTables) && in_array('groups', $this->createdTables))
-		{
-			if (!in_array('Group', $this->initializedModels))
-				$this->initGroup();
+		$this->initGroup();
+		$this->initAdmin();
+		$this->initCmsMenu();
 
-			if (!in_array('Admin', $this->initializedModels))
-				$this->initAdmin();
-		}
-
-		if (in_array('cms_menus', $this->createdTables) && in_array('Group', $this->initializedModels) && in_array('Admin', $this->initializedModels) && !in_array('CmsMenu', $this->initializedModels))
-			$this->initCmsMenu();
-
-		if (in_array('settings', $this->createdTables) && !in_array('Setting', $this->initializedModels))
-			$this->initSetting();
-
-		if (in_array('languages', $this->createdTables) && !in_array('Language', $this->initializedModels))
-			$this->initLanguage();
-
-		if (in_array('icons', $this->createdTables) && !in_array('Icon', $this->initializedModels))
-			$this->initIcon();
-
-		if (
-			in_array('admins', $this->createdTables) && in_array('groups', $this->createdTables) && in_array('aros', $this->createdTables) &&
-			in_array('acos', $this->createdTables) && in_array('aros_acos', $this->createdTables) && !in_array('ArosAcos', $this->initializedModels)
-		)
-			$this->initArosAcos();
+		$this->initArosAcos();
 	}
 
 	protected function initGroup() {
@@ -75,7 +49,6 @@ class DataGenerator
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
 		}
-		$this->initializedModels[] = 'Group';
 	}
 
 	protected function initAdmin() {
@@ -99,7 +72,6 @@ class DataGenerator
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
 		}
-		$this->initializedModels[] = 'Admin';
 	}
 
 	protected function initCmsMenu() {
@@ -234,7 +206,6 @@ class DataGenerator
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
 		}
-		$this->initializedModels[] = 'CmsMenu';
 	}
 
 	protected function initSetting() {
@@ -356,7 +327,6 @@ class DataGenerator
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
 		}
-		$this->initializedModels[] = 'Setting';
 	}
 
 	protected function initLanguage() {
@@ -376,7 +346,6 @@ class DataGenerator
 		} catch (Exception $e) {
 			return false;
 		}
-		$this->initializedModels[] = 'Language';
 	}
 
 	protected function initIcon() {
@@ -392,7 +361,6 @@ class DataGenerator
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
 		}
-		$this->initializedModels[] = 'Icon';
 	}
 
 	protected function initArosAcos()
@@ -428,7 +396,6 @@ class DataGenerator
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
 		}
-		$this->initializedModels[] = 'ArosAcos';
 	}
 
 	protected function getDefaultValues()
