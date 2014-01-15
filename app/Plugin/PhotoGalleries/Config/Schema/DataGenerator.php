@@ -184,17 +184,31 @@ class DataGenerator
 			{
 				foreach ($acos as $aco)
 				{
-					$ArosAco->create();
-					$ArosAco->save(array(
-						'ArosAco' => array(
-							'aro_id' => $aro['Aro']['id'],
-							'aco_id' => $aco['Aco']['id'],
-							'_create' => '1',
-							'_read' => '1',
-							'_update' => '1',
-							'_delete' => '1',
+					$aros_acos = $ArosAco->find(
+						'first',
+						array(
+							'conditions' => array(
+								'aro_id' => $aro['Aro']['id'],
+								'aco_id' => $aco['Aco']['id'],
+							),
+							'limit' => 1
 						)
-					));
+					);
+
+					if (!$aros_acos)
+					{
+						$ArosAco->create();
+						$ArosAco->save(array(
+							'ArosAco' => array(
+								'aro_id' => $aro['Aro']['id'],
+								'aco_id' => $aco['Aco']['id'],
+								'_create' => '1',
+								'_read' => '1',
+								'_update' => '1',
+								'_delete' => '1',
+							)
+						));
+					}
 				}
 			}
 			
