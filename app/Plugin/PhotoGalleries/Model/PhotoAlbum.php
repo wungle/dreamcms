@@ -10,7 +10,7 @@ App::uses('TranslateBehavior', 'Model.Behavior');
  * @property PhotoAlbum $ChildPhotoAlbum
  * @property Photo $Photo
  */
-class PhotoAlbum extends PhotoGalleriesAppModel {
+class PhotoAlbum extends CacheableModel {
 
 /**
  * Act as

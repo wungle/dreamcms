@@ -22,30 +22,38 @@ class CacheableModel extends DreamcmsAppModel
 
 	protected function _readDataSource($type, $query)
 	{
-		if (!Configure::read('Cache.disable'))
-		{
-			if (!$this->cacheConfigName)
+		if (!$this->cacheConfigName)
 				$this->setupCache();
 
-			$cacheKey = $type . '_' . sha1(json_encode($query));
-			$cache = Cache::read($cacheKey, $this->cacheConfigName);
+		$cacheKey = $type . '_' . sha1(json_encode($query));
+		$cache = Cache::read($cacheKey, $this->cacheConfigName);
 
-			if ($cache !== false)
-				return $cache;
-		}
+		if (!Configure::read('Cache.disable') && ($cache !== false))
+			return $cache;
+		elseif ($cache !== false)
+			$this->destroyCache();
 
 		$results = parent::_readDataSource($type, $query);
 
 		if (!Configure::read('Cache.disable'))
+		{
 			Cache::write($cacheKey, $results, $this->cacheConfigName);
+
+			$cache_file = CACHE . 'cacheable_models' . DS . $this->cacheConfigName . DS . $cacheKey;
+			if (file_exists($cache_file))
+				@chmod($cache_file, 0666);
+		}
 
 		return $results;
 	}
 
 	protected function setupCache()
 	{
+		if (file_exists(CACHE . DS . 'persistent' . DS . 'myapp_cake_core_file_map'))
+			@chmod(CACHE . DS . 'persistent' . DS . 'myapp_cake_core_file_map', 0666);
+
 		$this->cacheConfigName = Inflector::tableize($this->alias);
-		$duration = (isset($this->cacheDuration)) ? $this->cacheDuration : '+15 days';
+		$duration = (isset($this->cacheDuration)) ? $this->cacheDuration : '+30 days';
 
 		$this->cacheGroups = array($this->alias);
 		if (!Configure::read('App.SchemaCreate'))
@@ -85,7 +93,7 @@ class CacheableModel extends DreamcmsAppModel
 		}
 	}
 
-	protected function destroyCache()
+	public function destroyCache()
 	{
 		if (!$this->cacheConfigName)
 			$this->setupCache();
@@ -102,6 +110,9 @@ class CacheableModel extends DreamcmsAppModel
 	{
 		if ((substr($path, -1) != '/') && (substr($path, -1) != '\\'))
 			$path .= DS;
+
+		if (!is_dir($path))
+			return false;
 
 		$handle = opendir($path);
 

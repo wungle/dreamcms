@@ -1,11 +1,19 @@
 <?php
+App::uses('Configure', 'Core');
 App::uses('ClassRegistry', 'Utility');
 App::uses('Set', 'Utility');
+App::uses('Security', 'Utility');
 App::uses('AclComponent', 'Controller/Component');
 
 App::uses('Admin', 'Dreamcms.Model');
 App::uses('CmsMenu', 'Dreamcms.Model');
 App::uses('Group', 'Dreamcms.Model');
+
+App::uses('Photo', 'PhotoGalleries.Model');
+App::uses('PhotoAlbum', 'PhotoGalleries.Model');
+App::uses('PhotoAlbumI18n', 'PhotoGalleries.Model');
+App::uses('PhotoI18n', 'PhotoGalleries.Model');
+App::uses('PhotoThumbnail', 'PhotoGalleries.Model');
 
 class DataGenerator
 {
@@ -16,8 +24,66 @@ class DataGenerator
 	}
 
 	public function run() {
+		$this->initPhoto();
+		$this->initPhotoAlbum();
+		$this->initPhotoAlbumI18n();
+		$this->initPhotoI18n();
+		$this->initPhotoThumbnail();
+
 		$this->initCmsMenu();
 		$this->initArosAcos();
+
+		echo 'You need to clear your app cache after creating the schema, in /app/tmp/cache.' . "\n\n";
+	}
+
+	protected function initPhoto() {
+		try {
+			$photo = ClassRegistry::init('PhotoGalleries.Photo');
+			$photo->destroyCache();
+		} catch (Exception $e) {
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
+			return false;
+		}
+	}
+
+	protected function initPhotoAlbum() {
+		try {
+			$photo_album = ClassRegistry::init('PhotoGalleries.PhotoAlbum');
+			$photo_album->destroyCache();
+		} catch (Exception $e) {
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
+			return false;
+		}
+	}
+
+	protected function initPhotoAlbumI18n() {
+		try {
+			$photo_album_i18n = ClassRegistry::init('PhotoGalleries.PhotoAlbumI18n');
+			$photo_album_i18n->destroyCache();
+		} catch (Exception $e) {
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
+			return false;
+		}
+	}
+
+	protected function initPhotoI18n() {
+		try {
+			$photo_i18n = ClassRegistry::init('PhotoGalleries.PhotoI18n');
+			$photo_i18n->destroyCache();
+		} catch (Exception $e) {
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
+			return false;
+		}
+	}
+
+	protected function initPhotoThumbnail() {
+		try {
+			$photo_thumbnail = ClassRegistry::init('PhotoGalleries.PhotoThumbnail');
+			$photo_thumbnail->destroyCache();
+		} catch (Exception $e) {
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
+			return false;
+		}
 	}
 
 	protected function initCmsMenu() {

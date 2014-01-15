@@ -7,10 +7,18 @@ App::uses('AclComponent', 'Controller/Component');
 
 App::uses('Admin', 'Dreamcms.Model');
 App::uses('CmsMenu', 'Dreamcms.Model');
+App::uses('FileI18n', 'Dreamcms.Model');
+App::uses('FileType', 'Dreamcms.Model');
+App::uses('Files', 'Dreamcms.Model');
 App::uses('Group', 'Dreamcms.Model');
 App::uses('Icon', 'Dreamcms.Model');
 App::uses('Language', 'Dreamcms.Model');
 App::uses('Setting', 'Dreamcms.Model');
+App::uses('TempDir', 'Dreamcms.Model');
+App::uses('Thumbnail', 'Dreamcms.Model');
+App::uses('ThumbnailType', 'Dreamcms.Model');
+App::uses('WebMenu', 'Dreamcms.Model');
+App::uses('WebMenuI18n', 'Dreamcms.Model');
 
 class DataGenerator
 {
@@ -21,6 +29,16 @@ class DataGenerator
 
 	public function run()
 	{
+		$this->initFileI18n();
+		$this->initFileType();
+		$this->initFiles();
+		$this->initTempDir();
+		$this->initThumbnail();
+		$this->initThumbnailType();
+		$this->initThumbnailType();
+		$this->initWebMenu();
+		$this->initWebMenuI18n();
+
 		$this->initSetting();
 		$this->initLanguage();
 		$this->initIcon();
@@ -30,30 +48,14 @@ class DataGenerator
 		$this->initCmsMenu();
 
 		$this->initArosAcos();
-	}
 
-	protected function initGroup() {
-		try {
-			$group = ClassRegistry::init('Dreamcms.Group');
-			$group->create();
-			$group->save(array(
-				'Group' => Set::merge(
-					array(
-						'name' => 'Super Administrator'
-					),
-					$this->getDefaultValues()
-				)
-			));
-			unset($group);
-		} catch (Exception $e) {
-			echo 'Caught exception: ',  $e->getMessage(), "\n";
-			return false;
-		}
+		echo 'You need to clear your app cache after creating the schema, in /app/tmp/cache.' . "\n\n";
 	}
 
 	protected function initAdmin() {
 		try {
 			$admin = ClassRegistry::init('Dreamcms.Admin');
+			$admin->destroyCache();
 			$admin->create();
 			$admin->save(array(
 				'Admin' => Set::merge(
@@ -77,6 +79,7 @@ class DataGenerator
 	protected function initCmsMenu() {
 		try {
 			$cms_menu = ClassRegistry::init('Dreamcms.CmsMenu');
+			$cms_menu->destroyCache();
 			$cms_menu->create();
 			$cms_menu->saveMany(array(
 				array(
@@ -208,9 +211,96 @@ class DataGenerator
 		}
 	}
 
+	protected function initFileI18n() {
+		try {
+			$file_i18n = ClassRegistry::init('Dreamcms.FileI18n');
+			$file_i18n->destroyCache();
+		} catch (Exception $e) {
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
+			return false;
+		}
+	}
+
+	protected function initFileType() {
+		try {
+			$file_type = ClassRegistry::init('Dreamcms.FileType');
+			$file_type->destroyCache();
+		} catch (Exception $e) {
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
+			return false;
+		}
+	}
+
+	protected function initFiles() {
+		try {
+			$files = ClassRegistry::init('Dreamcms.Files');
+			$files->destroyCache();
+		} catch (Exception $e) {
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
+			return false;
+		}
+	}
+
+	protected function initGroup() {
+		try {
+			$group = ClassRegistry::init('Dreamcms.Group');
+			$group->destroyCache();
+			$group->create();
+			$group->save(array(
+				'Group' => Set::merge(
+					array(
+						'name' => 'Super Administrator'
+					),
+					$this->getDefaultValues()
+				)
+			));
+			unset($group);
+		} catch (Exception $e) {
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
+			return false;
+		}
+	}
+
+	protected function initIcon() {
+		try {
+			$icons = json_decode(file_get_contents(dirname(__FILE__) . DS . 'font-awesome-3.2.1.json'));
+			//$icons = json_decode(file_get_contents(dirname(__FILE__) . DS . 'font-awesome-4.0.3.json'));
+
+			$icon = ClassRegistry::init('Dreamcms.Icon');
+			$icon->destroyCache();
+			$icon->create();
+			$icon->saveMany($icons);
+			unset($icon);
+		} catch (Exception $e) {
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
+			return false;
+		}
+	}
+
+	protected function initLanguage() {
+		try {
+			$language = ClassRegistry::init('Dreamcms.Language');
+			$language->destroyCache();
+			$language->create();
+			$language->save(array(
+				'Language' => Set::merge(
+					array(
+						'name' => 'English',
+						'locale' => 'en-US',
+					),
+					$this->getDefaultValues()
+				)
+			));
+			unset($language);
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+
 	protected function initSetting() {
 		try {
 			$setting = ClassRegistry::init('Dreamcms.Setting');
+			$setting->destroyCache();
 			$setting->create();
 			$setting->saveMany(array(
 				array(
@@ -329,34 +419,50 @@ class DataGenerator
 		}
 	}
 
-	protected function initLanguage() {
+	protected function initTempDir() {
 		try {
-			$language = ClassRegistry::init('Dreamcms.Language');
-			$language->create();
-			$language->save(array(
-				'Language' => Set::merge(
-					array(
-						'name' => 'English',
-						'locale' => 'en-US',
-					),
-					$this->getDefaultValues()
-				)
-			));
-			unset($language);
+			$temp_dir = ClassRegistry::init('Dreamcms.TempDir');
+			$temp_dir->destroyCache();
 		} catch (Exception $e) {
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
 		}
 	}
 
-	protected function initIcon() {
+	protected function initThumbnail() {
 		try {
-			$icons = json_decode(file_get_contents(dirname(__FILE__) . DS . 'font-awesome-3.2.1.json'));
-			//$icons = json_decode(file_get_contents(dirname(__FILE__) . DS . 'font-awesome-4.0.3.json'));
+			$thumbnail = ClassRegistry::init('Dreamcms.Thumbnail');
+			$thumbnail->destroyCache();
+		} catch (Exception $e) {
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
+			return false;
+		}
+	}
 
-			$icon = ClassRegistry::init('Dreamcms.Icon');
-			$icon->create();
-			$icon->saveMany($icons);
-			unset($icon);
+	protected function initThumbnailType() {
+		try {
+			$thumbnail_type = ClassRegistry::init('Dreamcms.ThumbnailType');
+			$thumbnail_type->destroyCache();
+		} catch (Exception $e) {
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
+			return false;
+		}
+	}
+
+	protected function initWebMenu() {
+		try {
+			$web_menu = ClassRegistry::init('Dreamcms.WebMenu');
+			$web_menu->destroyCache();
+		} catch (Exception $e) {
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
+			return false;
+		}
+	}
+
+	protected function initWebMenuI18n() {
+		try {
+			$web_menu_i18n = ClassRegistry::init('Dreamcms.WebMenuI18n');
+			$web_menu_i18n->destroyCache();
 		} catch (Exception $e) {
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
