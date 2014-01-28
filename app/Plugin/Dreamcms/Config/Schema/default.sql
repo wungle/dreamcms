@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS `acos`;
 DROP TABLE IF EXISTS `admins`;
 DROP TABLE IF EXISTS `aros`;
 DROP TABLE IF EXISTS `aros_acos`;
+DROP TABLE IF EXISTS `cms_logs`;
 DROP TABLE IF EXISTS `cms_menus`;
 DROP TABLE IF EXISTS `file_i18n`;
 DROP TABLE IF EXISTS `file_types`;
@@ -71,6 +72,27 @@ CREATE TABLE `aros_acos` (
 	`_update` varchar(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT '0' NOT NULL,
 	`_delete` varchar(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT '0' NOT NULL,	PRIMARY KEY  (`id`),
 	UNIQUE KEY `ARO_ACO_KEY` (`aro_id`, `aco_id`)) 	DEFAULT CHARSET=utf8,
+	COLLATE=utf8_unicode_ci,
+	ENGINE=InnoDB;
+
+CREATE TABLE `cms_logs` (
+	`id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`admin` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`section` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`model` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`foreign_key` bigint(20) NOT NULL,
+	`fields` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`operation` varchar(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`data_before` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`data_after` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`created` datetime DEFAULT NULL,
+	`modified` datetime DEFAULT NULL,	PRIMARY KEY  (`id`),
+	KEY `section` (`section`),
+	KEY `model` (`model`),
+	KEY `foreign_key` (`foreign_key`),
+	KEY `operation` (`operation`),
+	KEY `common_query` (`model`, `foreign_key`)) 	DEFAULT CHARSET=utf8,
 	COLLATE=utf8_unicode_ci,
 	ENGINE=InnoDB;
 
