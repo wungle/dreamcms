@@ -55,7 +55,10 @@ class DataGenerator
 	protected function initAdmin() {
 		try {
 			$admin = ClassRegistry::init('Dreamcms.Admin');
-			$admin->destroyCache();
+
+			if (method_exists($admin, 'destroyCache') && is_subclass_of($admin, 'CacheableModel'))
+				@$admin->destroyCache();
+			
 			$admin->create();
 			$admin->save(array(
 				'Admin' => Set::merge(
@@ -79,7 +82,10 @@ class DataGenerator
 	protected function initCmsMenu() {
 		try {
 			$cms_menu = ClassRegistry::init('Dreamcms.CmsMenu');
-			$cms_menu->destroyCache();
+
+			if (method_exists($cms_menu, 'destroyCache') && is_subclass_of($cms_menu, 'CacheableModel'))
+				@$cms_menu->destroyCache();
+
 			$cms_menu->create();
 			$cms_menu->saveMany(array(
 				array(
@@ -214,7 +220,9 @@ class DataGenerator
 	protected function initFileI18n() {
 		try {
 			$file_i18n = ClassRegistry::init('Dreamcms.FileI18n');
-			$file_i18n->destroyCache();
+
+			if (method_exists($file_i18n, 'destroyCache') && is_subclass_of($file_i18n, 'CacheableModel'))
+				@$file_i18n->destroyCache();
 		} catch (Exception $e) {
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
@@ -224,7 +232,9 @@ class DataGenerator
 	protected function initFileType() {
 		try {
 			$file_type = ClassRegistry::init('Dreamcms.FileType');
-			$file_type->destroyCache();
+
+			if (method_exists($file_type, 'destroyCache') && is_subclass_of($file_type, 'CacheableModel'))
+				@$file_type->destroyCache();
 		} catch (Exception $e) {
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
@@ -234,7 +244,9 @@ class DataGenerator
 	protected function initFiles() {
 		try {
 			$files = ClassRegistry::init('Dreamcms.Files');
-			$files->destroyCache();
+
+			if (method_exists($files, 'destroyCache') && is_subclass_of($files, 'CacheableModel'))
+				@$files->destroyCache();
 		} catch (Exception $e) {
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
@@ -244,7 +256,10 @@ class DataGenerator
 	protected function initGroup() {
 		try {
 			$group = ClassRegistry::init('Dreamcms.Group');
-			$group->destroyCache();
+
+			if (method_exists($group, 'destroyCache') && is_subclass_of($group, 'CacheableModel'))
+				@$group->destroyCache();
+
 			$group->create();
 			$group->save(array(
 				'Group' => Set::merge(
@@ -267,7 +282,10 @@ class DataGenerator
 			//$icons = json_decode(file_get_contents(dirname(__FILE__) . DS . 'font-awesome-4.0.3.json'));
 
 			$icon = ClassRegistry::init('Dreamcms.Icon');
-			$icon->destroyCache();
+
+			if (method_exists($icon, 'destroyCache') && is_subclass_of($icon, 'CacheableModel'))
+				@$icon->destroyCache();
+
 			$icon->create();
 			$icon->saveMany($icons);
 			unset($icon);
@@ -280,7 +298,10 @@ class DataGenerator
 	protected function initLanguage() {
 		try {
 			$language = ClassRegistry::init('Dreamcms.Language');
-			$language->destroyCache();
+
+			if (method_exists($language, 'destroyCache') && is_subclass_of($language, 'CacheableModel'))
+				@$language->destroyCache();
+
 			$language->create();
 			$language->save(array(
 				'Language' => Set::merge(
@@ -300,7 +321,10 @@ class DataGenerator
 	protected function initSetting() {
 		try {
 			$setting = ClassRegistry::init('Dreamcms.Setting');
-			$setting->destroyCache();
+
+			if (method_exists($setting, 'destroyCache') && is_subclass_of($setting, 'CacheableModel'))
+				@$setting->destroyCache();
+
 			$setting->create();
 			$setting->saveMany(array(
 				array(
@@ -422,7 +446,9 @@ class DataGenerator
 	protected function initTempDir() {
 		try {
 			$temp_dir = ClassRegistry::init('Dreamcms.TempDir');
-			$temp_dir->destroyCache();
+
+			if (method_exists($temp_dir, 'destroyCache') && is_subclass_of($temp_dir, 'CacheableModel'))
+				@$temp_dir->destroyCache();
 		} catch (Exception $e) {
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
@@ -432,7 +458,9 @@ class DataGenerator
 	protected function initThumbnail() {
 		try {
 			$thumbnail = ClassRegistry::init('Dreamcms.Thumbnail');
-			$thumbnail->destroyCache();
+
+			if (method_exists($thumbnail, 'destroyCache') && is_subclass_of($thumbnail, 'CacheableModel'))
+				@$thumbnail->destroyCache();
 		} catch (Exception $e) {
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
@@ -442,7 +470,9 @@ class DataGenerator
 	protected function initThumbnailType() {
 		try {
 			$thumbnail_type = ClassRegistry::init('Dreamcms.ThumbnailType');
-			$thumbnail_type->destroyCache();
+
+			if (method_exists($thumbnail_type, 'destroyCache') && is_subclass_of($thumbnail_type, 'CacheableModel'))
+				@$thumbnail_type->destroyCache();
 		} catch (Exception $e) {
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
@@ -452,7 +482,9 @@ class DataGenerator
 	protected function initWebMenu() {
 		try {
 			$web_menu = ClassRegistry::init('Dreamcms.WebMenu');
-			$web_menu->destroyCache();
+
+			if (method_exists($web_menu, 'destroyCache') && is_subclass_of($web_menu, 'CacheableModel'))
+				@$web_menu->destroyCache();
 		} catch (Exception $e) {
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
@@ -462,7 +494,9 @@ class DataGenerator
 	protected function initWebMenuI18n() {
 		try {
 			$web_menu_i18n = ClassRegistry::init('Dreamcms.WebMenuI18n');
-			$web_menu_i18n->destroyCache();
+
+			if (method_exists($web_menu_i18n, 'destroyCache') && is_subclass_of($web_menu_i18n, 'CacheableModel'))
+				@$web_menu_i18n->destroyCache();
 		} catch (Exception $e) {
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
