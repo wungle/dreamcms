@@ -84,6 +84,7 @@ CREATE TABLE `cms_logs` (
 	`fields` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`operation` varchar(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`data_before` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`data_after` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`created` datetime DEFAULT NULL,
