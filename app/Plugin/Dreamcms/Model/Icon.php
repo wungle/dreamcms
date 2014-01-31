@@ -37,8 +37,8 @@ class Icon extends CacheableModel {
 		$data = $this->find(
 			'list',
 			array(
-				'fields' => array('Icon.name', 'Icon.name'),
-				'order' => 'Icon.name ASC'
+				'fields' => array($this->alias . '.name', $this->alias . '.name'),
+				'order' => $this->alias . '.name ASC'
 			)
 		);
 

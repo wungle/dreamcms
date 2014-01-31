@@ -1,6 +1,8 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
 App::uses('CacheableModel', 'Dreamcms.Model');
+App::uses('LogableBehavior', 'Dreamcms.Model.Behavior');
+
 /**
  * CmsMenu Model
  *
@@ -25,7 +27,8 @@ class CmsMenu extends CacheableModel {
 		'Tree',
 		'Acl' => array(
 			'type' => 'controlled'
-		)
+		),
+		'Dreamcms.Logable'
 	);
 
 /**
@@ -185,15 +188,15 @@ class CmsMenu extends CacheableModel {
 		if (!$this->id && empty($this->data)) {
 			return null;
 		}
-		if (isset($this->data['CmsMenu']['parent_id'])) {
-			$parentId = $this->data['CmsMenu']['parent_id'];
+		if (isset($this->data[$this->alias]['parent_id'])) {
+			$parentId = $this->data[$this->alias]['parent_id'];
 		} else {
 			$parentId = $this->field('parent_id');
 		}
 		if (!$parentId) {
 			return null;
 		} else {
-			return array('CmsMenu' => array('id' => $parentId));
+			return array($this->alias => array('id' => $parentId));
 		}
 	}
 
@@ -202,8 +205,8 @@ class CmsMenu extends CacheableModel {
 		return $this->find(
 			'all',
 			array(
-				'conditions' => array('CmsMenu.parent_id' => '0', 'CmsMenu.published' => 'Yes'),
-				'order' => 'CmsMenu.name ASC',
+				'conditions' => array($this->alias . '.parent_id' => '0', $this->alias . '.published' => 'Yes'),
+				'order' => $this->alias . '.name ASC',
 				'recursive' => 2
 			)
 		);

@@ -4,6 +4,8 @@ App::uses('CacheableModel', 'Dreamcms.Model');
 App::uses('ThumbnailableBehavior', 'Dreamcms.Model.Behavior');
 App::uses('TranslateBehavior', 'Model.Behavior');
 App::uses('UploadableBehavior', 'Dreamcms.Model.Behavior');
+App::uses('LogableBehavior', 'Dreamcms.Model.Behavior');
+
 /**
  * File Model
  *
@@ -60,6 +62,7 @@ class Files extends CacheableModel {
 			'width' => 'fileWidthTranslation',
 			'height' => 'fileHeightTranslation'
 		),
+		'Dreamcms.Logable'
 	);
 
 /**
@@ -294,7 +297,7 @@ class Files extends CacheableModel {
 			'first',
 			array(
 				'conditions' => $conditions,
-				'order' => 'Files.lft ASC',
+				'order' => $this->alias . '.lft ASC',
 				'limit' => 1
 			)
 		);
@@ -302,12 +305,12 @@ class Files extends CacheableModel {
 
 	public function findOneById($id, $conditions = array())
 	{
-		$conditions = Set::merge($conditions, array('Files.id' => intval($id)));
+		$conditions = Set::merge($conditions, array($this->alias . '.id' => intval($id)));
 		return $this->find(
 			'first',
 			array(
 				'conditions' => $conditions,
-				'order' => 'Files.id ASC',
+				'order' => $this->alias . '.id ASC',
 				'limit' => 1
 			)
 		);

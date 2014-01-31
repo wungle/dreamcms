@@ -2,6 +2,8 @@
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
 App::uses('CacheableModel', 'Dreamcms.Model');
 App::uses('AclBehavior', 'Model.Behavior');
+App::uses('LogableBehavior', 'Dreamcms.Model.Behavior');
+
 /**
  * Group Model
  *
@@ -24,7 +26,8 @@ class Group extends CacheableModel {
 	public $actsAs = array(
 		'Acl' => array(
 			'type' => 'requester'
-		)
+		),
+		'Dreamcms.Logable'
 	);
 
 /**
@@ -104,7 +107,7 @@ class Group extends CacheableModel {
 			'first',
 			array(
 				'conditions' => $conditions,
-				'order' => 'Group.name ASC',
+				'order' => $this->alias . '.name ASC',
 				'limit' => 1
 			)
 		);
@@ -115,8 +118,8 @@ class Group extends CacheableModel {
 		return $this->find(
 			'first',
 			array(
-				'conditions' => array('Group.id' => intval($id)),
-				'order' => 'Group.id ASC',
+				'conditions' => array($this->alias . '.id' => intval($id)),
+				'order' => $this->alias . '.id ASC',
 				'limit' => 1
 			)
 		);

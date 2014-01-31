@@ -3,6 +3,8 @@ App::uses('DreamcmsAppModel', 'Dreamcms.Model');
 App::uses('CacheableModel', 'Dreamcms.Model');
 App::uses('TreeBehavior', 'Model.Behavior');
 App::uses('TranslateBehavior', 'Model.Behavior');
+App::uses('LogableBehavior', 'Dreamcms.Model.Behavior');
+
 /**
  * WebMenu Model
  *
@@ -21,7 +23,8 @@ class WebMenu extends CacheableModel {
 		'Translate' => array(
 			'name' => 'webMenuNameTranslation',
 			'url' => 'webMenuUrlTranslation'
-		)
+		),
+		'Dreamcms.Logable'
 	);
 
 /**
@@ -200,7 +203,7 @@ class WebMenu extends CacheableModel {
 			'first',
 			array(
 				'conditions' => $conditions,
-				'order' => 'WebMenu.lft ASC',
+				'order' => $this->alias . '.lft ASC',
 				'limit' => 1
 			)
 		);
@@ -208,12 +211,12 @@ class WebMenu extends CacheableModel {
 
 	public function findOneById($id, $conditions = array())
 	{
-		$conditions = Set::merge($conditions, array('WebMenu.id' => intval($id)));
+		$conditions = Set::merge($conditions, array($this->alias . '.id' => intval($id)));
 		return $this->find(
 			'first',
 			array(
 				'conditions' => $conditions,
-				'order' => 'WebMenu.id ASC',
+				'order' => $this->alias . '.id ASC',
 				'limit' => 1
 			)
 		);

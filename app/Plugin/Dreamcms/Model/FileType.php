@@ -2,6 +2,8 @@
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
 App::uses('CacheableModel', 'Dreamcms.Model');
 App::uses('TreeBehavior', 'Model.Behavior');
+App::uses('LogableBehavior', 'Dreamcms.Model.Behavior');
+
 /**
  * FileType Model
  *
@@ -18,6 +20,7 @@ class FileType extends CacheableModel {
  */
 	public $actsAs = array(
 		'Tree',
+		'Dreamcms.Logable'
 	);
 
 /**
@@ -172,7 +175,7 @@ class FileType extends CacheableModel {
 			'first',
 			array(
 				'conditions' => $conditions,
-				'order' => 'FileType.lft ASC',
+				'order' => $this->alias . '.lft ASC',
 				'limit' => 1
 			)
 		);
@@ -180,12 +183,12 @@ class FileType extends CacheableModel {
 
 	public function findOneById($id, $conditions = array())
 	{
-		$conditions = Set::merge($conditions, array('FileType.id' => intval($id)));
+		$conditions = Set::merge($conditions, array($this->alias . '.id' => intval($id)));
 		return $this->find(
 			'first',
 			array(
 				'conditions' => $conditions,
-				'order' => 'FileType.id ASC',
+				'order' => $this->alias . '.id ASC',
 				'limit' => 1
 			)
 		);

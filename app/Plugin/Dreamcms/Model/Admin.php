@@ -2,7 +2,9 @@
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
 App::uses('CacheableModel', 'Dreamcms.Model');
 App::uses('AclBehavior', 'Model.Behavior');
+App::uses('LogableBehavior', 'Dreamcms.Model.Behavior');
 App::uses('Security', 'Utility');
+
 /**
  * Admin Model
  *
@@ -25,7 +27,8 @@ class Admin extends CacheableModel {
 	public $actsAs = array(
 		'Acl' => array(
 			'type' => 'requester'
-		)
+		),
+		'Dreamcms.Logable'
 	);
 
 /**
@@ -217,8 +220,8 @@ class Admin extends CacheableModel {
 		if (!$this->id && empty($this->data)) {
 			return null;
 		}
-		if (isset($this->data['Admin']['group_id'])) {
-			$groupId = $this->data['Admin']['group_id'];
+		if (isset($this->data[$this->alias]['group_id'])) {
+			$groupId = $this->data[$this->alias]['group_id'];
 		} else {
 			$groupId = $this->field('group_id');
 		}
@@ -231,16 +234,16 @@ class Admin extends CacheableModel {
 
 	public function beforeSave($options = array())
 	{
-		if (isset($this->data['Admin']['password_confirm']))
-			unset($this->data['Admin']['password_confirm']);
+		if (isset($this->data[$this->alias]['password_confirm']))
+			unset($this->data[$this->alias]['password_confirm']);
 		
-		if (isset($this->data['Admin']['old_password']))
-			unset($this->data['Admin']['old_password']);
+		if (isset($this->data[$this->alias]['old_password']))
+			unset($this->data[$this->alias]['old_password']);
 		
-		if (isset($this->data['Admin']['password']) && !empty($this->data['Admin']['password']))
-			$this->data['Admin']['password'] = Security::hash($this->data['Admin']['password'], 'blowfish');
+		if (isset($this->data[$this->alias]['password']) && !empty($this->data[$this->alias]['password']))
+			$this->data[$this->alias]['password'] = Security::hash($this->data[$this->alias]['password'], 'blowfish');
 		else
-			unset($this->data['Admin']['password']);
+			unset($this->data[$this->alias]['password']);
 		
 		return true;
 	}
@@ -248,9 +251,9 @@ class Admin extends CacheableModel {
 	public function matchConfirmation($check)
 	{
 		if (
-			isset($this->data['Admin']['password_confirm']) &&
-			isset($this->data['Admin']['password']) &&
-			($this->data['Admin']['password'] != $this->data['Admin']['password_confirm'])
+			isset($this->data[$this->alias]['password_confirm']) &&
+			isset($this->data[$this->alias]['password']) &&
+			($this->data[$this->alias]['password'] != $this->data[$this->alias]['password_confirm'])
 		)
 			return false;
 		
@@ -260,20 +263,20 @@ class Admin extends CacheableModel {
 	public function matchOldPassword($check)
 	{
 		if (
-			isset($this->data['Admin']['old_password']) &&
-			isset($this->data['Admin']['password']) &&
-			isset($this->data['Admin']['admin_id'])
+			isset($this->data[$this->alias]['old_password']) &&
+			isset($this->data[$this->alias]['password']) &&
+			isset($this->data[$this->alias]['admin_id'])
 		)
 		{
 			$temp = $this->find(
 				'first',
 				array(
-					'conditions' => array('Admin.admin_id' => $this->data['Admin']['admin_id']),
+					'conditions' => array($this->alias . '.admin_id' => $this->data[$this->alias]['admin_id']),
 					'limit' => '1'
 				)
 			);
 			
-			if ( $temp && ($temp['Admin']['password'] != Security::hash($this->data['Admin']['old_password'], 'blowfish')) )
+			if ( $temp && ($temp[$this->alias]['password'] != Security::hash($this->data[$this->alias]['old_password'], 'blowfish')) )
 				return false;
 		}
 		

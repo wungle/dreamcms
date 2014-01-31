@@ -1,6 +1,8 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
 App::uses('CacheableModel', 'Dreamcms.Model');
+App::uses('LogableBehavior', 'Dreamcms.Model.Behavior');
+
 /**
  * TempDir Model
  *
@@ -13,6 +15,15 @@ class TempDir extends CacheableModel {
  * @var string
  */
 	public $displayField = 'path';
+
+/**
+ * Act as - Model's behaviors
+ *
+ * @var array
+ */
+	public $actsAs = array(
+		'Dreamcms.Logable'
+	);
 
 /**
  * Validation rules

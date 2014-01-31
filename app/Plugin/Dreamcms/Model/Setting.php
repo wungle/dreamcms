@@ -1,6 +1,8 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
 App::uses('CacheableModel', 'Dreamcms.Model');
+App::uses('LogableBehavior', 'Dreamcms.Model.Behavior');
+
 /**
  * Setting Model
  *
@@ -13,6 +15,15 @@ class Setting extends CacheableModel {
  * @var string
  */
 	public $displayField = 'name';
+
+/**
+ * Act as - Model's behaviors
+ *
+ * @var array
+ */
+	public $actsAs = array(
+		'Dreamcms.Logable'
+	);
 
 /**
  * Validation rules
@@ -78,23 +89,35 @@ class Setting extends CacheableModel {
 
 	public function saveSettings($data)
     {
-		foreach ($data['Setting'] as $key => $value)
-			$this->query('UPDATE `' . $this->useTable . '` SET `value`=\'' . addslashes($value) . '\', `modified`=NOW() WHERE `name`=\'' . $key . '\' LIMIT 1');
+		foreach ($data[$this->alias] as $key => $value)
+		{
+			$setting = $this->find(
+				'first',
+				array(
+					'conditions' => array($this->alias . '.name' => $key),
+					'order' => $this->alias . '.id ASC',
+					'limit' => 1
+				)
+			);
+			$setting[$this->alias]['value'] = $value;
+			$this->create();
+			$this->save($setting);
+		}
     }
     
     public function loadSettings()
     {
-		$temp = $this->find('all', array('order' => 'Setting.name ASC'));
+		$temp = $this->find('all', array('order' => $this->alias . '.name ASC'));
 		return array(
-			'Setting' => Set::combine(
+			$this->alias => Set::combine(
 				$temp,
-				'{n}.Setting.name',
-				'{n}.Setting.value'
+				'{n}.' . $this->alias . '.name',
+				'{n}.' . $this->alias . '.value'
 			),
 			'Permisions' => Set::combine(
 				$temp,
-				'{n}.Setting.name',
-				'{n}.Setting.value'
+				'{n}.' . $this->alias . '.name',
+				'{n}.' . $this->alias . '.value'
 			)
 		);
     }
@@ -102,17 +125,17 @@ class Setting extends CacheableModel {
     public function publishSettings()
     {
 		$temp = array(
-			'Setting' => Set::combine(
-				$this->find('all', array('order' => 'Setting.name ASC')),
-				'{n}.Setting.name',
-				'{n}.Setting.value'
+			$this->alias => Set::combine(
+				$this->find('all', array('order' => $this->alias . '.name ASC')),
+				'{n}.' . $this->alias . '.name',
+				'{n}.' . $this->alias . '.value'
 			)
 		);
 		
-		foreach ($temp['Setting'] as  $key => $value)
+		foreach ($temp[$this->alias] as  $key => $value)
 			Configure::write('DreamCMS.' . $key, $value);
 		
-		Configure::write('Config.language', $temp['Setting']['default_language']);
+		Configure::write('Config.language', $temp[$this->alias]['default_language']);
 		
 		//if (Configure::read('DreamCMS.cache_status') == 'On')
 		//	Configure::write('Cache.disable', false);
