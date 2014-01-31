@@ -19,9 +19,10 @@ Key Features :
 --------------
 * Support Multi Languages
 * Embedded ACL (Access Control List)
-* Routable feature for : File Types, Files, Web Menu
+* Routable feature for : File Types, Files, Photo Albums, Photos, and Web Menu
 * Uploadable Behavior
 * Thumbnailable Behavior
+* Logable Behavior
 * Cacheable Model
 
 ---------------------------------------
