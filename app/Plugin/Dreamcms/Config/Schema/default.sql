@@ -78,7 +78,7 @@ CREATE TABLE `aros_acos` (
 CREATE TABLE `cms_logs` (
 	`id` bigint(20) NOT NULL AUTO_INCREMENT,
 	`admin` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-	`section` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`controller` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`model` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`foreign_key` bigint(20) NOT NULL,
 	`fields` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -89,7 +89,7 @@ CREATE TABLE `cms_logs` (
 	`data_after` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`created` datetime DEFAULT NULL,
 	`modified` datetime DEFAULT NULL,	PRIMARY KEY  (`id`),
-	KEY `section` (`section`),
+	KEY `controller` (`controller`),
 	KEY `model` (`model`),
 	KEY `foreign_key` (`foreign_key`),
 	KEY `operation` (`operation`),

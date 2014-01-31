@@ -96,7 +96,7 @@ class DefaultSchema extends CakeSchema {
 	public $cms_logs = array(
 		'id' => array('type' => 'biginteger', 'null' => false, 'default' => null, 'key' => 'primary'),
 		'admin' => array('type' => 'text', 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
-		'section' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 128, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'controller' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 128, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'model' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 128, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'foreign_key' => array('type' => 'biginteger', 'null' => false, 'default' => null, 'key' => 'index'),
 		'fields' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
@@ -109,7 +109,7 @@ class DefaultSchema extends CakeSchema {
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
-			'section' => array('column' => 'section', 'unique' => 0),
+			'controller' => array('column' => 'controller', 'unique' => 0),
 			'model' => array('column' => 'model', 'unique' => 0),
 			'foreign_key' => array('column' => 'foreign_key', 'unique' => 0),
 			'operation' => array('column' => 'operation', 'unique' => 0),
