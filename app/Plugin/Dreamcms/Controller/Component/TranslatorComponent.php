@@ -52,7 +52,7 @@ class TranslatorComponent extends Component
 	{
 	}
 
-	public function findFirst(Controller $model, $params = array())
+	public function findFirst(Model $model, $params = array())
 	{
 		$result = $model->find("first", $params);
 		
@@ -67,7 +67,7 @@ class TranslatorComponent extends Component
 		return $result;
 	}
 
-	public function init(Controller $model, $data)
+	public function init(Model $model, $data)
 	{
 		$this->data = $data;
 		$this->model = &$model;
