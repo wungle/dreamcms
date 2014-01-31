@@ -39,7 +39,9 @@ class DataGenerator
 	protected function initPhoto() {
 		try {
 			$photo = ClassRegistry::init('PhotoGalleries.Photo');
-			$photo->destroyCache();
+
+			if (method_exists($photo, 'destroyCache') && is_subclass_of($photo, 'CacheableModel'))
+				@$photo->destroyCache();
 		} catch (Exception $e) {
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
@@ -49,7 +51,9 @@ class DataGenerator
 	protected function initPhotoAlbum() {
 		try {
 			$photo_album = ClassRegistry::init('PhotoGalleries.PhotoAlbum');
-			$photo_album->destroyCache();
+
+			if (method_exists($photo_album, 'destroyCache') && is_subclass_of($photo_album, 'CacheableModel'))
+				@$photo_album->destroyCache();
 		} catch (Exception $e) {
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
@@ -59,7 +63,9 @@ class DataGenerator
 	protected function initPhotoAlbumI18n() {
 		try {
 			$photo_album_i18n = ClassRegistry::init('PhotoGalleries.PhotoAlbumI18n');
-			$photo_album_i18n->destroyCache();
+
+			if (method_exists($photo_album_i18n, 'destroyCache') && is_subclass_of($photo_album_i18n, 'CacheableModel'))
+				@$photo_album_i18n->destroyCache();
 		} catch (Exception $e) {
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
@@ -69,7 +75,9 @@ class DataGenerator
 	protected function initPhotoI18n() {
 		try {
 			$photo_i18n = ClassRegistry::init('PhotoGalleries.PhotoI18n');
-			$photo_i18n->destroyCache();
+
+			if (method_exists($photo_i18n, 'destroyCache') && is_subclass_of($photo_i18n, 'CacheableModel'))
+				@$photo_i18n->destroyCache();
 		} catch (Exception $e) {
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
@@ -79,7 +87,9 @@ class DataGenerator
 	protected function initPhotoThumbnail() {
 		try {
 			$photo_thumbnail = ClassRegistry::init('PhotoGalleries.PhotoThumbnail');
-			$photo_thumbnail->destroyCache();
+
+			if (method_exists($photo_thumbnail, 'destroyCache') && is_subclass_of($photo_thumbnail, 'CacheableModel'))
+				@$photo_thumbnail->destroyCache();
 		} catch (Exception $e) {
 			echo 'Caught exception: ',  $e->getMessage(), "\n";
 			return false;
