@@ -119,6 +119,9 @@ class TranslatorComponent extends Component
 		if (!$this->validated && !$this->validate())
 			return false;
 
+		$this->model->resetMultiLanguageTransaction();
+		$this->model->multiLanguageTransaction('start');
+
 		$this->model->setLanguage($this->defaultLanguage);
 		$this->model->create($this->processedData);
 		$this->model->save($this->processedData, false);
@@ -148,10 +151,13 @@ class TranslatorComponent extends Component
 		// Save in default language for the last time - for a better associated data
 		if ($lastData)
 		{
+			$this->model->multiLanguageTransaction('end');
 			$this->model->setLanguage($this->defaultLanguage);
 			$this->model->create($lastData);
 			$this->model->save($lastData, false);
 		}
+
+		$this->model->resetMultiLanguageTransaction();
 
 		return true;
 	}

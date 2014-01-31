@@ -32,6 +32,9 @@ App::uses('Model', 'Model');
 class AppModel extends Model
 {
 	public $locale = "en-US";
+
+	protected $multiLanguageTransactionStarted = false;
+	protected $multiLanguageTransactionEnded = false;
 	
 	public function setLanguage($locale)
 	{
@@ -42,5 +45,29 @@ class AppModel extends Model
 	{
 		$data = $this->query("SHOW TABLE STATUS LIKE '{$this->useTable}'");
 		return $data[0]["TABLES"]["Auto_increment"];
+	}
+
+	public function multiLanguageTransaction($status = null)
+	{
+		if (strval($status) == 'start')
+			$this->multiLanguageTransactionStarted = true;
+		elseif (strval($status) == 'end')
+			$this->multiLanguageTransactionEnded = true;
+
+		// 0 = not started
+		// 1 = started, but has not finished yet.
+		// 2 = started and finished.
+		if ($this->multiLanguageTransactionStarted && !$this->multiLanguageTransactionEnded)
+			return 1;
+		elseif ($this->multiLanguageTransactionStarted && $this->multiLanguageTransactionEnded)
+			return 2;
+		else
+			return 0;
+	}
+
+	public function resetMultiLanguageTransaction()
+	{
+		$this->multiLanguageTransactionStarted = false;
+		$this->multiLanguageTransactionEnded = false;
 	}
 }
