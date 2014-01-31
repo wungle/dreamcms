@@ -73,9 +73,14 @@ class AppController extends Controller {
 		}
 		
 		// Pass default variables to the view
-		$this->set('params_url', $this->params->url);
-		$this->set('params_here', $this->params->here);
+		$this->set('params_url', str_replace('//', '/', $this->params->url));
+		$this->set('params_here', str_replace('//', '/', $this->params->here));
 		$this->set('current_locale', $locale);
+
+		//Save current page's information globally
+		Configure::write('App.params_url', str_replace('//', '/', $this->params->url));
+		Configure::write('App.params_here', str_replace('//', '/', $this->params->here));
+		Configure::write('App.current_locale', $locale);
 	}
 
 	public function beforeRender()
