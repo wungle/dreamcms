@@ -5,6 +5,8 @@ App::uses('Set', 'Utility');
 App::uses('Security', 'Utility');
 App::uses('AclComponent', 'Controller/Component');
 
+App::uses('DreamcmsAppModel', 'Dreamcms.Model');
+App::uses('CacheableModel', 'Dreamcms.Model');
 App::uses('Admin', 'Dreamcms.Model');
 App::uses('CmsMenu', 'Dreamcms.Model');
 App::uses('FileI18n', 'Dreamcms.Model');
@@ -54,14 +56,14 @@ class DataGenerator
 
 	protected function initAdmin() {
 		try {
-			$admin = ClassRegistry::init('Dreamcms.Admin');
+			$admin = ClassRegistry::init(array('class' => 'Dreamcms.Admin', 'alias' => 'DreamcmsAdmin'), true);
 
 			if (method_exists($admin, 'destroyCache') && is_subclass_of($admin, 'CacheableModel'))
 				@$admin->destroyCache();
 			
 			$admin->create();
 			$admin->save(array(
-				'Admin' => Set::merge(
+				'DreamcmsAdmin' => Set::merge(
 					array(
 						'group_id' => '1',
 						'username' => 'admin',
