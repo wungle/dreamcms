@@ -43,6 +43,8 @@ class RouteableComponent extends Component
 		$this->currentPlugin = isset($this->controller->params->params['controllerAlias']) ? 'dreamcms' : $this->controller->params->params['plugin'];
 		$this->humanize = Inflector::humanize($this->currentController);
 		$this->singularize = Inflector::singularize($this->humanize);
+
+		Configure::write('DreamCMS.Routeable.current_controller', $this->currentController);
 	}
 
 	// called after the controller executes the requested action's logic but before the controller's renders views and layout.
