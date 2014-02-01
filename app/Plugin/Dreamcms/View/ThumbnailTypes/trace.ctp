@@ -11,7 +11,7 @@
 
 <div class="row">
 	<div class="col-sm-12">
-		<h2><?php echo __('Thumbnail Type Trace Log') . ': #' . $data['CmsLog']['id']; ?></h2>
+		<h2><?php echo __('Thumbnail Type\'s Record History') . ': #' . $data['CmsLog']['id']; ?></h2>
 
 		<div class="cms_logs form">
 			<?php echo $this->Form->create('CmsLog', array('role' => 'form', 'url' => '#')); ?> 

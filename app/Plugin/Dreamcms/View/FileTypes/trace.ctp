@@ -5,13 +5,13 @@
 								<i class="icon-home home-icon"></i>
 								<a href="#"><?php echo __('Home'); ?></a>
 							</li>
-							<li class="active"><?php echo __('File Types'); ?></li>
+							<li class="active"><?php echo __($this->Routeable->humanizeController()); ?></li>
 						</ul><!-- .breadcrumb -->
 <?php $this->end(); ?>
 
 <div class="row">
 	<div class="col-sm-12">
-		<h2><?php echo __('File Type Trace Log') . ': #' . $data['CmsLog']['id']; ?></h2>
+		<h2><?php echo __($this->Routeable->singularizeController() . '\'s Record History') . ': #' . $data['CmsLog']['id']; ?></h2>
 
 		<div class="cms_logs form">
 			<?php echo $this->Form->create('CmsLog', array('role' => 'form', 'url' => '#')); ?> 
