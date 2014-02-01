@@ -156,4 +156,22 @@ class FileTypesController extends DreamcmsAppController {
 		}
 		$this->Session->setFlash(__($this->Routeable->singularize . ' was not deleted'), 'flash/error');
 		$this->redirect(array('controller' => $this->Routeable->currentController, 'action' => 'index'));
-	}}
+	}
+
+/**
+ * trace method
+ *
+ * @throws NotFoundException
+ * @param string $record_id
+ * @param string $log_id
+ * @return void
+ */
+	public function trace($record_id, $log_id)
+	{
+		parent::trace($record_id, $log_id);
+
+		$parentFileTypes = $this->FileType->generateTreeList($this->Routeable->getTreeListConditions());
+		$this->set('parentFileTypes', $parentFileTypes);
+	}
+
+}
