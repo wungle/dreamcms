@@ -178,4 +178,21 @@ class PhotosController extends PhotoGalleriesAppController {
 		}
 		$this->Session->setFlash(__($this->Routeable->singularize . ' was not deleted'), 'flash/error');
 		$this->redirect(array('plugin' => $this->Routeable->currentPlugin, 'controller' => $this->Routeable->currentController, 'action' => 'index'));
-	}}
+	}
+
+/**
+ * trace method
+ *
+ * @throws NotFoundException
+ * @param string $record_id
+ * @param string $log_id
+ * @return void
+ */
+	public function dreamcms_trace($record_id, $log_id)
+	{
+		parent::dreamcms_trace($record_id, $log_id);
+
+		$photoAlbums = $this->PhotoAlbum->generateTreeList($this->Routeable->getTreeListConditions());
+		$this->set('photoAlbums', $photoAlbums);
+	}
+}
