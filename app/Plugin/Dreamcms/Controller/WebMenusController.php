@@ -157,4 +157,21 @@ class WebMenusController extends DreamcmsAppController {
 		}
 		$this->Session->setFlash(__($this->Routeable->singularize . ' was not deleted'), 'flash/error');
 		$this->redirect(array('controller' => $this->Routeable->currentController, 'action' => 'index'));
-	}}
+	}
+
+/**
+ * trace method
+ *
+ * @throws NotFoundException
+ * @param string $record_id
+ * @param string $log_id
+ * @return void
+ */
+	public function trace($record_id, $log_id)
+	{
+		parent::trace($record_id, $log_id);
+
+		$parentWebMenus = $this->WebMenu->generateTreeList($this->Routeable->getTreeListConditions());
+		$this->set('parentWebMenus', $parentWebMenus);
+	}
+}
