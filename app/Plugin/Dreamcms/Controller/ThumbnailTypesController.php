@@ -16,6 +16,13 @@ class ThumbnailTypesController extends DreamcmsAppController {
 	public $components = array('Paginator');
 
 /**
+ * logableModel
+ *
+ * @var string
+ */
+	public $logableModel = 'ThumbnailType';
+
+/**
  * index method
  *
  * @return void

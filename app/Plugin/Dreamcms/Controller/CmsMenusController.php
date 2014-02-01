@@ -26,6 +26,13 @@ class CmsMenusController extends DreamcmsAppController {
 	public $components = array('Paginator');
 
 /**
+ * logableModel
+ *
+ * @var string
+ */
+	public $logableModel = 'CmsMenu';
+
+/**
  * index method
  *
  * @return void

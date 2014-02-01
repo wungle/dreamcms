@@ -16,6 +16,13 @@ class TempDirsController extends DreamcmsAppController {
 	public $components = array('Paginator');
 
 /**
+ * logableModel
+ *
+ * @var string
+ */
+	public $logableModel = 'TempDir';
+
+/**
  * index method
  *
  * @return void

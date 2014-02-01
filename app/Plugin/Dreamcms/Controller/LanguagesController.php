@@ -16,6 +16,13 @@ class LanguagesController extends DreamcmsAppController {
 	public $components = array('Paginator');
 
 /**
+ * logableModel
+ *
+ * @var string
+ */
+	public $logableModel = 'Language';
+
+/**
  * index method
  *
  * @return void

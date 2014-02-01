@@ -16,6 +16,13 @@ class SettingsController extends DreamcmsAppController {
 	public $components = array('Paginator');
 
 /**
+ * logableModel
+ *
+ * @var string
+ */
+	public $logableModel = 'Setting';
+
+/**
  * index method
  *
  * @return void

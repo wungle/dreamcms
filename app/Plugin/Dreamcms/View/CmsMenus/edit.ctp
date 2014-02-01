@@ -38,5 +38,12 @@
 				</fieldset>
 			<?php echo $this->Form->end(); ?> 
 		</div>
+
+
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<?php echo $this->element('common/record_history', array('record_id' => $this->request->data['CmsMenu']['id'])); ?> 
+
+
 	</div>
 </div>

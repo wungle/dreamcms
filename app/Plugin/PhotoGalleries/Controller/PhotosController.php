@@ -25,6 +25,13 @@ class PhotosController extends PhotoGalleriesAppController {
  */
 	public $components = array('Paginator');
 
+/**
+ * logableModel
+ *
+ * @var string
+ */
+	public $logableModel = 'Photo';
+
 	public function beforeFilter()
 	{
 		parent::beforeFilter();

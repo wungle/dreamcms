@@ -15,6 +15,13 @@ class WebMenusController extends DreamcmsAppController {
  */
 	public $components = array('Paginator');
 
+/**
+ * logableModel
+ *
+ * @var string
+ */
+	public $logableModel = 'WebMenu';
+
 	public function beforeFilter()
 	{
 		parent::beforeFilter();

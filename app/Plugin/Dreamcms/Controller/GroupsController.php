@@ -16,6 +16,13 @@ class GroupsController extends DreamcmsAppController {
 	public $components = array('Paginator');
 
 /**
+ * logableModel
+ *
+ * @var string
+ */
+	public $logableModel = 'Group';
+
+/**
  * index method
  *
  * @return void

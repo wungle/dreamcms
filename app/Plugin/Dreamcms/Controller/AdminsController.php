@@ -17,6 +17,13 @@ class AdminsController extends DreamcmsAppController {
 	public $components = array('Paginator');
 
 /**
+ * logableModel
+ *
+ * @var string
+ */
+	public $logableModel = 'Admin';
+
+/**
  * index method
  *
  * @return void

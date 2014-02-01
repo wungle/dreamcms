@@ -25,6 +25,13 @@ class FilesController extends DreamcmsAppController {
  */
 	public $components = array('Paginator');
 
+/**
+ * logableModel
+ *
+ * @var string
+ */
+	public $logableModel = 'Files';
+
 	public function beforeFilter()
 	{
 		parent::beforeFilter();
