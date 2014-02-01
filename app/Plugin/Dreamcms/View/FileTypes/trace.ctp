@@ -63,13 +63,15 @@
 										<div class="form-group">
 											<div class="input select">
 												<?php 
+													$current = isset($this->request->data['FileTypeBefore']['parent_id']) ? $this->request->data['FileTypeBefore']['parent_id'] : null;
 													$no_parent_option = (isset($this->params->params['root_node']) && !empty($this->params->params['root_node'])) ? false : true;
 													echo $this->DreamcmsForm->treeSelect(array(
 														'model' => 'FileTypeBefore',
 														'field' => 'parent_id',
 														'class' => 'form-control',
 														'tree' => $parentFileTypes,
-														'no_parent_option' => $no_parent_option
+														'no_parent_option' => $no_parent_option,
+														'current' => $current
 													)); 
 												?>
 											</div>
@@ -106,13 +108,15 @@
 										<div class="form-group">
 											<div class="input select">
 												<?php 
+													$current = isset($this->request->data['FileTypeAfter']['parent_id']) ? $this->request->data['FileTypeAfter']['parent_id'] : null;
 													$no_parent_option = (isset($this->params->params['root_node']) && !empty($this->params->params['root_node'])) ? false : true;
 													echo $this->DreamcmsForm->treeSelect(array(
 														'model' => 'FileTypeAfter',
 														'field' => 'parent_id',
 														'class' => 'form-control',
 														'tree' => $parentFileTypes,
-														'no_parent_option' => $no_parent_option
+														'no_parent_option' => $no_parent_option,
+														'current' => $current
 													)); 
 												?>
 											</div>
