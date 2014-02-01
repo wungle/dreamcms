@@ -223,7 +223,7 @@ class AdminsController extends DreamcmsAppController {
 	}
 
 /**
- * login method
+ * logout method
  *
  * @return void
  */
@@ -231,5 +231,21 @@ class AdminsController extends DreamcmsAppController {
 	{
 		$this->DreamcmsAuth->logout();
 		$this->redirect('/');
+	}
+
+/**
+ * trace method
+ *
+ * @throws NotFoundException
+ * @param string $record_id
+ * @param string $log_id
+ * @return void
+ */
+	public function trace($record_id, $log_id)
+	{
+		parent::trace($record_id, $log_id);
+
+		$groups = $this->Admin->Group->find('list');
+		$this->set(compact('groups'));
 	}
 }
