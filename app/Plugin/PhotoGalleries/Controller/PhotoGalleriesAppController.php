@@ -88,13 +88,15 @@ class PhotoGalleriesAppController extends AppController {
 		$data['CmsLog']['data_after'] = unserialize($data['CmsLog']['data_after']);
 
 		if ($data['CmsLog']['data_before'])
-			$data[$this->logableModel . 'Before'] = $data['CmsLog']['data_before'];
+			$data[$this->logableModel . 'Before'] = $data['CmsLog']['data_before'][$this->logableModel];
 
 		if ($data['CmsLog']['data_after'])
-			$data[$this->logableModel . 'After'] = $data['CmsLog']['data_after'];
+			$data[$this->logableModel . 'After'] = $data['CmsLog']['data_after'][$this->logableModel];
+
+		$data['Admin'] = $data['CmsLog']['admin'];
 
 		$this->request->data = $data;
-		
+
 		$this->set('data', $data);
 	}
 
