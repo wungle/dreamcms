@@ -147,12 +147,18 @@ class UploadableBehavior extends ModelBehavior
 
 			if (isset($data[$Model->alias][$Model->primaryKey]))
 			{
+				$current_schema = $Model->schema();
+				$fields = array();
+				foreach ($current_schema as $fieldname => $desc)
+					$fields[] = $Model->alias . '.' . $fieldname;
+
 				$oldData = $Model->find(
 					'first',
 					array(
+						'fields' => $fields,
 						'conditions' => array($Model->alias . '.' . $Model->primaryKey => $data[$Model->alias][$Model->primaryKey]),
 						'limit' => 1,
-						'recursive' => 0
+						'recursive' => -1
 					)
 				);
 				if ($oldData)
