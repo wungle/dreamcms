@@ -179,4 +179,34 @@ class CmsMenusController extends DreamcmsAppController {
 		}
 		$this->Session->setFlash(__('Cms menu was not deleted'), 'flash/error');
 		$this->redirect(array('action' => 'index'));
-	}}
+	}
+
+/**
+ * trace method
+ *
+ * @throws NotFoundException
+ * @param string $record_id
+ * @param string $log_id
+ * @return void
+ */
+	public function trace($record_id, $log_id)
+	{
+		parent::trace($record_id, $log_id);
+
+		$parentCmsMenus = $this->CmsMenu->find(
+			'list',
+			array(
+				'fields' => array('CmsMenu.id', 'CmsMenu.name'),
+				'conditions' => array(
+					'CmsMenu.parent_id' => '0',
+					'CmsMenu.published' => 'Yes'
+				),
+				'order' => 'CmsMenu.name ASC'
+			)
+		);
+		$parentCmsMenus = Set::merge(array('0' => 'No Parent'), $parentCmsMenus);
+		$this->set(compact('parentCmsMenus'));
+		$this->set('iconList', $this->Icon->getIconList());
+	}
+
+}
