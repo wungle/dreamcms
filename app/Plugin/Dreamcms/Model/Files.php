@@ -26,6 +26,7 @@ class Files extends CacheableModel {
  * @var array
  */
 	public $actsAs = array(
+		'Dreamcms.Logable',
 		'Dreamcms.Uploadable' => array(
 			/**
 				savePath have to be inside of the WWW_ROOT directory
@@ -61,8 +62,7 @@ class Files extends CacheableModel {
 			'category' => 'fileCategoryTranslation',
 			'width' => 'fileWidthTranslation',
 			'height' => 'fileHeightTranslation'
-		),
-		'Dreamcms.Logable'
+		)
 	);
 
 /**
