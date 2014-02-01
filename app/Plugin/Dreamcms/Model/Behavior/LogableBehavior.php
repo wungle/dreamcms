@@ -283,7 +283,14 @@ class LogableBehavior extends ModelBehavior
 		if ($this->hasDeletedField($Model))
 			$conditions[$Model->alias . '.deleted'] = '0';
 
+		$current_schema = $this->fetchModelSchema($Model);
+		$fields = array();
+		foreach ($current_schema as $fieldname => $desc)
+			$fields[] = $Model->alias . '.' . $fieldname;
+
+
 		$result = $Model->find("first", array(
+			'fields' => $fields,
 			'conditions' => $conditions,
 			'limit' => 1
 		));
