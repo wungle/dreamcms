@@ -57,7 +57,7 @@ class PhotoGalleriesAppController extends AppController {
  * @param string $log_id
  * @return void
  */
-	public function trace($record_id, $log_id)
+	public function dreamcms_trace($record_id, $log_id)
 	{
 		$this->loadModel('Dreamcms.CmsLog');
 
@@ -107,7 +107,7 @@ class PhotoGalleriesAppController extends AppController {
  * @param integer $limit
  * @return void
  */
-	public function load_trace_logs($record_id, $start = 0, $limit = 20)
+	public function dreamcms_load_trace_logs($record_id, $start = 0, $limit = 20)
 	{
 		$this->layout = 'blank';
 
