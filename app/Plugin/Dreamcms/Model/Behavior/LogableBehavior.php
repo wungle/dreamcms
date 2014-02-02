@@ -360,6 +360,30 @@ class LogableBehavior extends ModelBehavior
 				}
 			}
 		}
+
+		// Fix unbinded belongsTo associations
+		foreach ($Model->belongsTo as $alias => $config)
+			if (!isset($result[$alias]))
+			{
+				$belongsToModel = ClassRegistry::init(array('class' => $config['className'], 'alias' => 'Logable' . $alias));
+				
+				$conditions = array('Logable' . $alias . '.' . $belongsToModel->primaryKey => $result[$Model->alias][$config['foreignKey']]);
+				if (isset($config['conditions']) && is_array($config['conditions']) && !empty($config['conditions']))
+					$conditions = Set::merge($conditions, $config['conditions']);
+
+				$belongsToData = $belongsToModel->find(
+					'first',
+					array(
+						'conditions' => $conditions,
+						'limit' => 1
+					)
+				);
+
+				if ($belongsToData)
+					$result[$alias] = $belongsToData['Logable' . $alias];
+
+				unset($belongsToModel);
+			}
 		
 		return $result;
 	}
