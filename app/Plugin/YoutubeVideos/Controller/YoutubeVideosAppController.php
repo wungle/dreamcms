@@ -1,7 +1,8 @@
 <?php
 
 App::uses('AppController', 'Controller');
+App::uses('DreamcmsAppController', 'Dreamcms.Controller');
 
-class YoutubeVideosAppController extends AppController {
+class YoutubeVideosAppController extends DreamcmsAppController {
 
 }

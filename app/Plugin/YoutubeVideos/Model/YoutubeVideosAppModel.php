@@ -1,7 +1,8 @@
 <?php
 
 App::uses('AppModel', 'Model');
+App::uses('DreamcmsAppModel', 'Dreamcms.Model');
 
-class YoutubeVideosAppModel extends AppModel {
-
+class YoutubeVideosAppModel extends DreamcmsAppModel {
+	
 }
