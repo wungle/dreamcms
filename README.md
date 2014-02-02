@@ -63,6 +63,13 @@ $ cd app/Console
 $ ./cake schema create --name PhotoGalleries.Default
 ```
 
+Database Installation for Youtube Videos
+----------------------------------------
+```sh
+$ cd app/Console
+$ ./cake schema create --name YoutubeVideos.Default
+```
+
 ---------------------------------------
 
 Default DreamCMS Login
