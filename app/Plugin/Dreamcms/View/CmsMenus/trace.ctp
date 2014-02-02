@@ -61,7 +61,16 @@
 											<?php echo $this->Form->input('id', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
-											<?php echo $this->Form->input('parent_id', array('options' => $parentCmsMenus, 'class' => 'form-control')); ?>
+											<?php 
+												$parent_id = '';
+												if (isset($this->request->data['CmsMenuBefore']['parent_id']))
+												{
+													$parent_id = $this->request->data['CmsMenuBefore']['parent_id'] . ' - ';
+													$parent_id .= isset($this->request->data['CmsLog']['data_before']['ParentCmsMenu']['name']) ? $this->request->data['CmsLog']['data_before']['ParentCmsMenu']['name'] : 'No Parent';
+												}
+
+												echo $this->Form->input('parent_id', array('type' => 'text', 'class' => 'form-control', 'value' => $parent_id));
+											?>
 										</div><!-- .form-group -->
 										<div class="form-group">
 											<?php echo $this->Form->input('icon', array('options' => $iconList, 'class' => 'width-100 select2-icon-select')); ?>
@@ -73,7 +82,7 @@
 											<?php echo $this->Form->input('url', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
-											<?php echo $this->Form->input('published', array('options' => array('Yes' => 'Yes', 'No' => 'No'), 'class' => 'form-control')); ?>
+											<?php echo $this->Form->input('published', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
 											<?php echo $this->Form->input('created', array('class' => 'form-control')); ?>
@@ -95,7 +104,16 @@
 											<?php echo $this->Form->input('id', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
-											<?php echo $this->Form->input('parent_id', array('options' => $parentCmsMenus, 'class' => 'form-control')); ?>
+											<?php 
+												$parent_id = '';
+												if (isset($this->request->data['CmsMenuAfter']['parent_id']))
+												{
+													$parent_id = $this->request->data['CmsMenuAfter']['parent_id'] . ' - ';
+													$parent_id .= isset($this->request->data['CmsLog']['data_after']['ParentCmsMenu']['name']) ? $this->request->data['CmsLog']['data_after']['ParentCmsMenu']['name'] : 'No Parent';
+												}
+
+												echo $this->Form->input('parent_id', array('type' => 'text', 'class' => 'form-control', 'value' => $parent_id));
+											?>
 										</div><!-- .form-group -->
 										<div class="form-group">
 											<?php echo $this->Form->input('icon', array('options' => $iconList, 'class' => 'width-100 select2-icon-select')); ?>
@@ -107,7 +125,7 @@
 											<?php echo $this->Form->input('url', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
-											<?php echo $this->Form->input('published', array('options' => array('Yes' => 'Yes', 'No' => 'No'), 'class' => 'form-control')); ?>
+											<?php echo $this->Form->input('published', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
 											<?php echo $this->Form->input('created', array('class' => 'form-control')); ?>
@@ -123,5 +141,6 @@
 				</div>
 			</div>
 		</div>
+		
 	</div>
 </div>

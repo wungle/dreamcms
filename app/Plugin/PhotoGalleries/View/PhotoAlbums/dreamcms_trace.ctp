@@ -63,16 +63,13 @@
 										<div class="form-group">
 											<div class="input select">
 												<?php 
-													$current = isset($this->request->data['PhotoAlbumBefore']['parent_id']) ? $this->request->data['PhotoAlbumBefore']['parent_id'] : null;
-													$no_parent_option = (isset($this->params->params['root_node']) && !empty($this->params->params['root_node'])) ? false : true;
-													echo $this->DreamcmsForm->treeSelect(array(
-														'model' => 'PhotoAlbumBefore',
-														'field' => 'parent_id',
-														'class' => 'form-control',
-														'tree' => $parentPhotoAlbums,
-														'no_parent_option' => $no_parent_option,
-														'current' => $current
-													)); 
+													$parent = '';
+													if (isset($this->request->data['PhotoAlbumBefore']['parent_id']))
+													{
+														$parent .= $this->request->data['PhotoAlbumBefore']['parent_id'] . ' - ';
+														$parent .= (isset($this->request->data['CmsLog']['data_before']['ParentPhotoAlbum']['name']) && !empty($this->request->data['CmsLog']['data_before']['ParentPhotoAlbum']['name'])) ? $this->request->data['CmsLog']['data_before']['ParentPhotoAlbum']['name'] : 'No Parent';
+													}
+													echo $this->Form->input('parent_id', array('type' => 'text', 'class' => 'form-control', 'value' => $parent));
 												?>
 											</div>
 										</div><!-- .form-group -->
@@ -92,7 +89,7 @@
 										?>
 
 										<div class="form-group">
-											<?php echo $this->Form->input('published', array('class' => 'form-control', 'options' => array('Yes' => 'Yes', 'No' => 'No'))); ?>
+											<?php echo $this->Form->input('published', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
 											<?php echo $this->Form->input('created', array('class' => 'form-control')); ?>
@@ -116,16 +113,13 @@
 										<div class="form-group">
 											<div class="input select">
 												<?php 
-													$current = isset($this->request->data['PhotoAlbumAfter']['parent_id']) ? $this->request->data['PhotoAlbumAfter']['parent_id'] : null;
-													$no_parent_option = (isset($this->params->params['root_node']) && !empty($this->params->params['root_node'])) ? false : true;
-													echo $this->DreamcmsForm->treeSelect(array(
-														'model' => 'PhotoAlbumAfter',
-														'field' => 'parent_id',
-														'class' => 'form-control',
-														'tree' => $parentPhotoAlbums,
-														'no_parent_option' => $no_parent_option,
-														'current' => $current
-													)); 
+													$parent = '';
+													if (isset($this->request->data['PhotoAlbumAfter']['parent_id']))
+													{
+														$parent .= $this->request->data['PhotoAlbumAfter']['parent_id'] . ' - ';
+														$parent .= (isset($this->request->data['CmsLog']['data_after']['ParentPhotoAlbum']['name']) && !empty($this->request->data['CmsLog']['data_after']['ParentPhotoAlbum']['name'])) ? $this->request->data['CmsLog']['data_after']['ParentPhotoAlbum']['name'] : 'No Parent';
+													}
+													echo $this->Form->input('parent_id', array('type' => 'text', 'class' => 'form-control', 'value' => $parent));
 												?>
 											</div>
 										</div><!-- .form-group -->
@@ -145,7 +139,7 @@
 										?>
 
 										<div class="form-group">
-											<?php echo $this->Form->input('published', array('class' => 'form-control', 'options' => array('Yes' => 'Yes', 'No' => 'No'))); ?>
+											<?php echo $this->Form->input('published', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
 											<?php echo $this->Form->input('created', array('class' => 'form-control')); ?>
@@ -162,6 +156,6 @@
 			</div>
 		</div>
 
-
+		
 	</div>
 </div>

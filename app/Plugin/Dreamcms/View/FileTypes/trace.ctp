@@ -63,16 +63,13 @@
 										<div class="form-group">
 											<div class="input select">
 												<?php 
-													$current = isset($this->request->data['FileTypeBefore']['parent_id']) ? $this->request->data['FileTypeBefore']['parent_id'] : null;
-													$no_parent_option = (isset($this->params->params['root_node']) && !empty($this->params->params['root_node'])) ? false : true;
-													echo $this->DreamcmsForm->treeSelect(array(
-														'model' => 'FileTypeBefore',
-														'field' => 'parent_id',
-														'class' => 'form-control',
-														'tree' => $parentFileTypes,
-														'no_parent_option' => $no_parent_option,
-														'current' => $current
-													)); 
+													$parent = '';
+													if (isset($this->request->data['FileTypeBefore']['parent_id']))
+													{
+														$parent .= $this->request->data['FileTypeBefore']['parent_id'] . ' - ';
+														$parent .= (isset($this->request->data['CmsLog']['data_before']['ParentFileType']['name']) && !empty($this->request->data['CmsLog']['data_before']['ParentFileType']['name'])) ? $this->request->data['CmsLog']['data_before']['ParentFileType']['name'] : 'No Parent';
+													}
+													echo $this->Form->input('parent_id', array('type' => 'text', 'class' => 'form-control', 'value' => $parent));
 												?>
 											</div>
 										</div><!-- .form-group -->
@@ -84,7 +81,7 @@
 											<?php echo $this->Form->input('description', array('type' => 'textarea', 'class' => 'form-control', 'rows' => '5')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
-											<?php echo $this->Form->input('published', array('options' => array('Yes' => 'Yes', 'No' => 'No'), 'class' => 'form-control')); ?>
+											<?php echo $this->Form->input('published', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
 											<?php echo $this->Form->input('created', array('class' => 'form-control')); ?>
@@ -108,16 +105,13 @@
 										<div class="form-group">
 											<div class="input select">
 												<?php 
-													$current = isset($this->request->data['FileTypeAfter']['parent_id']) ? $this->request->data['FileTypeAfter']['parent_id'] : null;
-													$no_parent_option = (isset($this->params->params['root_node']) && !empty($this->params->params['root_node'])) ? false : true;
-													echo $this->DreamcmsForm->treeSelect(array(
-														'model' => 'FileTypeAfter',
-														'field' => 'parent_id',
-														'class' => 'form-control',
-														'tree' => $parentFileTypes,
-														'no_parent_option' => $no_parent_option,
-														'current' => $current
-													)); 
+													$parent = '';
+													if (isset($this->request->data['FileTypeAfter']['parent_id']))
+													{
+														$parent .= $this->request->data['FileTypeAfter']['parent_id'] . ' - ';
+														$parent .= (isset($this->request->data['CmsLog']['data_after']['ParentFileType']['name']) && !empty($this->request->data['CmsLog']['data_after']['ParentFileType']['name'])) ? $this->request->data['CmsLog']['data_after']['ParentFileType']['name'] : 'No Parent';
+													}
+													echo $this->Form->input('parent_id', array('type' => 'text', 'class' => 'form-control', 'value' => $parent));
 												?>
 											</div>
 										</div><!-- .form-group -->
@@ -129,7 +123,7 @@
 											<?php echo $this->Form->input('description', array('type' => 'textarea', 'class' => 'form-control', 'rows' => '5')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
-											<?php echo $this->Form->input('published', array('options' => array('Yes' => 'Yes', 'No' => 'No'), 'class' => 'form-control')); ?>
+											<?php echo $this->Form->input('published', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
 											<?php echo $this->Form->input('created', array('class' => 'form-control')); ?>
@@ -145,5 +139,6 @@
 				</div>
 			</div>
 		</div>
+
 	</div>
 </div>

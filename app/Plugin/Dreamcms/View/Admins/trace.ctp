@@ -61,7 +61,12 @@
 											<?php echo $this->Form->input('id', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
-											<?php echo $this->Form->input('group_id', array('class' => 'form-control')); ?>
+											<?php
+												$group_id = '';
+												if (isset($this->request->data['AdminBefore']['group_id']))
+													$group_id = $this->request->data['AdminBefore']['group_id'] . ' - ' . $this->request->data['CmsLog']['data_before']['Group']['name'];
+												echo $this->Form->input('group_id', array('type' => 'text', 'class' => 'form-control', 'value' => $group_id));
+											?>
 										</div><!-- .form-group -->
 										<div class="form-group">
 											<?php echo $this->Form->input('username', array('class' => 'form-control')); ?>
@@ -73,7 +78,7 @@
 											<?php echo $this->Form->input('email', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
-											<?php echo $this->Form->input('active', array('options' => array('Yes' => 'Yes', 'No' => 'No'), 'class' => 'form-control')); ?>
+											<?php echo $this->Form->input('active', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
 											<?php echo $this->Form->input('last_login', array('class' => 'form-control')); ?>
@@ -101,7 +106,12 @@
 											<?php echo $this->Form->input('id', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
-											<?php echo $this->Form->input('group_id', array('class' => 'form-control')); ?>
+											<?php
+												$group_id = '';
+												if (isset($this->request->data['AdminAfter']['group_id']))
+													$group_id = $this->request->data['AdminAfter']['group_id'] . ' - ' . $this->request->data['CmsLog']['data_after']['Group']['name'];
+												echo $this->Form->input('group_id', array('type' => 'text', 'class' => 'form-control', 'value' => $group_id));
+											?>
 										</div><!-- .form-group -->
 										<div class="form-group">
 											<?php echo $this->Form->input('username', array('class' => 'form-control')); ?>
@@ -113,7 +123,7 @@
 											<?php echo $this->Form->input('email', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
-											<?php echo $this->Form->input('active', array('options' => array('Yes' => 'Yes', 'No' => 'No'), 'class' => 'form-control')); ?>
+											<?php echo $this->Form->input('active', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
 											<?php echo $this->Form->input('last_login', array('class' => 'form-control')); ?>
@@ -135,5 +145,6 @@
 				</div>
 			</div>
 		</div>
+
 	</div>
 </div>

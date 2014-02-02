@@ -70,7 +70,7 @@
 											<?php echo $this->Form->input('height', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
-											<?php echo $this->Form->input('method', array('options' => array('Scale' => 'Scale', 'Crop' => 'Crop'), 'class' => 'form-control')); ?>
+											<?php echo $this->Form->input('method', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
 											<?php echo $this->Form->input('created', array('class' => 'form-control')); ?>
@@ -101,7 +101,7 @@
 											<?php echo $this->Form->input('height', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
-											<?php echo $this->Form->input('method', array('options' => array('Scale' => 'Scale', 'Crop' => 'Crop'), 'class' => 'form-control')); ?>
+											<?php echo $this->Form->input('method', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
 											<?php echo $this->Form->input('created', array('class' => 'form-control')); ?>

@@ -63,16 +63,13 @@
 										<div class="form-group">
 											<div class="input select">
 												<?php 
-													$current = isset($this->request->data['WebMenuBefore']['parent_id']) ? $this->request->data['WebMenuBefore']['parent_id'] : null;
-													$no_parent_option = (isset($this->params->params['root_node']) && !empty($this->params->params['root_node'])) ? false : true;
-													echo $this->DreamcmsForm->treeSelect(array(
-														'model' => 'WebMenuBefore',
-														'field' => 'parent_id',
-														'class' => 'form-control',
-														'tree' => $parentWebMenus,
-														'no_parent_option' => $no_parent_option,
-														'current' => $current
-													)); 
+													$parent = '';
+													if (isset($this->request->data['WebMenuBefore']['parent_id']))
+													{
+														$parent .= $this->request->data['WebMenuBefore']['parent_id'] . ' - ';
+														$parent .= (isset($this->request->data['CmsLog']['data_before']['ParentWebMenu']['name']) && !empty($this->request->data['CmsLog']['data_before']['ParentWebMenu']['name'])) ? $this->request->data['CmsLog']['data_before']['ParentWebMenu']['name'] : 'No Parent';
+													}
+													echo $this->Form->input('parent_id', array('type' => 'text', 'class' => 'form-control', 'value' => $parent));
 												?>
 											</div>
 										</div><!-- .form-group -->
@@ -95,7 +92,7 @@
 											<?php echo $this->Form->input('priority', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
-											<?php echo $this->Form->input('published', array('options' => array('Yes' => 'Yes', 'No' => 'No'), 'class' => 'form-control')); ?>
+											<?php echo $this->Form->input('published', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
 											<?php echo $this->Form->input('created', array('class' => 'form-control')); ?>
@@ -119,16 +116,13 @@
 										<div class="form-group">
 											<div class="input select">
 												<?php 
-													$current = isset($this->request->data['WebMenuAfter']['parent_id']) ? $this->request->data['WebMenuAfter']['parent_id'] : null;
-													$no_parent_option = (isset($this->params->params['root_node']) && !empty($this->params->params['root_node'])) ? false : true;
-													echo $this->DreamcmsForm->treeSelect(array(
-														'model' => 'WebMenuAfter',
-														'field' => 'parent_id',
-														'class' => 'form-control',
-														'tree' => $parentWebMenus,
-														'no_parent_option' => $no_parent_option,
-														'current' => $current
-													)); 
+													$parent = '';
+													if (isset($this->request->data['WebMenuAfter']['parent_id']))
+													{
+														$parent .= $this->request->data['WebMenuAfter']['parent_id'] . ' - ';
+														$parent .= (isset($this->request->data['CmsLog']['data_after']['ParentWebMenu']['name']) && !empty($this->request->data['CmsLog']['data_after']['ParentWebMenu']['name'])) ? $this->request->data['CmsLog']['data_after']['ParentWebMenu']['name'] : 'No Parent';
+													}
+													echo $this->Form->input('parent_id', array('type' => 'text', 'class' => 'form-control', 'value' => $parent));
 												?>
 											</div>
 										</div><!-- .form-group -->
@@ -151,7 +145,7 @@
 											<?php echo $this->Form->input('priority', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
-											<?php echo $this->Form->input('published', array('options' => array('Yes' => 'Yes', 'No' => 'No'), 'class' => 'form-control')); ?>
+											<?php echo $this->Form->input('published', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
 											<?php echo $this->Form->input('created', array('class' => 'form-control')); ?>
@@ -167,5 +161,6 @@
 				</div>
 			</div>
 		</div>
+		
 	</div>
 </div>

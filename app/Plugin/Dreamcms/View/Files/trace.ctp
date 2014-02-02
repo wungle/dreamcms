@@ -63,14 +63,13 @@
 										<div class="form-group">
 											<div class="input select">
 												<?php 
-													$current = isset($this->request->data['FilesBefore']['file_type_id']) ? $this->request->data['FilesBefore']['file_type_id'] : null;
-													echo $this->DreamcmsForm->treeSelect(array(
-														'model' => 'FilesBefore',
-														'field' => 'file_type_id',
-														'class' => 'form-control',
-														'tree' => $fileTypes,
-														'current' => $current
-													)); 
+													$file_type = '';
+													if (isset($this->request->data['FilesBefore']['file_type_id']))
+													{
+														$file_type .= $this->request->data['FilesBefore']['file_type_id'] . ' - ';
+														$file_type .= (isset($this->request->data['CmsLog']['data_before']['FileType']['name']) && !empty($this->request->data['CmsLog']['data_before']['FileType']['name'])) ? $this->request->data['CmsLog']['data_before']['FileType']['name'] : 'No File Type';
+													}
+													echo $this->Form->input('file_type_id', array('type' => 'text', 'class' => 'form-control', 'value' => $file_type));
 												?>
 											</div>
 										</div><!-- .form-group -->
@@ -102,7 +101,7 @@
 											<?php echo $this->Form->input('priority', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
-											<?php echo $this->Form->input('published', array('options' => array('Yes' => 'Yes', 'No' => 'No'), 'class' => 'form-control')); ?>
+											<?php echo $this->Form->input('published', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
 											<?php echo $this->Form->input('created', array('class' => 'form-control')); ?>
@@ -126,14 +125,13 @@
 										<div class="form-group">
 											<div class="input select">
 												<?php 
-													$current = isset($this->request->data['FilesAfter']['file_type_id']) ? $this->request->data['FilesAfter']['file_type_id'] : null;
-													echo $this->DreamcmsForm->treeSelect(array(
-														'model' => 'FilesAfter',
-														'field' => 'file_type_id',
-														'class' => 'form-control',
-														'tree' => $fileTypes,
-														'current' => $current
-													)); 
+													$file_type = '';
+													if (isset($this->request->data['FilesAfter']['file_type_id']))
+													{
+														$file_type .= $this->request->data['FilesAfter']['file_type_id'] . ' - ';
+														$file_type .= (isset($this->request->data['CmsLog']['data_after']['FileType']['name']) && !empty($this->request->data['CmsLog']['data_after']['FileType']['name'])) ? $this->request->data['CmsLog']['data_after']['FileType']['name'] : 'No File Type';
+													}
+													echo $this->Form->input('file_type_id', array('type' => 'text', 'class' => 'form-control', 'value' => $file_type));
 												?>
 											</div>
 										</div><!-- .form-group -->
@@ -165,7 +163,7 @@
 											<?php echo $this->Form->input('priority', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
-											<?php echo $this->Form->input('published', array('options' => array('Yes' => 'Yes', 'No' => 'No'), 'class' => 'form-control')); ?>
+											<?php echo $this->Form->input('published', array('class' => 'form-control')); ?>
 										</div><!-- .form-group -->
 										<div class="form-group">
 											<?php echo $this->Form->input('created', array('class' => 'form-control')); ?>
