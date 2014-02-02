@@ -107,6 +107,20 @@ class DreamcmsAppController extends AppController {
 	}
 
 /**
+ * dreamcms_trace method
+ *   - an admin routing version of trace() method.
+ *
+ * @throws NotFoundException
+ * @param string $record_id
+ * @param string $log_id
+ * @return void
+ */
+	public function dreamcms_trace($record_id, $log_id)
+	{
+		$this->trace($record_id, $log_id);
+	}
+
+/**
  * load_trace_logs method
  *
  * @throws NotFoundException
@@ -157,6 +171,21 @@ class DreamcmsAppController extends AppController {
 		);
 
 		echo json_encode($result); die();
+	}
+
+/**
+ * dreamcms_load_trace_logs method
+ *   - an admin routing version of load_trace_logs() method.
+ *
+ * @throws NotFoundException
+ * @param string $record_id
+ * @param integer $start
+ * @param integer $limit
+ * @return void
+ */
+	public function dreamcms_load_trace_logs($record_id, $start = 0, $limit = 20)
+	{
+		$this->load_trace_logs($record_id, $start = 0, $limit = 20);
 	}
 }
 
