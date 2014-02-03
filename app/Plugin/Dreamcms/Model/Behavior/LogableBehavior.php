@@ -294,6 +294,9 @@ class LogableBehavior extends ModelBehavior
 			'conditions' => $conditions,
 			'limit' => 1
 		));
+
+		if (empty($result))
+			return $result;
 		
 		if ($this->hasTranslateBehavior($Model))
 		{
