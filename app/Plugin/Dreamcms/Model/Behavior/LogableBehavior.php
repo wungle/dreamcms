@@ -156,7 +156,7 @@ class LogableBehavior extends ModelBehavior
 			$this->dataBeforeSave[$Model->alias] = $this->fetchCurrentData($Model, $Model->data[$Model->alias][$pk]);
 		}
 		else
-			$this->dataBeforeSave[$Model->alias] = null;
+			$this->dataBeforeSave[$Model->alias] = false;
 
 		return true;
 	}
@@ -186,7 +186,7 @@ class LogableBehavior extends ModelBehavior
 		$this->dataAfterSave[$Model->alias] = $this->fetchCurrentData($Model, $id);
 
 		if (empty($this->dataAfterSave[$Model->alias]))
-			$this->dataAfterSave[$Model->alias] = null;
+			$this->dataAfterSave[$Model->alias] = false;
 
 		$this->saveLog($Model);
 
@@ -218,7 +218,7 @@ class LogableBehavior extends ModelBehavior
 		if (!is_array($this->dataAfterSave))
 			$this->dataAfterSave = array();
 
-		$this->dataAfterSave[$Model->alias] = null;
+		$this->dataAfterSave[$Model->alias] = false;
 
 		$this->saveLog($Model);
 
