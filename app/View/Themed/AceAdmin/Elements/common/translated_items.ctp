@@ -78,8 +78,26 @@ Configure::write('DreamCMS.translated_items.index', $unique_id+1);
 <?php foreach ($elements as $field => $options) : ?>
 <?php $options['label'] = false; ?>
 								<div class="form-group">
-									<?php echo $this->Form->label($field); ?> 
-									<?php echo $this->Form->input($modelName . '.' . $field . '.' . $locale, $options); ?> 
+									<?php
+										if (strpos($field, '_uploadable_thumbnail') !== false)
+										{
+											if (isset($this->request->data[$modelName][$field][$locale]))
+											{
+												echo $this->Form->label('thumbnail');
+												echo '<div><img alt="" src="data:image/jpeg;base64,'. $this->request->data[$modelName][$field][$locale] .'" /></div>';
+											}
+										}
+										elseif (strpos($field, '_uploadable_filesize') !== false)
+										{
+											echo $this->Form->label('file_size');
+											echo $this->Form->input($modelName . '.' . $field . '.' . $locale, $options);
+										}
+										else
+										{
+											echo $this->Form->label($field);
+											echo $this->Form->input($modelName . '.' . $field . '.' . $locale, $options);
+										}
+									?> 
 								</div>
 								
 <?php endforeach; ?> 
