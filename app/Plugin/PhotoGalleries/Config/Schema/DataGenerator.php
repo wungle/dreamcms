@@ -21,6 +21,18 @@ class DataGenerator
 	public function __construct() {
 		Configure::write('Cache.disable', true);
 		Configure::write('App.SchemaCreate', true);
+		Configure::write('DreamCMS.logable.custom_admin', array(
+			'group_id' => '0',
+			'username' => 'system',
+			'real_name' => 'System Installer',
+			'email' => 'richan.fongdasen@yahoo.com',
+			'last_login' => '0000-00-00 00:00:00',
+			'last_login_ip' => '0.0.0.0',
+			'active' => 'Yes',
+			'deleted' => '0',
+			'created' => '0000-00-00 00:00:00',
+			'modified' => '0000-00-00 00:00:00',
+		));
 	}
 
 	public function run() {
@@ -98,6 +110,9 @@ class DataGenerator
 
 	protected function initCmsMenu() {
 		try {
+			Configure::write('DreamCMS.Routeable.current_controller', 'cms_menus');
+			Configure::write('App.params_here', '/dreamcms/cms_menus/add');
+			
 			$cms_menu = ClassRegistry::init('Dreamcms.CmsMenu');
 			$photos = $cms_menu->find(
 				'first',

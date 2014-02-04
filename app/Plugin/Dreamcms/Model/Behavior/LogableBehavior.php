@@ -469,6 +469,9 @@ class LogableBehavior extends ModelBehavior
 
 		$dreamcms_user = CakeSession::read('Auth.User');
 
+		if (!$dreamcms_user && Configure::read('DreamCMS.logable.custom_admin'))
+			$dreamcms_user = Configure::read('DreamCMS.logable.custom_admin');
+
 		if (!$dreamcms_user)
 			return false;
 
@@ -488,13 +491,26 @@ class LogableBehavior extends ModelBehavior
 			$description = $dreamcms_user['real_name'] . ' (' . $dreamcms_user['username'] . ') has logged in.';
 		}
 
+		$model_alias =  $Model->alias;
+		$affected_fields = implode(', ', $this->getUpdatedFields($Model, $before, $after));
+
+		// Special case for Schema's data generator with model Admin and alias DreamcmsAdmin
+		if ($Model->alias == 'DreamcmsAdmin')
+		{
+			$model_alias = 'Admin';
+			if (isset($before['DreamcmsAdmin']))
+				$before['Admin'] = $before['DreamcmsAdmin'];
+			if (isset($after['DreamcmsAdmin']))
+				$after['Admin'] = $after['DreamcmsAdmin'];
+		}
+
 		$data = array(
 			'CmsLog' => array(
 				'admin' => serialize($dreamcms_user),
 				'controller' => Inflector::camelize(Configure::read('DreamCMS.Routeable.current_controller')),
-				'model' => $Model->alias,
+				'model' => $model_alias,
 				'foreign_key' => $id,
-				'fields' => implode(', ', $this->getUpdatedFields($Model, $before, $after)),
+				'fields' => $affected_fields,
 				'operation' => $operation,
 				'description' => $description,
 				'url' => strval($this->getUpdateTraceUrl($id, $CmsLog->getNextAutoIncrementValue())),

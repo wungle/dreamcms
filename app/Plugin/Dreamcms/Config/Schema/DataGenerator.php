@@ -27,6 +27,18 @@ class DataGenerator
 	public function __construct() {
 		Configure::write('Cache.disable', true);
 		Configure::write('App.SchemaCreate', true);
+		Configure::write('DreamCMS.logable.custom_admin', array(
+			'group_id' => '0',
+			'username' => 'system',
+			'real_name' => 'System Installer',
+			'email' => 'richan.fongdasen@yahoo.com',
+			'last_login' => '0000-00-00 00:00:00',
+			'last_login_ip' => '0.0.0.0',
+			'active' => 'Yes',
+			'deleted' => '0',
+			'created' => '0000-00-00 00:00:00',
+			'modified' => '0000-00-00 00:00:00',
+		));
 	}
 
 	public function run()
@@ -56,6 +68,9 @@ class DataGenerator
 
 	protected function initAdmin() {
 		try {
+			Configure::write('DreamCMS.Routeable.current_controller', 'admins');
+			Configure::write('App.params_here', '/dreamcms/admins/add');
+
 			$admin = ClassRegistry::init(array('class' => 'Dreamcms.Admin', 'alias' => 'DreamcmsAdmin'), true);
 
 			if (method_exists($admin, 'destroyCache') && is_subclass_of($admin, 'CacheableModel'))
@@ -83,6 +98,9 @@ class DataGenerator
 
 	protected function initCmsMenu() {
 		try {
+			Configure::write('DreamCMS.Routeable.current_controller', 'cms_menus');
+			Configure::write('App.params_here', '/dreamcms/cms_menus/add');
+
 			$cms_menu = ClassRegistry::init('Dreamcms.CmsMenu');
 
 			if (method_exists($cms_menu, 'destroyCache') && is_subclass_of($cms_menu, 'CacheableModel'))
@@ -257,6 +275,9 @@ class DataGenerator
 
 	protected function initGroup() {
 		try {
+			Configure::write('DreamCMS.Routeable.current_controller', 'groups');
+			Configure::write('App.params_here', '/dreamcms/groups/add');
+
 			$group = ClassRegistry::init('Dreamcms.Group');
 
 			if (method_exists($group, 'destroyCache') && is_subclass_of($group, 'CacheableModel'))
@@ -299,6 +320,9 @@ class DataGenerator
 
 	protected function initLanguage() {
 		try {
+			Configure::write('DreamCMS.Routeable.current_controller', 'languages');
+			Configure::write('App.params_here', '/dreamcms/languages/add');
+
 			$language = ClassRegistry::init('Dreamcms.Language');
 
 			if (method_exists($language, 'destroyCache') && is_subclass_of($language, 'CacheableModel'))
@@ -322,6 +346,9 @@ class DataGenerator
 
 	protected function initSetting() {
 		try {
+			Configure::write('DreamCMS.Routeable.current_controller', 'settings');
+			Configure::write('App.params_here', '/dreamcms/settings/add');
+
 			$setting = ClassRegistry::init('Dreamcms.Setting');
 
 			if (method_exists($setting, 'destroyCache') && is_subclass_of($setting, 'CacheableModel'))
