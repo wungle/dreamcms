@@ -15,6 +15,12 @@ App::uses('Files', 'Dreamcms.Model');
 App::uses('Group', 'Dreamcms.Model');
 App::uses('Icon', 'Dreamcms.Model');
 App::uses('Language', 'Dreamcms.Model');
+App::uses('Page', 'Dreamcms.Model');
+App::uses('PageAttachment', 'Dreamcms.Model');
+App::uses('PageAttachmentThumbnail', 'Dreamcms.Model');
+App::uses('PageAttachmentType', 'Dreamcms.Model');
+App::uses('PageI18n', 'Dreamcms.Model');
+App::uses('PageType', 'Dreamcms.Model');
 App::uses('Setting', 'Dreamcms.Model');
 App::uses('TempDir', 'Dreamcms.Model');
 App::uses('Thumbnail', 'Dreamcms.Model');
@@ -56,6 +62,13 @@ class DataGenerator
 		$this->initSetting();
 		$this->initLanguage();
 		$this->initIcon();
+
+		$this->initPage();
+		$this->initPageAttachment();
+		$this->initPageAttachmentThumbnail();
+		$this->initPageAttachmentType();
+		$this->initPageI18n();
+		$this->initPageType();
 
 		$this->initGroup();
 		$this->initAdmin();
@@ -181,6 +194,39 @@ class DataGenerator
 							'icon' => 'icon-flag',
 							'name' => 'Languages',
 							'url' => '/dreamcms/languages',
+						),
+						$this->getDefaultValues()
+					)
+				),
+				array(
+					'CmsMenu' => Set::merge(
+						array(
+							'parent_id' => '1',
+							'icon' => 'icon-html5',
+							'name' => 'Pages',
+							'url' => '/dreamcms/pages',
+						),
+						$this->getDefaultValues()
+					)
+				),
+				array(
+					'CmsMenu' => Set::merge(
+						array(
+							'parent_id' => '1',
+							'icon' => 'icon-file',
+							'name' => 'Page Attachment Type',
+							'url' => '/dreamcms/page_attachment_types',
+						),
+						$this->getDefaultValues()
+					)
+				),
+				array(
+					'CmsMenu' => Set::merge(
+						array(
+							'parent_id' => '1',
+							'icon' => 'icon-html5',
+							'name' => 'Page Type',
+							'url' => '/dreamcms/page_types',
 						),
 						$this->getDefaultValues()
 					)
@@ -339,6 +385,84 @@ class DataGenerator
 				)
 			));
 			unset($language);
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+
+	protected function initPage() {
+		try {
+			$page = ClassRegistry::init('Dreamcms.Page');
+
+			if (method_exists($page, 'destroyCache') && is_subclass_of($page, 'CacheableModel'))
+				@$page->destroyCache();
+
+			unset($page);
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+
+	protected function initPageAttachment() {
+		try {
+			$page_attachment = ClassRegistry::init('Dreamcms.PageAttachment');
+
+			if (method_exists($page_attachment, 'destroyCache') && is_subclass_of($page_attachment, 'CacheableModel'))
+				@$page_attachment->destroyCache();
+
+			unset($page_attachment);
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+
+	protected function initPageAttachmentThumbnail() {
+		try {
+			$page_attachment_thumbnail = ClassRegistry::init('Dreamcms.PageAttachmentThumbnail');
+
+			if (method_exists($page_attachment_thumbnail, 'destroyCache') && is_subclass_of($page_attachment_thumbnail, 'CacheableModel'))
+				@$page_attachment_thumbnail->destroyCache();
+
+			unset($page_attachment_thumbnail);
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+
+	protected function initPageAttachmentType() {
+		try {
+			$page_attachment_type = ClassRegistry::init('Dreamcms.PageAttachmentType');
+
+			if (method_exists($page_attachment_type, 'destroyCache') && is_subclass_of($page_attachment_type, 'CacheableModel'))
+				@$page_attachment_type->destroyCache();
+
+			unset($page_attachment_type);
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+
+	protected function initPageI18n() {
+		try {
+			$page_i18n = ClassRegistry::init('Dreamcms.PageI18n');
+
+			if (method_exists($page_i18n, 'destroyCache') && is_subclass_of($page_i18n, 'CacheableModel'))
+				@$page_i18n->destroyCache();
+
+			unset($page_i18n);
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+
+	protected function initPageType() {
+		try {
+			$page_type = ClassRegistry::init('Dreamcms.PageType');
+
+			if (method_exists($page_type, 'destroyCache') && is_subclass_of($page_type, 'CacheableModel'))
+				@$page_type->destroyCache();
+
+			unset($page_type);
 		} catch (Exception $e) {
 			return false;
 		}

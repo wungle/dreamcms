@@ -1,26 +1,32 @@
 
 
-DROP TABLE IF EXISTS `acos`;
-DROP TABLE IF EXISTS `admins`;
-DROP TABLE IF EXISTS `aros`;
-DROP TABLE IF EXISTS `aros_acos`;
-DROP TABLE IF EXISTS `cms_logs`;
-DROP TABLE IF EXISTS `cms_menus`;
-DROP TABLE IF EXISTS `file_i18n`;
-DROP TABLE IF EXISTS `file_types`;
-DROP TABLE IF EXISTS `files`;
-DROP TABLE IF EXISTS `groups`;
-DROP TABLE IF EXISTS `icons`;
-DROP TABLE IF EXISTS `languages`;
-DROP TABLE IF EXISTS `settings`;
-DROP TABLE IF EXISTS `temp_dirs`;
-DROP TABLE IF EXISTS `thumbnail_types`;
-DROP TABLE IF EXISTS `thumbnails`;
-DROP TABLE IF EXISTS `web_menu_i18n`;
-DROP TABLE IF EXISTS `web_menus`;
+DROP TABLE IF EXISTS `dreamcms`.`acos`;
+DROP TABLE IF EXISTS `dreamcms`.`admins`;
+DROP TABLE IF EXISTS `dreamcms`.`aros`;
+DROP TABLE IF EXISTS `dreamcms`.`aros_acos`;
+DROP TABLE IF EXISTS `dreamcms`.`cms_logs`;
+DROP TABLE IF EXISTS `dreamcms`.`cms_menus`;
+DROP TABLE IF EXISTS `dreamcms`.`file_i18n`;
+DROP TABLE IF EXISTS `dreamcms`.`file_types`;
+DROP TABLE IF EXISTS `dreamcms`.`files`;
+DROP TABLE IF EXISTS `dreamcms`.`groups`;
+DROP TABLE IF EXISTS `dreamcms`.`icons`;
+DROP TABLE IF EXISTS `dreamcms`.`languages`;
+DROP TABLE IF EXISTS `dreamcms`.`page_attachment_thumbnails`;
+DROP TABLE IF EXISTS `dreamcms`.`page_attachment_types`;
+DROP TABLE IF EXISTS `dreamcms`.`page_attachments`;
+DROP TABLE IF EXISTS `dreamcms`.`page_i18n`;
+DROP TABLE IF EXISTS `dreamcms`.`page_types`;
+DROP TABLE IF EXISTS `dreamcms`.`pages`;
+DROP TABLE IF EXISTS `dreamcms`.`settings`;
+DROP TABLE IF EXISTS `dreamcms`.`temp_dirs`;
+DROP TABLE IF EXISTS `dreamcms`.`thumbnail_types`;
+DROP TABLE IF EXISTS `dreamcms`.`thumbnails`;
+DROP TABLE IF EXISTS `dreamcms`.`web_menu_i18n`;
+DROP TABLE IF EXISTS `dreamcms`.`web_menus`;
 
 
-CREATE TABLE `acos` (
+CREATE TABLE `dreamcms`.`acos` (
 	`id` int(10) NOT NULL AUTO_INCREMENT,
 	`parent_id` int(10) DEFAULT NULL,
 	`model` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -31,7 +37,7 @@ CREATE TABLE `acos` (
 	COLLATE=utf8_unicode_ci,
 	ENGINE=InnoDB;
 
-CREATE TABLE `admins` (
+CREATE TABLE `dreamcms`.`admins` (
 	`id` bigint(20) NOT NULL AUTO_INCREMENT,
 	`group_id` bigint(20) NOT NULL,
 	`username` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -52,7 +58,7 @@ CREATE TABLE `admins` (
 	COLLATE=utf8_unicode_ci,
 	ENGINE=InnoDB;
 
-CREATE TABLE `aros` (
+CREATE TABLE `dreamcms`.`aros` (
 	`id` int(10) NOT NULL AUTO_INCREMENT,
 	`parent_id` int(10) DEFAULT NULL,
 	`model` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -63,7 +69,7 @@ CREATE TABLE `aros` (
 	COLLATE=utf8_unicode_ci,
 	ENGINE=InnoDB;
 
-CREATE TABLE `aros_acos` (
+CREATE TABLE `dreamcms`.`aros_acos` (
 	`id` int(10) NOT NULL AUTO_INCREMENT,
 	`aro_id` int(10) NOT NULL,
 	`aco_id` int(10) NOT NULL,
@@ -75,7 +81,7 @@ CREATE TABLE `aros_acos` (
 	COLLATE=utf8_unicode_ci,
 	ENGINE=InnoDB;
 
-CREATE TABLE `cms_logs` (
+CREATE TABLE `dreamcms`.`cms_logs` (
 	`id` bigint(20) NOT NULL AUTO_INCREMENT,
 	`admin` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`controller` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -97,7 +103,7 @@ CREATE TABLE `cms_logs` (
 	COLLATE=utf8_unicode_ci,
 	ENGINE=InnoDB;
 
-CREATE TABLE `cms_menus` (
+CREATE TABLE `dreamcms`.`cms_menus` (
 	`id` bigint(20) NOT NULL AUTO_INCREMENT,
 	`parent_id` bigint(20) NOT NULL,
 	`icon` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -119,7 +125,7 @@ CREATE TABLE `cms_menus` (
 	COLLATE=utf8_unicode_ci,
 	ENGINE=InnoDB;
 
-CREATE TABLE `file_i18n` (
+CREATE TABLE `dreamcms`.`file_i18n` (
 	`id` int(10) NOT NULL AUTO_INCREMENT,
 	`locale` varchar(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`model` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -133,7 +139,7 @@ CREATE TABLE `file_i18n` (
 	COLLATE=utf8_unicode_ci,
 	ENGINE=InnoDB;
 
-CREATE TABLE `file_types` (
+CREATE TABLE `dreamcms`.`file_types` (
 	`id` bigint(20) NOT NULL AUTO_INCREMENT,
 	`parent_id` bigint(20) NOT NULL,
 	`name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -153,7 +159,7 @@ CREATE TABLE `file_types` (
 	COLLATE=utf8_unicode_ci,
 	ENGINE=InnoDB;
 
-CREATE TABLE `files` (
+CREATE TABLE `dreamcms`.`files` (
 	`id` bigint(20) NOT NULL AUTO_INCREMENT,
 	`file_type_id` bigint(20) NOT NULL,
 	`name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -179,7 +185,7 @@ CREATE TABLE `files` (
 	COLLATE=utf8_unicode_ci,
 	ENGINE=InnoDB;
 
-CREATE TABLE `groups` (
+CREATE TABLE `dreamcms`.`groups` (
 	`id` bigint(20) NOT NULL AUTO_INCREMENT,
 	`name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`deleted` tinyint(1) NOT NULL,
@@ -190,7 +196,7 @@ CREATE TABLE `groups` (
 	COLLATE=utf8_unicode_ci,
 	ENGINE=InnoDB;
 
-CREATE TABLE `icons` (
+CREATE TABLE `dreamcms`.`icons` (
 	`id` bigint(20) NOT NULL AUTO_INCREMENT,
 	`name` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`created` datetime DEFAULT NULL,
@@ -198,7 +204,7 @@ CREATE TABLE `icons` (
 	COLLATE=utf8_unicode_ci,
 	ENGINE=InnoDB;
 
-CREATE TABLE `languages` (
+CREATE TABLE `dreamcms`.`languages` (
 	`id` bigint(20) NOT NULL AUTO_INCREMENT,
 	`name` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`locale` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -211,48 +217,7 @@ CREATE TABLE `languages` (
 	COLLATE=utf8_unicode_ci,
 	ENGINE=InnoDB;
 
-CREATE TABLE `settings` (
-	`id` bigint(20) NOT NULL AUTO_INCREMENT,
-	`name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-	`value` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-	`deleted` tinyint(1) NOT NULL,
-	`created` datetime DEFAULT NULL,
-	`modified` datetime DEFAULT NULL,	PRIMARY KEY  (`id`),
-	UNIQUE KEY `name_UNIQUE` (`name`),
-	KEY `deleted` (`deleted`)) 	DEFAULT CHARSET=utf8,
-	COLLATE=utf8_unicode_ci,
-	ENGINE=InnoDB;
-
-CREATE TABLE `temp_dirs` (
-	`id` bigint(20) NOT NULL AUTO_INCREMENT,
-	`path` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-	`lifespan` bigint(20) NOT NULL,
-	`deleted` tinyint(1) NOT NULL,
-	`created` datetime DEFAULT NULL,
-	`modified` datetime DEFAULT NULL,	PRIMARY KEY  (`id`),
-	UNIQUE KEY `path_UNIQUE` (`path`),
-	KEY `path` (`path`),
-	KEY `deleted` (`deleted`)) 	DEFAULT CHARSET=utf8,
-	COLLATE=utf8_unicode_ci,
-	ENGINE=InnoDB;
-
-CREATE TABLE `thumbnail_types` (
-	`id` bigint(20) NOT NULL AUTO_INCREMENT,
-	`name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-	`width` int(10) NOT NULL,
-	`height` int(10) NOT NULL,
-	`method` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-	`deleted` tinyint(1) NOT NULL,
-	`created` datetime DEFAULT NULL,
-	`modified` datetime DEFAULT NULL,	PRIMARY KEY  (`id`),
-	UNIQUE KEY `name_UNIQUE` (`name`),
-	KEY `name` (`name`),
-	KEY `method` (`method`),
-	KEY `deleted` (`deleted`)) 	DEFAULT CHARSET=utf8,
-	COLLATE=utf8_unicode_ci,
-	ENGINE=InnoDB;
-
-CREATE TABLE `thumbnails` (
+CREATE TABLE `dreamcms`.`page_attachment_thumbnails` (
 	`id` bigint(20) NOT NULL AUTO_INCREMENT,
 	`thumbnail_type_id` bigint(20) NOT NULL,
 	`name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -278,7 +243,47 @@ CREATE TABLE `thumbnails` (
 	COLLATE=utf8_unicode_ci,
 	ENGINE=InnoDB;
 
-CREATE TABLE `web_menu_i18n` (
+CREATE TABLE `dreamcms`.`page_attachment_types` (
+	`id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`parent_id` bigint(20) NOT NULL,
+	`name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`lft` bigint(20) NOT NULL,
+	`rght` bigint(20) NOT NULL,
+	`deleted` tinyint(1) NOT NULL,
+	`created` datetime DEFAULT NULL,
+	`modified` datetime DEFAULT NULL,	PRIMARY KEY  (`id`),
+	KEY `parent_id` (`parent_id`),
+	KEY `lft` (`lft`),
+	KEY `rght` (`rght`),
+	KEY `tree` (`lft`, `rght`),
+	KEY `deleted` (`deleted`)) 	DEFAULT CHARSET=utf8,
+	COLLATE=utf8_unicode_ci,
+	ENGINE=InnoDB;
+
+CREATE TABLE `dreamcms`.`page_attachments` (
+	`id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`page_id` bigint(20) NOT NULL,
+	`page_attachment_type_id` bigint(20) NOT NULL,
+	`name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`filename` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`extension` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`size` bigint(20) NOT NULL,
+	`mime_type` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`category` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`width` int(10) NOT NULL,
+	`height` int(10) NOT NULL,
+	`deleted` tinyint(1) NOT NULL,
+	`created` datetime DEFAULT NULL,
+	`modified` datetime DEFAULT NULL,	PRIMARY KEY  (`id`),
+	KEY `page_id` (`page_id`),
+	KEY `page_attachment_type_id` (`page_attachment_type_id`),
+	KEY `category` (`category`),
+	KEY `deleted` (`deleted`)) 	DEFAULT CHARSET=utf8,
+	COLLATE=utf8_unicode_ci,
+	ENGINE=InnoDB;
+
+CREATE TABLE `dreamcms`.`page_i18n` (
 	`id` int(10) NOT NULL AUTO_INCREMENT,
 	`locale` varchar(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`model` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -292,7 +297,131 @@ CREATE TABLE `web_menu_i18n` (
 	COLLATE=utf8_unicode_ci,
 	ENGINE=InnoDB;
 
-CREATE TABLE `web_menus` (
+CREATE TABLE `dreamcms`.`page_types` (
+	`id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`parent_id` bigint(20) NOT NULL,
+	`name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`published` varchar(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`lft` bigint(20) NOT NULL,
+	`rght` bigint(20) NOT NULL,
+	`deleted` tinyint(1) NOT NULL,
+	`created` datetime DEFAULT NULL,
+	`modified` datetime DEFAULT NULL,	PRIMARY KEY  (`id`),
+	KEY `parent_id` (`parent_id`),
+	KEY `published` (`published`),
+	KEY `lft` (`lft`),
+	KEY `rght` (`rght`),
+	KEY `tree` (`lft`, `rght`),
+	KEY `deleted` (`deleted`)) 	DEFAULT CHARSET=utf8,
+	COLLATE=utf8_unicode_ci,
+	ENGINE=InnoDB;
+
+CREATE TABLE `dreamcms`.`pages` (
+	`id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`page_type_id` bigint(20) NOT NULL,
+	`path` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`name` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`description` varchar(512) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`tags` varchar(512) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`content` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`read_count` bigint(20) NOT NULL,
+	`published` varchar(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`published_at` date NOT NULL,
+	`deleted` tinyint(1) NOT NULL,
+	`created` datetime NOT NULL,
+	`modified` datetime NOT NULL,	PRIMARY KEY  (`id`),
+	KEY `page_type_id` (`page_type_id`),
+	KEY `path` (`path`),
+	KEY `tags` (`tags`(255)),
+	KEY `published` (`published`),
+	KEY `published_at` (`published_at`),
+	KEY `deleted` (`deleted`)) 	DEFAULT CHARSET=utf8,
+	COLLATE=utf8_unicode_ci,
+	ENGINE=InnoDB;
+
+CREATE TABLE `dreamcms`.`settings` (
+	`id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`value` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`deleted` tinyint(1) NOT NULL,
+	`created` datetime DEFAULT NULL,
+	`modified` datetime DEFAULT NULL,	PRIMARY KEY  (`id`),
+	UNIQUE KEY `name_UNIQUE` (`name`),
+	KEY `deleted` (`deleted`)) 	DEFAULT CHARSET=utf8,
+	COLLATE=utf8_unicode_ci,
+	ENGINE=InnoDB;
+
+CREATE TABLE `dreamcms`.`temp_dirs` (
+	`id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`path` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`lifespan` bigint(20) NOT NULL,
+	`deleted` tinyint(1) NOT NULL,
+	`created` datetime DEFAULT NULL,
+	`modified` datetime DEFAULT NULL,	PRIMARY KEY  (`id`),
+	UNIQUE KEY `path_UNIQUE` (`path`),
+	KEY `path` (`path`),
+	KEY `deleted` (`deleted`)) 	DEFAULT CHARSET=utf8,
+	COLLATE=utf8_unicode_ci,
+	ENGINE=InnoDB;
+
+CREATE TABLE `dreamcms`.`thumbnail_types` (
+	`id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`width` int(10) NOT NULL,
+	`height` int(10) NOT NULL,
+	`method` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`deleted` tinyint(1) NOT NULL,
+	`created` datetime DEFAULT NULL,
+	`modified` datetime DEFAULT NULL,	PRIMARY KEY  (`id`),
+	UNIQUE KEY `name_UNIQUE` (`name`),
+	KEY `name` (`name`),
+	KEY `method` (`method`),
+	KEY `deleted` (`deleted`)) 	DEFAULT CHARSET=utf8,
+	COLLATE=utf8_unicode_ci,
+	ENGINE=InnoDB;
+
+CREATE TABLE `dreamcms`.`thumbnails` (
+	`id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`thumbnail_type_id` bigint(20) NOT NULL,
+	`name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`model` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`foreign_key` bigint(20) NOT NULL,
+	`field` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`locale` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`filename` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`width` int(10) NOT NULL,
+	`height` int(10) NOT NULL,
+	`created` datetime DEFAULT NULL,
+	`modified` datetime DEFAULT NULL,	PRIMARY KEY  (`id`),
+	KEY `thumbnail_type_id` (`thumbnail_type_id`),
+	KEY `name` (`name`),
+	KEY `model` (`model`),
+	KEY `foreign_key` (`foreign_key`),
+	KEY `field` (`field`),
+	KEY `locale` (`locale`),
+	KEY `common_query1` (`model`, `foreign_key`, `field`, `locale`),
+	KEY `common_query2` (`thumbnail_type_id`, `model`, `foreign_key`, `field`, `locale`),
+	KEY `common_query3` (`model`, `foreign_key`, `field`),
+	KEY `common_query4` (`thumbnail_type_id`, `model`, `foreign_key`, `field`)) 	DEFAULT CHARSET=utf8,
+	COLLATE=utf8_unicode_ci,
+	ENGINE=InnoDB;
+
+CREATE TABLE `dreamcms`.`web_menu_i18n` (
+	`id` int(10) NOT NULL AUTO_INCREMENT,
+	`locale` varchar(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`model` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`foreign_key` int(10) NOT NULL,
+	`field` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`content` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,	PRIMARY KEY  (`id`),
+	KEY `locale` (`locale`),
+	KEY `model` (`model`),
+	KEY `row_id` (`foreign_key`),
+	KEY `field` (`field`)) 	DEFAULT CHARSET=utf8,
+	COLLATE=utf8_unicode_ci,
+	ENGINE=InnoDB;
+
+CREATE TABLE `dreamcms`.`web_menus` (
 	`id` bigint(20) NOT NULL AUTO_INCREMENT,
 	`parent_id` bigint(20) NOT NULL,
 	`name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,

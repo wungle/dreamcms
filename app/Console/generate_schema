@@ -2,7 +2,7 @@
 
 #./cake schema generate --name Dreamcms.Default
 
-./cake schema generate --name Dreamcms.default --models Admin,CmsLog,CmsMenu,FileI18n,FileType,Files,Group,Icon,Language,Setting,TempDir,Thumbnail,ThumbnailType,WebMenu,WebMenuI18n
+./cake schema generate --name Dreamcms.default --models Admin,CmsLog,CmsMenu,FileI18n,FileType,Files,Group,Icon,Language,Page,PageAttachment,PageAttachmentThumbnail,PageAttachmentType,PageI18n,PageType,Setting,TempDir,Thumbnail,ThumbnailType,WebMenu,WebMenuI18n
 
 ./cake schema dump --name Default --write default.sql --plugin Dreamcms
 
