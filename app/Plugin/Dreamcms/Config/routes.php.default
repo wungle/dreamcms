@@ -2,6 +2,8 @@
 
 require_once "core.php";
 
+Router::connect('/dreamcms', array('plugin' => 'Dreamcms', 'controller' => 'Dreamcms', 'action' => 'index'));
+Router::connect('/dreamcms/admin_activities/*', array('plugin' => 'Dreamcms', 'controller' => 'Dreamcms', 'action' => 'admin_activities'));
 Router::connect('/secret/captcha/*', array('plugin' => 'Dreamcms', 'controller' => 'SimpleCaptcha', 'action' => 'secret_captcha'));
 Router::connect('/secret/login/*', array('plugin' => 'Dreamcms', 'controller' => 'Admins', 'action' => 'login'));
 
