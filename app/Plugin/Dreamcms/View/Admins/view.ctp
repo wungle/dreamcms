@@ -3,7 +3,7 @@
 						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home home-icon"></i>
-								<a href="#"><?php echo __('Home'); ?></a>
+								<a href="<?php echo $this->Html->url('/dreamcms'); ?>"><?php echo __('Home'); ?></a>
 							</li>
 							<li class="active"><?php echo __('Admins'); ?></li>
 						</ul><!-- .breadcrumb -->
