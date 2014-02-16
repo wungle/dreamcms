@@ -17,7 +17,7 @@
 
 				<div class="navbar-header pull-right" role="navigation">
 					<ul class="nav ace-nav">
-						<li class="grey">
+						<!--li class="grey">
 							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
 								<i class="icon-tasks"></i>
 								<span class="badge badge-grey">4</span>
@@ -224,7 +224,7 @@
 									</a>
 								</li>
 							</ul>
-						</li>
+						</li-->
 
 						<?php $current_admin = $this->Session->read('Auth.User'); ?> 
 						<li class="light-blue">
