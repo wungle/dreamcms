@@ -1,6 +1,8 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
 App::uses('CacheableModel', 'Dreamcms.Model');
+App::uses('LogableBehavior', 'Dreamcms.Model.Behavior');
+
 /**
  * PageAttachmentType Model
  *
@@ -9,6 +11,16 @@ App::uses('CacheableModel', 'Dreamcms.Model');
  * @property PageAttachment $PageAttachment
  */
 class PageAttachmentType extends CacheableModel {
+
+/**
+ * Act as - Model's behaviors
+ *
+ * @var array
+ */
+	public $actsAs = array(
+		'Tree',
+		'Dreamcms.Logable'
+	);
 
 /**
  * Display field
