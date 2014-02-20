@@ -350,6 +350,7 @@ class DefaultSchema extends CakeSchema {
 		'parent_id' => array('type' => 'biginteger', 'null' => false, 'default' => null, 'key' => 'index'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 64, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'description' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'layout' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 32, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'published' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 3, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'lft' => array('type' => 'biginteger', 'null' => false, 'default' => null, 'key' => 'index'),
 		'rght' => array('type' => 'biginteger', 'null' => false, 'default' => null, 'key' => 'index'),
