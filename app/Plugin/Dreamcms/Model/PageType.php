@@ -1,6 +1,8 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
 App::uses('CacheableModel', 'Dreamcms.Model');
+App::uses('LogableBehavior', 'Dreamcms.Model.Behavior');
+
 /**
  * PageType Model
  *
@@ -9,6 +11,16 @@ App::uses('CacheableModel', 'Dreamcms.Model');
  * @property Page $Page
  */
 class PageType extends CacheableModel {
+
+/**
+ * Act as - Model's behaviors
+ *
+ * @var array
+ */
+	public $actsAs = array(
+		'Tree',
+		'Dreamcms.Logable'
+	);
 
 /**
  * Display field
@@ -69,6 +81,32 @@ class PageType extends CacheableModel {
 			'notEmpty' => array(
 				'rule' => array('notEmpty'),
 				'message' => 'Description can not be empty.',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'layout' => array(
+			'minLength' => array(
+				'rule' => array('minLength', 2),
+				'message' => 'Layout has to be at least 2 characters.',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+			'maxLength' => array(
+				'rule' => array('maxLength', 32),
+				'message' => 'Layout can not be exceeded 32 characters.',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+			'notEmpty' => array(
+				'rule' => array('notEmpty'),
+				'message' => 'Layout can not be empty.',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
