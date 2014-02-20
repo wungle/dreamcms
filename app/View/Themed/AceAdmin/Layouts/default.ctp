@@ -213,6 +213,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 		<!-- inline scripts related to this page -->
 		<?php echo $this->fetch('datafinder_init'); ?> 
 		<?php echo $this->fetch('record_history_init'); ?> 
+		<?php echo $this->fetch('tinymce_init'); ?> 
 		<?php echo $this->fetch('page_inline_scripts'); ?> 
 
 	</body>
