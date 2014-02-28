@@ -86,7 +86,9 @@ class FileUtility
  */
 	public static function getFileExtension($filename) {
 		$pathInfo = pathinfo(basename($filename));
-		$result = (!empty($pathInfo) && !empty($pathInfo['extension'])) ? $pathInfo['extension'] : '';
+		$result = (!empty($pathInfo) && !empty($pathInfo['extension'])) ? strtolower($pathInfo['extension']) : '';
+
+		$filename = strtolower($filename);
 
 		if (substr($filename, -7) == '.tar.gz')
 			$result = 'tar.gz';
@@ -176,6 +178,55 @@ class FileUtility
 		@unlink($tmp);
 
 		return true;
+	}
+
+	public static function getTinymceTemplateList()
+	{
+		$dir = WWW_ROOT . 'files/templates';
+
+		if (!is_dir($dir))
+			return array();
+
+		$handle = opendir($dir);
+		if ($handle)
+		{
+			while ( ($file = readdir($handle)) !== false )
+			{
+				if ( ($file != ".") && ($file != "..") && is_file($dir . DIRECTORY_SEPARATOR . $file) && (FileUtility::getFileExtension($file) == "html") )
+				{
+					$templates[$file] = array(
+						"name" => FileUtility::generateTemplateName($file),
+						"url" => "/files/templates/" . $file,
+						"description" => FileUtility::generateTemplateName($file)
+					);
+				}
+			}
+		}
+		closedir($handle);
+		
+		ksort($templates);
+		sort($templates);
+
+		//print_r($templates); die();
+		return $templates;
+	}
+
+	public static function generateTemplateName($name)
+	{
+		$name = str_replace("-", " ", $name);
+		$name = str_replace("_", " ", $name);
+		$name = str_replace(".html", "", $name);
+		
+		$after_space = true;
+		$result = "";
+		
+		for ($i=0,$c=strlen($name); $i<$c; $i++)
+		{
+			$result .= ($after_space) ? strtoupper($name{$i}) : $name{$i};
+			$after_space = ($name{$i} == " ") ? true : false;
+		}
+		
+		return $result;
 	}
 }
 
