@@ -19,6 +19,8 @@ DROP TABLE IF EXISTS `page_i18n`;
 DROP TABLE IF EXISTS `page_types`;
 DROP TABLE IF EXISTS `pages`;
 DROP TABLE IF EXISTS `settings`;
+DROP TABLE IF EXISTS `tagged`;
+DROP TABLE IF EXISTS `tags`;
 DROP TABLE IF EXISTS `temp_dirs`;
 DROP TABLE IF EXISTS `thumbnail_types`;
 DROP TABLE IF EXISTS `thumbnails`;
@@ -328,7 +330,7 @@ CREATE TABLE `pages` (
 	`content` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`read_count` bigint(20) NOT NULL,
 	`published` varchar(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-	`published_at` date NOT NULL,
+	`published_at` datetime NOT NULL,
 	`deleted` tinyint(1) NOT NULL,
 	`created` datetime NOT NULL,
 	`modified` datetime NOT NULL,	PRIMARY KEY  (`id`),
@@ -350,6 +352,30 @@ CREATE TABLE `settings` (
 	`modified` datetime DEFAULT NULL,	PRIMARY KEY  (`id`),
 	UNIQUE KEY `name_UNIQUE` (`name`),
 	KEY `deleted` (`deleted`)) 	DEFAULT CHARSET=utf8,
+	COLLATE=utf8_unicode_ci,
+	ENGINE=InnoDB;
+
+CREATE TABLE `tagged` (
+	`id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`tag_id` bigint(20) DEFAULT NULL,
+	`model` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+	`model_id` bigint(20) DEFAULT NULL,	PRIMARY KEY  (`id`),
+	KEY `tag_id` (`tag_id`),
+	KEY `model` (`model`),
+	KEY `model_id` (`model_id`),
+	KEY `common_query1` (`tag_id`, `model`, `model_id`),
+	KEY `common_query2` (`model`, `model_id`),
+	KEY `common_query3` (`tag_id`, `model`)) 	DEFAULT CHARSET=utf8,
+	COLLATE=utf8_unicode_ci,
+	ENGINE=InnoDB;
+
+CREATE TABLE `tags` (
+	`id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`name` varchar(160) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+	`slug` varchar(160) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+	`count` bigint(20) DEFAULT 0 NOT NULL,
+	`created` datetime DEFAULT NULL,
+	`modified` datetime DEFAULT NULL,	PRIMARY KEY  (`id`)) 	DEFAULT CHARSET=utf8,
 	COLLATE=utf8_unicode_ci,
 	ENGINE=InnoDB;
 

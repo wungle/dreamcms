@@ -379,7 +379,7 @@ class DefaultSchema extends CakeSchema {
 		'content' => array('type' => 'text', 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'read_count' => array('type' => 'biginteger', 'null' => false, 'default' => null),
 		'published' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 3, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
-		'published_at' => array('type' => 'date', 'null' => false, 'default' => null, 'key' => 'index'),
+		'published_at' => array('type' => 'datetime', 'null' => false, 'default' => null, 'key' => 'index'),
 		'deleted' => array('type' => 'boolean', 'null' => false, 'default' => null, 'key' => 'index'),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
@@ -406,6 +406,36 @@ class DefaultSchema extends CakeSchema {
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
 			'name_UNIQUE' => array('column' => 'name', 'unique' => 1),
 			'deleted' => array('column' => 'deleted', 'unique' => 0)
+		),
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'InnoDB')
+	);
+
+	public $tagged = array(
+		'id' => array('type' => 'biginteger', 'null' => false, 'default' => null, 'key' => 'primary'),
+		'tag_id' => array('type' => 'biginteger', 'null' => true, 'default' => null, 'key' => 'index'),
+		'model' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 100, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'model_id' => array('type' => 'biginteger', 'null' => true, 'default' => null, 'key' => 'index'),
+		'indexes' => array(
+			'PRIMARY' => array('column' => 'id', 'unique' => 1),
+			'tag_id' => array('column' => 'tag_id', 'unique' => 0),
+			'model' => array('column' => 'model', 'unique' => 0),
+			'model_id' => array('column' => 'model_id', 'unique' => 0),
+			'common_query1' => array('column' => array('tag_id', 'model', 'model_id'), 'unique' => 0),
+			'common_query2' => array('column' => array('model', 'model_id'), 'unique' => 0),
+			'common_query3' => array('column' => array('tag_id', 'model'), 'unique' => 0)
+		),
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'InnoDB')
+	);
+
+	public $tags = array(
+		'id' => array('type' => 'biginteger', 'null' => false, 'default' => null, 'key' => 'primary'),
+		'name' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 160, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'slug' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 160, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'count' => array('type' => 'biginteger', 'null' => false, 'default' => '0'),
+		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'indexes' => array(
+			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'InnoDB')
 	);

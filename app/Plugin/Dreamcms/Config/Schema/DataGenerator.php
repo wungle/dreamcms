@@ -511,7 +511,7 @@ class DataGenerator
 					'Setting' => Set::merge(
 						array(
 							'name' => 'web_css',
-							'value' => 'default.css'
+							'value' => '/css/default.css'
 						),
 						$this->getDefaultValues()
 					)
