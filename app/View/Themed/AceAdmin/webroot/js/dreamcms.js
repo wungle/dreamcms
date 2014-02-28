@@ -1,3 +1,4 @@
+var PageAttachmentCounter = 900;
 var DreamCMS = {
 	captchaReloadCount: 0,
 	loadTraceLogUrl: '',
@@ -112,6 +113,78 @@ var DreamCMS = {
 				console.log(e);
 			}
 		});
+	},
+
+	initPageAttachment: function (element) {
+		$('#' + element).change(function(){
+			var currentElement = this;
+
+			$.get('/dreamcms/pages/get_attachment_description/' + $(currentElement).val(), function(data) {
+				//data = $.trim(data);
+				$(currentElement).next('.pageAttachmentDescription').empty().html(data);
+			});
+		});
+
+		$.get('/dreamcms/pages/get_attachment_description/' + $('#' + element).val(), function(data) {
+			data = $.trim(data);
+			$('#' + element).next('.pageAttachmentDescription').empty().html(data);
+		});
+	},
+
+	addPageAttachment: function() {
+		var element = '';
+		element = element + '<fieldset class="well dreamcms-well">';
+		element = element + '<div class="form-group">';
+		element = element + '<div class="input select"><label for="PagePageAttachmentTypeId">Page Attachment Type</label>';
+		element = element + '<select name="data[PageAttachment]['+ PageAttachmentCounter +'][page_attachment_type_id]" class="form-control" id="PageAttachmentTypeId-'+ PageAttachmentCounter +'">';
+
+		for (var i=0; i<pageAttachmentTypes.count; i++)
+			element = element + '<option value="'+ pageAttachmentTypes.data[i].id +'">'+ pageAttachmentTypes.data[i].name +'</option>';
+
+		element = element + '</select>';
+		element = element + '<div class="pageAttachmentDescription"></div>';
+		element = element + '</div></div><!-- .form-group -->';
+		element = element + '<div class="form-group">';
+		element = element + '<div class="input text required"><label for="PageName">Name</label>';
+		element = element + '<input name="data[PageAttachment]['+ PageAttachmentCounter +'][name]" class="form-control" maxlength="128" type="text" id="PageAttachmentName-'+ PageAttachmentCounter +'" required="required">';
+		element = element + '</div></div><!-- .form-group -->';
+		element = element + '<div class="form-group">';
+		element = element + '<div><label for="PageFilename">Filename</label></div>';
+		element = element + '<div><div class="input text">';
+		element = element + '<input name="data[PageAttachment]['+ PageAttachmentCounter +'][filename]" class="col-sm-8" id="PageAttachmentFilename-'+ PageAttachmentCounter +'" type="text"></div> &nbsp; ';
+		element = element + '<a href="javascript:DreamCMS.browsePageAttachment(\'PageAttachmentFilename-'+ PageAttachmentCounter +'\');" class="btn btn-sm btn-success"> Browse</a>';
+		element = element + '</div></div><!-- .form-group --></fieldset>';
+
+		$('#PageAttachmentsContainer').append(element);
+
+		DreamCMS.initPageAttachment('PageAttachmentTypeId-' + PageAttachmentCounter);
+
+		PageAttachmentCounter++;
+	},
+
+	browsePageAttachment: function(input_id) {
+		$.colorbox({
+			transition: 'elastic',
+			href: '/js/vendors/simogeo_filemanager/index.html?field_name=' + input_id,
+			innerWidth: 900,
+			innerHeight: 400,
+			iframe: true,
+			close: 'x'
+		});
+	},
+
+	deletePageAttachment: function(page_id, attachment_id) {
+		if (confirm("Do you really want to delete this attachment?")) {
+			$.get('/dreamcms/pages/delete_attachment/' + page_id + '/' + attachment_id, function(data) {
+				//console.log(data);
+				var element = '#currentPageAttachment-' + attachment_id;
+				$(element).remove();
+
+				return false;
+			});
+		}
+
+		return false;
 	}
 };
 

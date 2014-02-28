@@ -1,6 +1,9 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
 App::uses('CacheableModel', 'Dreamcms.Model');
+App::uses('TaggableBehavior', 'Dreamcms.Model.Behavior');
+App::uses('LogableBehavior', 'Dreamcms.Model.Behavior');
+
 /**
  * Page Model
  *
@@ -10,11 +13,40 @@ App::uses('CacheableModel', 'Dreamcms.Model');
 class Page extends CacheableModel {
 
 /**
+ * Act as - Model's behaviors
+ *
+ * @var array
+ */
+	public $actsAs = array(
+		'Dreamcms.Taggable',
+		'Dreamcms.Logable',
+		'Translate' => array(
+			'name' => 'pageNameTranslation',
+			'description' => 'pageDescriptionTranslation',
+			'content' => 'pageContentTranslation'
+		)
+	);
+
+/**
  * Display field
  *
  * @var string
  */
 	public $displayField = 'name';
+
+/**
+ * Translate model
+ *
+ * @var string
+ */
+	public $translateModel = "Dreamcms.PageI18n";
+
+/**
+ * Translate table
+ *
+ * @var string
+ */
+	public $translateTable = "page_i18n";
 
 /**
  * Validation rules
@@ -34,6 +66,14 @@ class Page extends CacheableModel {
 			'maxLength' => array(
 				'rule' => array('maxLength', 255),
 				'message' => 'Path can not be exceeded 255 characters.',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+			'isUnique' => array(
+				'rule' => array('isUnique'),
+				'message' => 'Path has already been taken.',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -216,7 +256,7 @@ class Page extends CacheableModel {
  */
 	public $hasMany = array(
 		'PageAttachment' => array(
-			'className' => 'PageAttachment',
+			'className' => 'Dreamcms.PageAttachment',
 			'foreignKey' => 'page_id',
 			'dependent' => false,
 			'conditions' => array('PageAttachment.deleted' => '0'),
@@ -229,5 +269,10 @@ class Page extends CacheableModel {
 			'counterQuery' => ''
 		)
 	);
+
+	public function setLanguage($locale)
+	{
+		$this->locale = $locale;
+	}
 
 }

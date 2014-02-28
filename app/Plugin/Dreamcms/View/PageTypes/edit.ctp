@@ -38,7 +38,7 @@
 						<?php echo $this->Form->input('name', array('class' => 'form-control')); ?>
 					</div><!-- .form-group -->
 					<div class="form-group">
-						<?php echo $this->Form->input('description', array('class' => 'form-control')); ?>
+						<?php echo $this->Form->input('description', array('type' => 'textarea', 'class' => 'form-control')); ?>
 					</div><!-- .form-group -->
 					<div class="form-group">
 						<?php echo $this->Form->input('layout', array('class' => 'form-control')); ?>

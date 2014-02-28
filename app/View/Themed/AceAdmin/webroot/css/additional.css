@@ -28,3 +28,16 @@
 	padding: 1em;
 	margin-bottom: .8em;
 }
+
+div.mce-fullscreen {
+	z-index: 1100 !important;
+}
+
+.dreamcms-well {
+	border: 1px solid rgb(197, 208, 220) !important;
+}
+
+.dreamcms-page-attachment-thumbnail {
+	max-width: 200px;
+	height: auto;
+}

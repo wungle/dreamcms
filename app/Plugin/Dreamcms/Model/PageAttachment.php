@@ -1,6 +1,9 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
 App::uses('CacheableModel', 'Dreamcms.Model');
+App::uses('ThumbnailableBehavior', 'Dreamcms.Model.Behavior');
+App::uses("FileUtility", 'Dreamcms.Lib');
+
 /**
  * PageAttachment Model
  *
@@ -10,11 +13,45 @@ App::uses('CacheableModel', 'Dreamcms.Model');
 class PageAttachment extends CacheableModel {
 
 /**
+ * Act as
+ *
+ * @var array
+ */
+	public $actsAs = array(
+		'Dreamcms.Logable',
+		'Dreamcms.Thumbnailable' => array(
+			/**
+				savePath have to be inside of the WWW_ROOT directory
+				ex : /files/thumbnails/
+				the exact savePath would be WWW_ROOT/files/thumbnails/
+			**/
+			//'savePath' => 'path-to-save-the-uploaded-files',
+			'fields' => array(
+				'filename' => 'Thumbnails'
+			)
+		),
+	);
+
+/**
  * Display field
  *
  * @var string
  */
 	public $displayField = 'name';
+
+/**
+ * Thumbnail model
+ *
+ * @var string
+ */
+	public $thumbnailModel = "Dreamcms.PageAttachmentThumbnail";
+
+/**
+ * Thumbnail table
+ *
+ * @var string
+ */
+	public $thumbnailTable = "page_attachment_thumbnails";
 
 /**
  * Validation rules
@@ -119,6 +156,7 @@ class PageAttachment extends CacheableModel {
  * @var array
  */
 	public $belongsTo = array(
+		/*
 		'Page' => array(
 			'className' => 'Page',
 			'foreignKey' => 'page_id',
@@ -126,6 +164,7 @@ class PageAttachment extends CacheableModel {
 			'fields' => '',
 			'order' => ''
 		),
+		*/
 		'PageAttachmentType' => array(
 			'className' => 'PageAttachmentType',
 			'foreignKey' => 'page_attachment_type_id',
@@ -134,4 +173,42 @@ class PageAttachment extends CacheableModel {
 			'order' => ''
 		)
 	);
+
+	public function beforeSave($options = array())
+	{
+		$data = $this->data;
+
+		$data['PageAttachment']['extension'] = FileUtility::getFileExtension($data['PageAttachment']['filename']);
+		$data['PageAttachment']['size'] = filesize(WWW_ROOT . FileUtility::stripBeginingSlashes($data['PageAttachment']['filename']));
+		$data['PageAttachment']['category'] = $this->getFileCategory($data['PageAttachment']['extension']);
+
+		if ($data['PageAttachment']['category'] == 'Image')
+		{
+			$info = @getimagesize(WWW_ROOT . FileUtility::stripBeginingSlashes($data['PageAttachment']['filename']));
+
+			if ($info)
+			{
+				$data['PageAttachment']['width'] = $info[0];
+				$data['PageAttachment']['height'] = $info[1];
+			}
+		}
+
+		$this->data = $data;
+	}
+
+	protected function getFileCategory($extension)
+	{
+		$categories = FileUtility::getFileCategories();
+
+		foreach($categories as $category => $extensions)
+			if (in_array($extension, $extensions))
+				return $category;
+
+		return "Unknown";
+	}
+
+	public function bindThumbnails()
+	{
+		$this->bindModel(array('hasMany' => array('Thumbnails' => array('className' => 'PageAttachmentThumbnail', 'foreignKey' => 'foreign_key', 'conditions' => array('Thumbnails.model' => 'PageAttachment')))));
+	}
 }

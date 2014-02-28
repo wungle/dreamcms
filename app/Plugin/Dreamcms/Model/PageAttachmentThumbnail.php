@@ -1,6 +1,7 @@
 <?php
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
 App::uses('CacheableModel', 'Dreamcms.Model');
+
 /**
  * PageAttachmentThumbnail Model
  *
