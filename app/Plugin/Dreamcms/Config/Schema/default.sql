@@ -328,6 +328,7 @@ CREATE TABLE `pages` (
 	`description` varchar(512) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`tags` varchar(512) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`content` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+	`content_no_html` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`read_count` bigint(20) NOT NULL,
 	`published` varchar(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`published_at` datetime NOT NULL,

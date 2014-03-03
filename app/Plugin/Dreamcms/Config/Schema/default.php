@@ -377,6 +377,7 @@ class DefaultSchema extends CakeSchema {
 		'description' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 512, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'tags' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 512, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'content' => array('type' => 'text', 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'content_no_html' => array('type' => 'text', 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'read_count' => array('type' => 'biginteger', 'null' => false, 'default' => null),
 		'published' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 3, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'published_at' => array('type' => 'datetime', 'null' => false, 'default' => null, 'key' => 'index'),

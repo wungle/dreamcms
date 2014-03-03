@@ -24,6 +24,7 @@ class Page extends CacheableModel {
 			'name' => 'pageNameTranslation',
 			'description' => 'pageDescriptionTranslation',
 			'content' => 'pageContentTranslation'
+			'content_no_html' => 'pageContentNoHtmlTranslation'
 		)
 	);
 
@@ -273,6 +274,18 @@ class Page extends CacheableModel {
 	public function setLanguage($locale)
 	{
 		$this->locale = $locale;
+	}
+
+	public function beforeSave($options = array())
+	{
+		if (isset($this->data['Page']['content']) && !empty($this->data['Page']['content']))
+		{
+			$data = $this->data;
+			$data['Page']['content_no_html'] = strip_tags($this->data['Page']['content']);
+			$this->data = $data;
+		}
+
+		parent::beforeSave($options);
 	}
 
 }
