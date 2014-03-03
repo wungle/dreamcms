@@ -23,7 +23,7 @@ class Page extends CacheableModel {
 		'Translate' => array(
 			'name' => 'pageNameTranslation',
 			'description' => 'pageDescriptionTranslation',
-			'content' => 'pageContentTranslation'
+			'content' => 'pageContentTranslation',
 			'content_no_html' => 'pageContentNoHtmlTranslation'
 		)
 	);
