@@ -71,8 +71,8 @@ class PageType extends CacheableModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 			'maxLength' => array(
-				'rule' => array('maxLength', 64),
-				'message' => 'Description can not be exceeded 64 characters.',
+				'rule' => array('maxLength', 255),
+				'message' => 'Description can not be exceeded 255 characters.',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
