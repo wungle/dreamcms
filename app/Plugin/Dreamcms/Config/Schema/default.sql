@@ -460,7 +460,7 @@ CREATE TABLE `web_menus` (
 	`rght` bigint(20) NOT NULL,
 	`created` datetime DEFAULT NULL,
 	`modified` datetime DEFAULT NULL,	PRIMARY KEY  (`id`),
-	UNIQUE KEY `url_UNIQUE` (`url`),
+	KEY `url` (`url`),
 	KEY `parent_id` (`parent_id`),
 	KEY `published` (`published`),
 	KEY `deleted` (`deleted`),
