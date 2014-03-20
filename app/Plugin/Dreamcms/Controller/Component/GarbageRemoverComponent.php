@@ -39,8 +39,10 @@ class GarbageRemoverComponent extends Component
 
 	public function cleanGarbage()
 	{
-		foreach ($this->tempDirs as $dir)
-			$this->doClean($dir);
+		if ($this->tempDirs) {
+			foreach ($this->tempDirs as $dir)
+				$this->doClean($dir);
+		}
 	}
 
 	private function doClean($dir)

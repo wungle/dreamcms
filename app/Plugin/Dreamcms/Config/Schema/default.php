@@ -132,7 +132,7 @@ class DefaultSchema extends CakeSchema {
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
-			'url_UNIQUE' => array('column' => 'url', 'unique' => 1),
+			'url' => array('column' => 'url', 'unique' => 0),
 			'parent_id' => array('column' => 'parent_id', 'unique' => 0),
 			'deleted' => array('column' => 'deleted', 'unique' => 0),
 			'lft' => array('column' => 'lft', 'unique' => 0),

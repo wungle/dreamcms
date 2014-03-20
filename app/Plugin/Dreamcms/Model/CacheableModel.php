@@ -8,6 +8,20 @@ class CacheableModel extends DreamcmsAppModel
 	protected $cacheConfigName;
 	protected $cacheGroups;
 
+	public function unbindModel($params, $reset = true) {
+		$this->setupCache();
+
+		return parent::unbindModel($params, $reset);
+	}
+
+	public function bindModel($params, $reset = true) {
+		$result = parent::bindModel($params, $reset);
+
+		$this->setupCache();
+
+		return $result;
+	}
+
 	public function afterSave($created, $options = array())
 	{
 		$this->destroyCache();
@@ -23,7 +37,7 @@ class CacheableModel extends DreamcmsAppModel
 	protected function _readDataSource($type, $query)
 	{
 		if (!$this->cacheConfigName)
-				$this->setupCache();
+			$this->setupCache();
 
 		$cacheKey = $type . '_' . sha1(json_encode($query));
 		$cache = Cache::read($cacheKey, $this->cacheConfigName);
@@ -52,19 +66,21 @@ class CacheableModel extends DreamcmsAppModel
 		if (file_exists(CACHE . DS . 'persistent' . DS . 'myapp_cake_core_file_map'))
 			@chmod(CACHE . DS . 'persistent' . DS . 'myapp_cake_core_file_map', 0666);
 
-		$this->cacheConfigName = Inflector::tableize($this->alias);
-		$duration = (isset($this->cacheDuration)) ? $this->cacheDuration : '+30 days';
+		if (!$this->cacheConfigName)
+			$this->cacheConfigName = Inflector::underscore($this->alias);
 
-		$this->cacheGroups = array($this->alias);
-		if (!Configure::read('App.SchemaCreate'))
-			Cache::config($this->cacheConfigName, array(
-				'engine' => 'File',
-				'duration' => $duration,
-				'probability' => 100,
-				'path' => CACHE . 'cacheable_models' . DS . $this->cacheConfigName . DS,
-				//'groups' => $this->cacheGroups,
-				'prefix' => null,
-			));
+		if (!$this->cacheDuration)
+			$this->cacheDuration = '+360 days';
+
+		if (!$this->cacheGroups || !is_array($this->cacheGroups))
+			$this->cacheGroups = array();
+
+		if (!in_array($this->cacheConfigName, $this->cacheGroups)) {
+			$this->cacheGroups[] = $this->cacheConfigName;
+
+			if (!Configure::read('App.SchemaCreate'))
+				$this->createCacheConfig($this->cacheConfigName);
+		}
 
 		foreach (array('hasOne', 'hasMany', 'belongsTo', 'hasAndBelongsToMany') as $type)
 		{
@@ -75,18 +91,14 @@ class CacheableModel extends DreamcmsAppModel
 					{
 						while (strpos($association['className'], '.') !== false)
 							$association['className'] = substr($association['className'], strpos($association['className'], '.')+1);
+
+						$association['className'] = Inflector::underscore($association['className']);
+
 						if (!in_array($association['className'], $this->cacheGroups))
 						{
 							$this->cacheGroups[] = $association['className'];
 							if (!Configure::read('App.SchemaCreate'))
-								Cache::config(Inflector::tableize($association['className']), array(
-									'engine' => 'File',
-									'duration' => $duration,
-									'probability' => 100,
-									'path' => CACHE . 'cacheable_models' . DS . Inflector::tableize($association['className']) . DS,
-									//'groups' => $this->cacheGroups,
-									'prefix' => null,
-								));
+								$this->createCacheConfig($association['className']);
 						}
 					}
 				}
@@ -101,8 +113,8 @@ class CacheableModel extends DreamcmsAppModel
 		if (!Configure::read('App.SchemaCreate'))
 			foreach ($this->cacheGroups as $group)
 			{
-				Cache::clear(false, Inflector::tableize($group));
-				$this->forceClearDirectory(CACHE . 'cacheable_models' . DS . Inflector::tableize($group) . DS);
+				Cache::clear(false, $group);
+				$this->forceClearDirectory(CACHE . 'cacheable_models' . DS . $group . DS);
 			}
 	}
 
@@ -128,6 +140,41 @@ class CacheableModel extends DreamcmsAppModel
 			}
 			closedir($handle);
 		}
+	}
+
+/**
+ * createCacheConfig method
+ * 
+ * Recommendation :
+ * use file engine for development environment
+ * use memcached engine for staging / production environment
+ *
+ * @param string $configName
+ * @return void
+ */
+	protected function createCacheConfig($configName) {
+		Cache::config($configName, array(
+			'engine' => 'File',
+			'duration' => $this->cacheDuration,
+			'probability' => 100,
+			'path' => CACHE . 'cacheable_models' . DS . $configName . DS,
+			//'groups' => $this->cacheGroups,
+			'prefix' => null,
+		));
+
+		/*
+		Cache::config($configName, array(
+			'engine' => 'Memcache',
+			'duration' => $this->cacheDuration,
+			'probability' => 100,
+	 		'prefix' => Inflector::slug(strtolower(Configure::read('DreamCMS.web_name')), '_') . '_',
+	 		'servers' => array(
+	 			'127.0.0.1:11211'
+	 		),
+	 		'persistent' => true,
+	 		'compress' => false,
+		));
+		*/
 	}
 }
 

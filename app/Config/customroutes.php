@@ -37,7 +37,8 @@ class DreamcmsCustomRoutes
 
 		if ($page)
 		{
-			Router::connect($here, array('controller' => 'pages', 'action' => 'display', $page['Page']['id']));
+			//Router::connect($here, array('controller' => 'pages', 'action' => 'display', $page['DreamcmsPage']['id']));
+			Router::connect($here, array('controller' => 'my_test', 'action' => 'aduh', $page['DreamcmsPage']['id']));
 		}
 	}
 
