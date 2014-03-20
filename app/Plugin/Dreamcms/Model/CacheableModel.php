@@ -2,6 +2,7 @@
 App::uses('Cache', 'Cache');
 App::uses('CacheEngine', 'Cache');
 App::uses('DreamcmsAppModel', 'Dreamcms.Model');
+App::uses("FileUtility", 'Dreamcms.Lib');
 
 class CacheableModel extends DreamcmsAppModel
 {
@@ -153,6 +154,8 @@ class CacheableModel extends DreamcmsAppModel
  * @return void
  */
 	protected function createCacheConfig($configName) {
+		FileUtility::createDirectory('cacheable_models' . DS . $configName, CACHE);
+
 		Cache::config($configName, array(
 			'engine' => 'File',
 			'duration' => $this->cacheDuration,
