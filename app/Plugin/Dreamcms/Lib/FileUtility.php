@@ -59,9 +59,9 @@ class FileUtility
  * @param string $path
  * @return boolean
  */
-	public static function createDirectory($path) {
+	public static function createDirectory($path, $start = null) {
 		$tmp = explode("/", $path);
-		$test = WWW_ROOT;
+		$test = (!empty($start)) ? $start : WWW_ROOT;
 		foreach ($tmp as $temp)
 		{
 			if (strlen(trim($temp)) == 0)
