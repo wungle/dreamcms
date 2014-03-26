@@ -99,7 +99,7 @@ class ThumbnailableBehavior extends ModelBehavior
  * @return array Modified query
  */
 	public function beforeFind(Model $Model, $query) {
-		$locale = (isset($Model->locale) && !empty($Model->locale)) ? $Model->locale : 'en-US';
+		$locale = (isset($Model->locale) && !empty($Model->locale)) ? $Model->locale : Configure::read('DreamCMS.default_language');
 
 		if (!isset($this->config[$Model->alias]['locale']) || ($this->config[$Model->alias]['locale'] != $locale))
 		{
@@ -184,7 +184,7 @@ class ThumbnailableBehavior extends ModelBehavior
 		$data = $this->runtimeData[$Model->alias];
 
 		$record_id = isset($data[$Model->alias][$Model->primaryKey]) ? $data[$Model->alias][$Model->primaryKey] : $Model->id;
-		$locale = (isset($Model->locale) && !empty($Model->locale)) ? $Model->locale : 'en-US';
+		$locale = (isset($Model->locale) && !empty($Model->locale)) ? $Model->locale : Configure::read('DreamCMS.default_language');
 		$RuntimeModel = $this->thumbnailModel($Model);
 
 		if (!$record_id)
@@ -331,7 +331,7 @@ class ThumbnailableBehavior extends ModelBehavior
  * @return boolean
  */
 	public function beforeDelete(Model $Model, $cascade = true) {
-		$locale = (isset($Model->locale) && !empty($Model->locale)) ? $Model->locale : 'en-US';
+		$locale = (isset($Model->locale) && !empty($Model->locale)) ? $Model->locale : Configure::read('DreamCMS.default_language');
 		$RuntimeModel = $this->thumbnailModel($Model);
 
 		if (isset($this->config[$Model->alias]['fields']))
@@ -401,7 +401,7 @@ class ThumbnailableBehavior extends ModelBehavior
 	protected function bindThumbnail(Model $Model, $fields)
 	{
 		//$className = (isset($Model->thumbnailModel) && !empty($Model->thumbnailModel)) ? $Model->thumbnailModel : 'Dreamcms.Thumbnail';
-		$locale = (isset($Model->locale) && !empty($Model->locale)) ? $Model->locale : 'en-US';
+		$locale = (isset($Model->locale) && !empty($Model->locale)) ? $Model->locale : Configure::read('DreamCMS.default_language');
 
 		$RuntimeModel = $this->thumbnailModel($Model);
 		$associations = array();
