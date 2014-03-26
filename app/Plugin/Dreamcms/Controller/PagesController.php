@@ -155,10 +155,24 @@ class PagesController extends DreamcmsAppController {
 			$this->PageAttachmentType->unbindModel(array('hasMany' => array('PageAttachment')));
 			$this->PageAttachment->unbindModel(array('belongsTo' => array('Page')));
 			$this->Page->PageAttachment->bindThumbnails();
+			$this->Page->PageType->unbindModel(array('hasMany' => array('Page')));
 
-			$options = array('conditions' => Set::merge(array('Page.' . $this->Page->primaryKey => $id), $this->Routeable->getAssociatedFindConditions('Page.page_type_id')), 'recursive' => 3);
+			$options = array(
+				'fields' => array(
+					'Page.id', 'Page.page_type_id', 'Page.path', 'Page.name', 'Page.description', 'Page.tags', 'Page.content', 
+					'Page.read_count', 'Page.published', 'Page.published_at', 'Page.deleted', 'Page.created', 'Page.modified'
+				),
+				'conditions' => array('Page.' . $this->Page->primaryKey => $id), 
+				'recursive' => 2
+			);
+
 			$this->request->data = $this->Translator->findFirst($this->Page, $options);
 			if (!$this->request->data)
+				throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
+
+			$rootPageTypes = $this->Routeable->getAssociatedFindConditions('Page.page_type_id');
+			$rootPageTypes = $rootPageTypes['Page.page_type_id'];
+			if ((count($rootPageTypes) > 0) && !in_array($this->request->data['Page']['page_type_id'], $rootPageTypes))
 				throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 		}
 	}
