@@ -52,7 +52,7 @@ class AppController extends Controller {
 			Configure::write('debug', 0);
 		
 		// Multi languages feature
-		$locale = $this->Session->read('Config.language') ? $this->Session->read('Config.language') : 'en-US';
+		$locale = $this->Session->read('Config.language') ? $this->Session->read('Config.language') : Configure::read('DreamCMS.default_language');
 		Configure::write('Config.language', $locale);
 
 		$this->loadModel('Dreamcms.Language');
