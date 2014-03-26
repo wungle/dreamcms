@@ -31,7 +31,7 @@ App::uses('Model', 'Model');
  */
 class AppModel extends Model
 {
-	public $locale = "en-US";
+	public $locale = 'en-US';
 
 	protected $modelSchema;
 	
