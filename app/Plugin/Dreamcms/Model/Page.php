@@ -278,14 +278,29 @@ class Page extends CacheableModel {
 
 	public function beforeSave($options = array())
 	{
-		if (isset($this->data['Page']['content']) && !empty($this->data['Page']['content']))
-		{
-			$data = $this->data;
-			$data['Page']['content_no_html'] = strip_tags($this->data['Page']['content']);
-			$this->data = $data;
-		}
+		$this->generateContentNoHtml();
+		$this->fixTinyMceUrl();
 
 		parent::beforeSave($options);
+	}
+
+	protected function generateContentNoHtml() {
+		if (isset($this->data[$this->alias]['content']) && !empty($this->data[$this->alias]['content']))
+		{
+			$data = $this->data;
+			$data[$this->alias]['content_no_html'] = strip_tags($this->data[$this->alias]['content']);
+			$this->data = $data;
+		}
+	}
+
+	protected function fixTinyMceUrl() {
+		if (isset($this->data[$this->alias]['content']) && !empty($this->data[$this->alias]['content']))
+		{
+			$data = $this->data;
+			$data[$this->alias]['content'] = preg_replace('/(\.\.\/)+app\/webroot\//', '/', $data[$this->alias]['content']);
+			$data[$this->alias]['content'] = preg_replace('/(\.\.\/)+/', '/', $data[$this->alias]['content']);
+			$this->data = $data;
+		}
 	}
 
 }
