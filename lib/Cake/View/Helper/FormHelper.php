@@ -1402,14 +1402,11 @@ class FormHelper extends AppHelper {
 			unset($options['default']);
 		}
 
-		$options += array('required' => false);
+		$options += array('value' => 1, 'required' => false);
 		$options = $this->_initInputField($fieldName, $options) + array('hiddenField' => true);
 		$value = current($this->value($valueOptions));
 		$output = '';
 
-		if (empty($options['value'])) {
-			$options['value'] = 1;
-		}
 		if (
 			(!isset($options['checked']) && !empty($value) && $value == $options['value']) ||
 			!empty($options['checked'])
@@ -1718,7 +1715,7 @@ class FormHelper extends AppHelper {
 	public function postButton($title, $url, $options = array()) {
 		$out = $this->create(false, array('id' => false, 'url' => $url));
 		if (isset($options['data']) && is_array($options['data'])) {
-			foreach ($options['data'] as $key => $value) {
+			foreach (Hash::flatten($options['data']) as $key => $value) {
 				$out .= $this->hidden($key, array('value' => $value, 'id' => false));
 			}
 			unset($options['data']);
@@ -1782,7 +1779,7 @@ class FormHelper extends AppHelper {
 
 		$fields = array();
 		if (isset($options['data']) && is_array($options['data'])) {
-			foreach ($options['data'] as $key => $value) {
+			foreach (Hash::flatten($options['data']) as $key => $value) {
 				$fields[$key] = $value;
 				$out .= $this->hidden($key, array('value' => $value, 'id' => false));
 			}
@@ -2081,14 +2078,14 @@ class FormHelper extends AppHelper {
  * limitation, but to avoid layout issues it still filters out some sensitive chars.
  *
  * @param string $value The value that should be transferred into a DOM ID suffix.
- * @param string $type Doctype to use. Defaults to html5. Anything else will use limited chars.
+ * @param string $type Doctype to use. Defaults to html4.
  * @return string DOM ID
  */
-	public function domIdSuffix($value, $type = 'html5') {
+	public function domIdSuffix($value, $type = 'html4') {
 		if ($type === 'html5') {
-			$value = str_replace(array('<', '>', ' ', '"', '\''), '_', $value);
+			$value = str_replace(array('@', '<', '>', ' ', '"', '\''), '_', $value);
 		} else {
-			$value = preg_replace('~[^\\pL\d-_]+~u', '_', $value);
+			$value = Inflector::camelize(Inflector::slug($value));
 		}
 		$value = Inflector::camelize($value);
 		$count = 1;
@@ -2119,7 +2116,11 @@ class FormHelper extends AppHelper {
 		$attributes = $this->_dateTimeSelected('day', $fieldName, $attributes);
 
 		if (strlen($attributes['value']) > 2) {
-			$attributes['value'] = date_create($attributes['value'])->format('d');
+			$date = date_create($attributes['value']);
+			$attributes['value'] = null;
+			if ($date) {
+				$attributes['value'] = $date->format('d');
+			}
 		} elseif ($attributes['value'] === false) {
 			$attributes['value'] = null;
 		}
@@ -2166,7 +2167,11 @@ class FormHelper extends AppHelper {
 		}
 
 		if (strlen($attributes['value']) > 4 || $attributes['value'] === 'now') {
-			$attributes['value'] = date_create($attributes['value'])->format('Y');
+			$date = date_create($attributes['value']);
+			$attributes['value'] = null;
+			if ($date) {
+				$attributes['value'] = $date->format('Y');
+			}
 		} elseif ($attributes['value'] === false) {
 			$attributes['value'] = null;
 		}
@@ -2202,7 +2207,11 @@ class FormHelper extends AppHelper {
 		$attributes = $this->_dateTimeSelected('month', $fieldName, $attributes);
 
 		if (strlen($attributes['value']) > 2) {
-			$attributes['value'] = date_create($attributes['value'])->format('m');
+			$date = date_create($attributes['value']);
+			$attributes['value'] = null;
+			if ($date) {
+				$attributes['value'] = $date->format('m');
+			}
 		} elseif ($attributes['value'] === false) {
 			$attributes['value'] = null;
 		}
@@ -2238,11 +2247,15 @@ class FormHelper extends AppHelper {
 		$attributes = $this->_dateTimeSelected('hour', $fieldName, $attributes);
 
 		if (strlen($attributes['value']) > 2) {
-			$Date = new DateTime($attributes['value']);
-			if ($format24Hours) {
-				$attributes['value'] = $Date->format('H');
-			} else {
-				$attributes['value'] = $Date->format('g');
+			try {
+				$date = new DateTime($attributes['value']);
+				if ($format24Hours) {
+					$attributes['value'] = $date->format('H');
+				} else {
+					$attributes['value'] = $date->format('g');
+				}
+			} catch (Exception $e) {
+				$attributes['value'] = null;
 			}
 		} elseif ($attributes['value'] === false) {
 			$attributes['value'] = null;
@@ -2281,7 +2294,11 @@ class FormHelper extends AppHelper {
 		$attributes = $this->_dateTimeSelected('min', $fieldName, $attributes);
 
 		if (strlen($attributes['value']) > 2) {
-			$attributes['value'] = date_create($attributes['value'])->format('i');
+			$date = date_create($attributes['value']);
+			$attributes['value'] = null;
+			if ($date) {
+				$attributes['value'] = $date->format('i');
+			}
 		} elseif ($attributes['value'] === false) {
 			$attributes['value'] = null;
 		}
@@ -2332,7 +2349,7 @@ class FormHelper extends AppHelper {
  * - `value` The selected value of the input.
  *
  * @param string $fieldName Prefix name for the SELECT element
- * @param array|string $attributes Array of Attributes
+ * @param array $attributes Array of Attributes
  * @return string Completed meridian select input
  * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/form.html#FormHelper::meridian
  */
@@ -2349,7 +2366,11 @@ class FormHelper extends AppHelper {
 						$attributes['value'] = date('a');
 					}
 				} else {
-					$attributes['value'] = date_create($attributes['value'])->format('a');
+					$date = date_create($attributes['value']);
+					$attributes['value'] = null;
+					if ($date) {
+						$attributes['value'] = $date->format('a');
+					}
 				}
 			}
 		}
@@ -2383,7 +2404,7 @@ class FormHelper extends AppHelper {
  * @param string $fieldName Prefix name for the SELECT element
  * @param string $dateFormat DMY, MDY, YMD, or null to not generate date inputs.
  * @param string $timeFormat 12, 24, or null to not generate time inputs.
- * @param array|string $attributes array of Attributes
+ * @param array $attributes Array of Attributes
  * @return string Generated set of select boxes for the date and time formats chosen.
  * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/form.html#FormHelper::dateTime
  */
