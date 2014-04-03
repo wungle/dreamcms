@@ -1,6 +1,6 @@
 
 
-<?php $this->startIfEmpty('tinymce_init'); ?> 
+<?php $this->startIfEmpty('tinymce_init'); ?>
 <?php $templates = FileUtility::getTinymceTemplateList(); ?>
 		<script type="text/javascript" src="<?php echo $this->Html->url('/js/vendors/tinymce/tinymce.min.js'); ?>"></script>
 		<script type="text/javascript">
@@ -20,8 +20,8 @@
 					content_css: '<?php echo $this->Html->url(Configure::read('DreamCMS.web_css')); ?>',
 					templates: [
 <?php for ($i=0,$c=count($templates); $i<$c; $i++) : ?>
-						{title: '<?php echo $templates[$i]['name']; ?>', description: '<?php echo $templates[$i]['description']; ?>', url: '<?php echo $this->Html->url($templates[$i]['url']); ?>'}<?php if ($i < $c-1) echo ','; ?> 
-<?php endfor; ?> 
+						{title: '<?php echo $templates[$i]['name']; ?>', description: '<?php echo $templates[$i]['description']; ?>', url: '<?php echo $this->Html->url($templates[$i]['url']); ?>'}<?php if ($i < $c-1) echo ','; ?>
+<?php endfor; ?>
 					],
 					autosave_ask_before_unload: false,
 					file_browser_callback: function(field_name, url, type, win) {
@@ -35,7 +35,7 @@
 
 						var cmsURL = '<?php echo $this->Html->url('/js/vendors/simogeo_filemanager/index.html'); ?>?&field_name='+field_name+'&lang='+tinymce.settings.language;
 
-						if(type == 'image') {           
+						if(type == 'image') {
 							cmsURL = cmsURL + "&type=images";
 						}
 
@@ -51,9 +51,9 @@
 				});
 			});
 		</script>
-<?php $this->end(); ?> 
+<?php $this->end(); ?>
 
-<?php $this->startIfEmpty('page_inline_scripts'); ?> 
+<?php $this->startIfEmpty('page_inline_scripts'); ?>
 			<script type="text/javascript">
 				var pageAttachmentTypes = {
 					count: <?php echo count($pageAttachmentTypes); ?>,
@@ -76,7 +76,7 @@
 						var form_input = this;
 						var form_id = $(form_input).attr('id');
 						//we could just set the data-provide="tag" of the element inside HTML, but IE8 fails!
-						if(! ( /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase())) ) 
+						if(! ( /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase())) )
 						{
 							var new_element = $(form_input).tag(
 							  {
@@ -97,7 +97,7 @@
 			</script>
 <?php $this->end(); ?>
 
-<?php $this->startIfEmpty('breadcrumb'); ?> 
+<?php $this->startIfEmpty('breadcrumb'); ?>
 						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home home-icon"></i>
@@ -105,28 +105,29 @@
 							</li>
 							<li class="active"><?php echo __($this->Routeable->humanizeController()); ?></li>
 						</ul><!-- .breadcrumb -->
-<?php $this->end(); ?> 
+<?php $this->end(); ?>
 
 <div class="row">
 	<div class="col-sm-12">
 		<h2><?php echo __('Edit ' . $this->Routeable->singularizeController()); ?></h2>
 		<div class="pages form">
-			<?php echo $this->Form->create('Page', array('role' => 'form')); ?> 
+			<?php echo $this->Form->create('Page', array('role' => 'form')); ?>
 				<fieldset>
 					<div class="form-group">
 						<?php echo $this->Form->input('id', array('class' => 'form-control')); ?>
 					</div><!-- .form-group -->
 					<div class="form-group">
 						<div class="input select">
-							<?php 
+							<?php
 								$no_parent_option = (isset($this->params->params['root_node']) && !empty($this->params->params['root_node'])) ? false : true;
 								echo $this->DreamcmsForm->treeSelect(array(
 									'model' => 'Page',
 									'field' => 'page_type_id',
 									'class' => 'form-control',
 									'tree' => $pageTypes,
-									'no_parent_option' => $no_parent_option
-								)); 
+									'no_parent_option' => $no_parent_option,
+									'current' => $this->request->data['Page']['page_type_id']
+								));
 							?>
 						</div>
 					</div><!-- .form-group -->
@@ -151,7 +152,7 @@
 
 					<div class="form-group">
 						<div>
-							<?php echo $this->Form->label('tags'); ?> 
+							<?php echo $this->Form->label('tags'); ?>
 						</div>
 						<div>
 							<?php echo $this->Form->input('tags', array('class' => 'form-field-tags', 'placeholder' => 'Enter keywords / tags here..', 'label' => false, 'required' => false)); ?>
@@ -163,10 +164,10 @@
 					</div><!-- .form-group -->
 					<div class="form-group">
 						<div>
-							<?php echo $this->Form->label('published_at'); ?> 
+							<?php echo $this->Form->label('published_at'); ?>
 						</div>
 						<div>
-							<?php echo $this->Form->input('published_at', array('type' => 'datetime', 'dateFormat' => 'DMY', 'timeFormat' => '24', 'label' => false)); ?> 
+							<?php echo $this->Form->input('published_at', array('type' => 'datetime', 'dateFormat' => 'DMY', 'timeFormat' => '24', 'label' => false)); ?>
 						</div>
 					</div><!-- .form-group -->
 
@@ -224,11 +225,11 @@
 				<fieldset>
 					<?php echo $this->Form->submit(__('Submit'), array('class' => 'btn btn-large btn-primary')); ?>
 				</fieldset>
-			<?php echo $this->Form->end(); ?> 
+			<?php echo $this->Form->end(); ?>
 		</div>
 
 		<p>&nbsp;</p>
 		<p>&nbsp;</p>
-		<?php echo $this->element('common/record_history', array('record_id' => $this->request->data['Page']['id'])); ?> 
+		<?php echo $this->element('common/record_history', array('record_id' => $this->request->data['Page']['id'])); ?>
 	</div>
 </div>

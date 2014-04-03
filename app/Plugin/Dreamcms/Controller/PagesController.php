@@ -31,7 +31,7 @@ class PagesController extends DreamcmsAppController {
 	public $uses = array(
 		'Dreamcms.PageAttachmentType',
 		'Dreamcms.PageAttachment',
-		'Dreamcms.PageType', 
+		'Dreamcms.PageType',
 		'Dreamcms.Page'
 	);
 
@@ -62,11 +62,11 @@ class PagesController extends DreamcmsAppController {
 
 		$this->Page->setLanguage(Configure::read('Config.language'));
 		$this->Page->recursive = 0;
-		
+
 		$paginate = $this->paginate;
 		$paginate['fields'] = array(
-			'Page.id', 'Page.page_type_id', 'Page.path', 'Page.name', 'Page.description', 'Page.tags', 
-			'Page.read_count', 'Page.published', 'Page.published_at', 'Page.deleted', 'Page.created', 
+			'Page.id', 'Page.page_type_id', 'Page.path', 'Page.name', 'Page.description', 'Page.tags',
+			'Page.read_count', 'Page.published', 'Page.published_at', 'Page.deleted', 'Page.created',
 			'Page.modified', 'PageType.id', 'PageType.parent_id', 'PageType.name'
 		);
 		$paginate['conditions'] = $this->Routeable->getAssociatedFindConditions('Page.page_type_id');
@@ -159,10 +159,10 @@ class PagesController extends DreamcmsAppController {
 
 			$options = array(
 				'fields' => array(
-					'Page.id', 'Page.page_type_id', 'Page.path', 'Page.name', 'Page.description', 'Page.tags', 'Page.content', 
+					'Page.id', 'Page.page_type_id', 'Page.path', 'Page.name', 'Page.description', 'Page.tags', 'Page.content',
 					'Page.read_count', 'Page.published', 'Page.published_at', 'Page.deleted', 'Page.created', 'Page.modified'
 				),
-				'conditions' => array('Page.' . $this->Page->primaryKey => $id), 
+				'conditions' => array('Page.' . $this->Page->primaryKey => $id),
 				'recursive' => 2
 			);
 
@@ -170,10 +170,12 @@ class PagesController extends DreamcmsAppController {
 			if (!$this->request->data)
 				throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
 
-			$rootPageTypes = $this->Routeable->getAssociatedFindConditions('Page.page_type_id');
-			$rootPageTypes = $rootPageTypes['Page.page_type_id'];
-			if ((count($rootPageTypes) > 0) && !in_array($this->request->data['Page']['page_type_id'], $rootPageTypes))
-				throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
+			if (isset($this->params->params['root_node'])) {
+				$rootPageTypes = $this->Routeable->getAssociatedFindConditions('Page.page_type_id');
+				$rootPageTypes = $rootPageTypes['Page.page_type_id'];
+				if ((count($rootPageTypes) > 0) && !in_array($this->request->data['Page']['page_type_id'], $rootPageTypes))
+					throw new NotFoundException(__('Invalid ' . strtolower($this->Routeable->singularize)));
+			}
 		}
 	}
 
