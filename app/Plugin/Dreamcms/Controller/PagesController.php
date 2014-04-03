@@ -69,6 +69,7 @@ class PagesController extends DreamcmsAppController {
 			'Page.read_count', 'Page.published', 'Page.published_at', 'Page.deleted', 'Page.created',
 			'Page.modified', 'PageType.id', 'PageType.parent_id', 'PageType.name'
 		);
+		$paginate['order'] = 'Page.id DESC';
 		$paginate['conditions'] = $this->Routeable->getAssociatedFindConditions('Page.page_type_id');
 		$this->paginate = $paginate;
 
