@@ -293,7 +293,7 @@ class DreamcmsAclComponent extends AclComponent
 		$url = explode('/', str_replace('//', '/', $url));
 		$result = array();
 
-		for ($i=0; $i<3; $i++)
+		for ($i=0; $i<4; $i++)
 		{
 			if (count($url) >= 3)
 				$result[] = implode('/', $url);
