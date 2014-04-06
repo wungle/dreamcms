@@ -10,6 +10,7 @@ Here is the list of features currently available in DreamCMS:
 * CMS Menu management
 * Files & File Types management
 * Languages management
+* Pages management
 * Photos & Photo Albums management
 * Thumbnail Types management
 * Web Settings / Configurations
@@ -97,7 +98,5 @@ $ ./cake bake view --plugin PluginNameInCamelCase
 
 ATTENTION :
 -----------
-
-* The DreamCMS dashboard is currently unavailable. Please change your url to : `http://your-dreamcms-installation-path/dreamcms/admins` after login. The DreamCMS dashboard will display any information about Google Analytics report and Admins Timeline.
 
 * DreamCMS is currently not capable to be installed in a suburl, such like: `http://my-domain/myapp/`, this feature will be enabled soon.
