@@ -31,11 +31,16 @@ class Filemanager {
 	protected $separator = 'userfiles'; // @todo fix keep it or not?
 
 	public function __construct($extraConfig = '') {
-			
+		
+		// getting default config file
+		$content = file_get_contents("../../scripts/filemanager.config.js.default");
+		$config_default = json_decode($content, true);
+		
+		// getting user config file
 		$content = file_get_contents("../../scripts/filemanager.config.js");
 		$config = json_decode($content, true);
-			
-		$this->config = $config;
+		
+		$this->config = array_replace_recursive ($config_default, $config);
 
 		// override config options if needed
 		if(!empty($extraConfig)) {
@@ -85,7 +90,7 @@ class Filemanager {
 	// $extraconfig should be formatted as json config array.
 	public function setup($extraconfig) {
 
-		$this->config = array_merge_recursive($this->config, $extraconfig);
+		$this->config = array_replace_recursive($this->config, $extraconfig);
 			
 	}
 
@@ -140,11 +145,15 @@ class Filemanager {
 			return true;
 		}
 	}
-	public function postvar($var) {
+	public function postvar($var, $sanitize = true) {
 		if(!isset($_POST[$var]) || $_POST[$var]=='') {
 			$this->error(sprintf($this->lang('INVALID_VAR'),$var));
 		} else {
-			$this->post[$var] = $_POST[$var];
+			if($sanitize) {
+				$this->post[$var] = $this->sanitize($_POST[$var]);
+			} else {
+				$this->post[$var] = $_POST[$var];
+			}
 			return true;
 		}
 	}
@@ -229,8 +238,8 @@ class Filemanager {
 					$this->item['properties'] = $this->properties;
 					$this->get_file_info($this->get['path'] . $file, true);
 
-					if(!isset($this->params['type']) || (isset($this->params['type']) && strtolower($this->params['type'])=='images' && in_array(strtolower($this->item['filetype']),$this->config['images']['imagesExt']))) {
-						if($this->config['upload']['imagesOnly']== false || ($this->config['upload']['imagesOnly']== true && in_array(strtolower($this->item['filetype']),$this->config['images']['imagesExt']))) {
+					if(!isset($this->params['type']) || (isset($this->params['type']) && strtolower($this->params['type'])=='images' && in_array(strtolower($this->item['filetype']),array_map('strtolower', $this->config['images']['imagesExt'])))) {
+						if($this->config['upload']['imagesOnly']== false || ($this->config['upload']['imagesOnly']== true && in_array(strtolower($this->item['filetype']),array_map('strtolower', $this->config['images']['imagesExt'])))) {
 							$array[$this->get['path'] . $file] = array(
 									'Path'=>$this->get['path'] . $file,
 									'Filename'=>$this->item['filename'],
@@ -250,11 +259,68 @@ class Filemanager {
 
 		return $array;
 	}
+	
+	
+	public function editfile() {
+
+		$current_path = $this->getFullPath();
+		
+		if(!$this->isValidPath($current_path) || !$this->isEditable($current_path)) {
+			$this->error("No way.");
+		}
+
+		$this->__log(__METHOD__ . ' - editing file '. $current_path);
+
+		$content = file_get_contents($current_path);
+		$content = htmlspecialchars($content);
+
+		if(!$content) {
+			$this->error(sprintf($this->lang('ERROR_OPENING_FILE')));
+		}
+
+		$array = array(
+				'Error'=>"",
+				'Code'=>0,
+				'Path'=>$this->get['path'],
+				'Content'=>$this->formatPath($content)
+		);
+		
+		return $array;
+	}
+
+	public function savefile() {
+	
+		$current_path = $this->getFullPath($this->post['path']);
+	
+		if(!$this->isValidPath($current_path) || !$this->isEditable($current_path)) {
+			$this->error("No way.");
+		}
+	
+		if(!is_writable($current_path)) {
+			$this->error(sprintf($this->lang('ERROR_WRITING_PERM')));
+		}
+		
+		$this->__log(__METHOD__ . ' - saving file '. $current_path);
+		
+		$content =  htmlspecialchars_decode($this->post['content']);
+		$r = file_put_contents($current_path, $content, LOCK_EX);
+
+		if(!is_numeric($r)) {
+			$this->error(sprintf($this->lang('ERROR_SAVING_FILE')));
+		}
+	
+		$array = array(
+					'Error'=>"",
+					'Code'=>0,
+					'Path'=>$this->formatPath($this->post['path'])
+			);
+		
+		return $array;
+	}
 
 	public function rename() {
 
 		$suffix='';
-
 
 		if(substr($this->get['old'],-1,1)=='/') {
 			$this->get['old'] = substr($this->get['old'],0,(strlen($this->get['old'])-1));
@@ -380,13 +446,20 @@ class Filemanager {
 	public function delete() {
 
 		$current_path = $this->getFullPath();
+		$thumbnail_path = $this->get_thumbnail_path($current_path);
 			
 		if(!$this->isValidPath($current_path)) {
 			$this->error("No way.");
 		}
 			
 		if(is_dir($current_path)) {
+			
 			$this->unlinkRecursive($current_path);
+			
+			// we remove thumbnails if needed
+			$this->__log(__METHOD__ . ' - deleting thumbnails folder '. $thumbnail_path);
+			$this->unlinkRecursive($thumbnail_path);
+			
 			$array = array(
 					'Error'=>"",
 					'Code'=>0,
@@ -397,7 +470,13 @@ class Filemanager {
 			return $array;
 
 		} else if(file_exists($current_path)) {
+			
 			unlink($current_path);
+			
+			// delete thumbail if exists
+			$this->__log(__METHOD__ . ' - deleting thumbnail file '. $thumbnail_path);
+			if(file_exists($thumbnail_path)) unlink($thumbnail_path);
+			
 			$array = array(
 					'Error'=>"",
 					'Code'=>0,
@@ -411,21 +490,131 @@ class Filemanager {
 			$this->error(sprintf($this->lang('INVALID_DIRECTORY_OR_FILE')));
 		}
 	}
+	
+	public function replace() {
+		
+		$this->setParams();
+
+		if(!isset($_FILES['fileR']) || !is_uploaded_file($_FILES['fileR']['tmp_name'])) {
+			
+			// if fileSize limit set by the user is greater than size allowed in php.ini file, we apply server restrictions
+			// and log a warning into file
+			if($this->config['upload']['fileSizeLimit'] > $this->getMaxUploadFileSize()) {
+				$this->__log(__METHOD__ . ' [WARNING] : file size limit set by user is greater than size allowed in php.ini file : '. $this->config['upload']['fileSizeLimit']. $this->lang('mb') .' > '. $this->getMaxUploadFileSize(). $this->lang('mb'). '.');
+				$this->config['upload']['fileSizeLimit'] = $this->getMaxUploadFileSize();
+				$this->error(sprintf($this->lang('UPLOAD_FILES_SMALLER_THAN'),$this->config['upload']['fileSizeLimit'] . $this->lang('mb')),true);
+			}
+			
+			$this->error(sprintf($this->lang('INVALID_FILE_UPLOAD') . ' '. sprintf($this->lang('UPLOAD_FILES_SMALLER_THAN'),$this->config['upload']['fileSizeLimit'] . $this->lang('mb'))),true);
+		}
+		// we determine max upload size if not set
+		if($this->config['upload']['fileSizeLimit'] == 'auto') {
+			$this->config['upload']['fileSizeLimit'] = $this->getMaxUploadFileSize();
+		}
+
+		if($_FILES['fileR']['size'] > ($this->config['upload']['fileSizeLimit'] * 1024 * 1024)) {
+			$this->error(sprintf($this->lang('UPLOAD_FILES_SMALLER_THAN'),$this->config['upload']['fileSizeLimit'] . $this->lang('mb')),true);
+		}
+		
+		// we check the given file has the same extension as the old one
+		if(strtolower(pathinfo($_FILES['fileR']['name'], PATHINFO_EXTENSION)) != strtolower(pathinfo($this->post['newfilepath'], PATHINFO_EXTENSION))) {
+			$this->error(sprintf($this->lang('ERROR_REPLACING_FILE') . ' '. pathinfo($this->post['newfilepath'], PATHINFO_EXTENSION)),true);
+		}
+		
+		if(!$this->isAllowedFileType($_FILES['fileR']['name'])) {
+			$this->error(sprintf($this->lang('INVALID_FILE_TYPE')),true);
+		}
+		
+		// we check if extension is allowed regarding the security Policy settings
+		if(!$this->isAllowedFileType($_FILES['fileR']['name'])) {
+			$this->error(sprintf($this->lang('INVALID_FILE_TYPE')),true);
+		}
+		
+		// we check if only images are allowed
+		if($this->config['upload']['imagesOnly'] || (isset($this->params['type']) && strtolower($this->params['type'])=='images')) {
+			if(!($size = @getimagesize($_FILES['fileR']['tmp_name']))){
+				$this->error(sprintf($this->lang('UPLOAD_IMAGES_ONLY')),true);
+			}
+			if(!in_array($size[2], array(1, 2, 3, 7, 8))) {
+				$this->error(sprintf($this->lang('UPLOAD_IMAGES_TYPE_JPEG_GIF_PNG')),true);
+			}
+		}
+
+		$current_path = $this->getFullPath($this->post['newfilepath']);
+
+		if(!$this->isValidPath($current_path)) {
+			$this->error("No way.");
+		}
+
+		move_uploaded_file($_FILES['fileR']['tmp_name'], $current_path);
+		
+		// we delete thumbnail if file is image and thumbnail already
+		if($this->is_image($current_path) && file_exists($this->get_thumbnail($current_path))) {
+			unlink($this->get_thumbnail($current_path));
+		}
+
+		// automatically resize image if it's too big
+		$imagePath = $current_path;
+		if($this->is_image($imagePath) && $this->config['images']['resize']['enabled']) {
+			if ($size = @getimagesize($imagePath)){
+				if ($size[0] > $this->config['images']['resize']['maxWidth'] || $size[1] > $this->config['images']['resize']['maxHeight']) {
+					require_once('./inc/vendor/wideimage/lib/WideImage.php');
+					
+					$image = WideImage::load($imagePath);
+					$resized = $image->resize($this->config['images']['resize']['maxWidth'], $this->config['images']['resize']['maxHeight'], 'inside');
+					$resized->saveToFile($imagePath);
+					
+					$this->__log(__METHOD__ . ' - resizing image : '. $current_path);
+				}
+			}
+		}
+
+		chmod($current_path, 0644);
+
+		$response = array(
+				'Path'=>dirname($this->post['newfilepath']),
+				'Name'=>basename($this->post['newfilepath']),
+				'Error'=>"",
+				'Code'=>0
+		);
+
+		$this->__log(__METHOD__ . ' - replacing file '. $current_path);
+
+		echo '<textarea>' . json_encode($response) . '</textarea>';
+		die();
+	}
 
 	public function add() {
 			
 		$this->setParams();
 
 		if(!isset($_FILES['newfile']) || !is_uploaded_file($_FILES['newfile']['tmp_name'])) {
-			$this->error(sprintf($this->lang('INVALID_FILE_UPLOAD')),true);
+			
+			// if fileSize limit set by the user is greater than size allowed in php.ini file, we apply server restrictions
+			// and log a warning into file
+			if($this->config['upload']['fileSizeLimit'] > $this->getMaxUploadFileSize()) {
+				$this->__log(__METHOD__ . ' [WARNING] : file size limit set by user is greater than size allowed in php.ini file : '. $this->config['upload']['fileSizeLimit'] . 'Mb > '. $this->getMaxUploadFileSize() .'Mb.');
+				$this->config['upload']['fileSizeLimit'] = $this->getMaxUploadFileSize();
+				$this->error(sprintf($this->lang('UPLOAD_FILES_SMALLER_THAN'),$this->config['upload']['fileSizeLimit'] . $this->lang('mb')),true);
+			}
+			
+			$this->error(sprintf($this->lang('INVALID_FILE_UPLOAD') . ' '. sprintf($this->lang('UPLOAD_FILES_SMALLER_THAN'),$this->config['upload']['fileSizeLimit'] . $this->lang('mb'))),true);
 		}
 		// we determine max upload size if not set
 		if($this->config['upload']['fileSizeLimit'] == 'auto') {
 			$this->config['upload']['fileSizeLimit'] = $this->getMaxUploadFileSize();
 		}
+
 		if($_FILES['newfile']['size'] > ($this->config['upload']['fileSizeLimit'] * 1024 * 1024)) {
-			$this->error(sprintf($this->lang('UPLOAD_FILES_SMALLER_THAN'),$this->config['upload']['size'] . 'Mb'),true);
+			$this->error(sprintf($this->lang('UPLOAD_FILES_SMALLER_THAN'),$this->config['upload']['fileSizeLimit'] . $this->lang('mb')),true);
 		}
+		
+		// we check if extension is allowed regarding the security Policy settings
+		if(!$this->isAllowedFileType($_FILES['newfile']['name'])) {
+			$this->error(sprintf($this->lang('INVALID_FILE_TYPE')),true);
+		}
+		
+		// we check if only images are allowed
 		if($this->config['upload']['imagesOnly'] || (isset($this->params['type']) && strtolower($this->params['type'])=='images')) {
 			if(!($size = @getimagesize($_FILES['newfile']['tmp_name']))){
 				$this->error(sprintf($this->lang('UPLOAD_IMAGES_ONLY')),true);
@@ -446,6 +635,23 @@ class Filemanager {
 			$_FILES['newfile']['name'] = $this->checkFilename($current_path,$_FILES['newfile']['name']);
 		}
 		move_uploaded_file($_FILES['newfile']['tmp_name'], $current_path . $_FILES['newfile']['name']);
+
+		// automatically resize image if it's too big
+		$imagePath = $current_path . $_FILES['newfile']['name'];
+		if($this->is_image($imagePath) && $this->config['images']['resize']['enabled']) {
+			if ($size = @getimagesize($imagePath)){
+				if ($size[0] > $this->config['images']['resize']['maxWidth'] || $size[1] > $this->config['images']['resize']['maxHeight']) {
+					require_once('./inc/vendor/wideimage/lib/WideImage.php');
+					
+					$image = WideImage::load($imagePath);
+					$resized = $image->resize($this->config['images']['resize']['maxWidth'], $this->config['images']['resize']['maxHeight'], 'inside');
+					$resized->saveToFile($imagePath);
+					
+					$this->__log(__METHOD__ . ' - resizing image : '. $_FILES['newfile']['name']. ' into '. $current_path);
+				}
+			}
+		}
+
 		chmod($current_path . $_FILES['newfile']['name'], 0644);
 
 		$response = array(
@@ -494,6 +700,11 @@ class Filemanager {
 		if(!$this->isValidPath($current_path)) {
 			$this->error("No way.");
 		}
+		
+		// we check if extension is allowed regarding the security Policy settings
+		if(!$this->isAllowedFileType(basename($current_path))) {
+			$this->error(sprintf($this->lang('INVALID_FILE_TYPE')),true);
+		}
 
 		if(isset($this->get['path']) && file_exists($current_path)) {
 			header("Content-type: application/force-download");
@@ -502,6 +713,8 @@ class Filemanager {
 			header("Content-length: ".filesize($current_path));
 			header('Content-Type: application/octet-stream');
 			header('Content-Disposition: attachment; filename="' . basename($current_path) . '"');
+			ob_end_clean();
+			flush();
 			readfile($current_path);
 			$this->__log(__METHOD__ . ' - downloading '. $current_path);
 			exit();
@@ -524,7 +737,7 @@ class Filemanager {
 				$returned_path = $current_path;
 			}
 			
-			header("Content-type: image/" .$ext = pathinfo($returned_path, PATHINFO_EXTENSION));
+			header("Content-type: image/" . strtolower(pathinfo($returned_path, PATHINFO_EXTENSION)));
 			header("Content-Transfer-Encoding: Binary");
 			header("Content-length: ".filesize($returned_path));
 			header('Content-Disposition: inline; filename="' . basename($returned_path) . '"');
@@ -592,13 +805,13 @@ class Filemanager {
 
 			$this->item['preview'] = $this->config['icons']['path'] . $this->config['icons']['directory'];
 
-		} else if(in_array(strtolower($this->item['filetype']),$this->config['images']['imagesExt'])) {
+		} else if(in_array(strtolower($this->item['filetype']),array_map('strtolower', $this->config['images']['imagesExt']))) {
 			
 			// svg should not be previewed as raster formats images
 			if($this->item['filetype'] == 'svg') {
 				$this->item['preview'] = $current_path;
 			} else {
-				$this->item['preview'] = 'connectors/php/filemanager.php?mode=preview&path='. rawurlencode($current_path);
+				$this->item['preview'] = 'connectors/php/filemanager.php?mode=preview&path='. rawurlencode($current_path).'&'. time();
 				if($thumbnail) $this->item['preview'] .= '&thumbnail=true';
 			}
 			//if(isset($get['getsize']) && $get['getsize']=='true') {
@@ -756,6 +969,32 @@ private function unlinkRecursive($dir,$deleteRootToo=true) {
 	return;
 }
 
+/**
+ * isAllowedFile()
+ * check if extension is allowed regarding the security Policy / Restrictions settings
+ * @param string $file
+ */
+private function isAllowedFileType($file) {
+	
+	$path_parts = pathinfo($file);
+	
+	$exts = array_map('strtolower', $this->config['security']['uploadRestrictions']);
+	
+	if($this->config['security']['uploadPolicy'] == 'DISALLOW_ALL') {
+			
+		if(!in_array(strtolower($path_parts['extension']), $exts))
+			$this->error(sprintf($this->lang('INVALID_FILE_TYPE')),true);
+	}
+	if($this->config['security']['uploadPolicy'] == 'ALLOW_ALL') {
+	
+		if(in_array(strtolower($path_parts['extension']), $exts))
+			$this->error(sprintf($this->lang('INVALID_FILE_TYPE')),true);
+	}
+	
+	return true;
+	
+}
+
 private function cleanString($string, $allowed = array()) {
 	$allow = null;
 
@@ -773,7 +1012,7 @@ private function cleanString($string, $allowed = array()) {
 			'Þ'=>'B', 'ß'=>'Ss','à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c',
 			'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n',
 			'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ő'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'ű'=>'u',
-			'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y', 'Ŕ'=>'R', 'ŕ'=>'r', ' '=>'_', "'"=>'_', '/'=>''
+			'û'=>'u', 'ü'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y', 'Ŕ'=>'R', 'ŕ'=>'r', ' '=>'_', "'"=>'_', '/'=>''
 	);
 
 	if (is_array($string)) {
@@ -802,6 +1041,30 @@ private function cleanString($string, $allowed = array()) {
 }
 
 /**
+ * Return Thumbnail path from given path
+ * works for both file and dir path
+ * @param string $path
+ */
+private function get_thumbnail_path($path) {
+		
+	$a = explode($this->separator, $path);
+
+	$path_parts = pathinfo($path);
+
+	$thumbnail_path = $a[0].$this->separator.'/'.$this->cachefolder.dirname(end($a)).'/';
+	$thumbnail_name = $path_parts['filename'] . '_' . $this->thumbnail_width . 'x' . $this->thumbnail_height . 'px.' . $path_parts['extension'];
+	
+	if(is_dir($path)) {
+		$thumbnail_fullpath = $thumbnail_path;
+	} else {
+		$thumbnail_fullpath = $thumbnail_path.$thumbnail_name;
+	}
+
+	return $thumbnail_fullpath;
+
+}
+
+/**
  * For debugging just call
  * the direct URL http://localhost/Filemanager/connectors/php/filemanager.php?mode=preview&path=%2FFilemanager%2Fuserfiles%2FMy%20folder3%2Fblanches_neiges.jPg&thumbnail=true
  * and echo vars below
@@ -811,16 +1074,7 @@ private function get_thumbnail($path) {
 	
 	require_once('./inc/vendor/wideimage/lib/WideImage.php');
 	
-
-	// echo $path.'<br>';
-	$a = explode($this->separator, $path);
-	
-	$path_parts = pathinfo($path);
-	
-	// $thumbnail_path = $path_parts['dirname'].'/'.$this->cachefolder;
-	$thumbnail_path = $a[0].$this->separator.'/'.$this->cachefolder.dirname(end($a)).'/';
-	$thumbnail_name = $path_parts['filename'] . '_' . $this->thumbnail_width . 'x' . $this->thumbnail_height . 'px.' . $path_parts['extension'];
-	$thumbnail_fullpath = $thumbnail_path.$thumbnail_name;
+	$thumbnail_fullpath = $this->get_thumbnail_path($path);
 	
 	// echo $thumbnail_fullpath.'<br>';
 	
@@ -828,8 +1082,8 @@ private function get_thumbnail($path) {
 	if(!file_exists($thumbnail_fullpath)) {
 		
 		// create folder if it does not exist
-		if(!file_exists($thumbnail_path)) {
-			mkdir($thumbnail_path, 0755, true);
+		if(!file_exists(dirname($thumbnail_fullpath))) {
+			mkdir(dirname($thumbnail_fullpath), 0755, true);
 		}
 		$image = WideImage::load($path);
 		$resized = $image->resize($this->thumbnail_width, $this->thumbnail_height, 'outside')->crop('center', 'center', $this->thumbnail_width, $this->thumbnail_height);
@@ -896,12 +1150,43 @@ private function availableLanguages() {
 	}
 }
 
+private function is_image($path) {
+	
+	$a = getimagesize($path);
+	$image_type = $a[2];
+
+	if(in_array($image_type , array(IMAGETYPE_GIF , IMAGETYPE_JPEG ,IMAGETYPE_PNG , IMAGETYPE_BMP))) {
+		return true;
+	}
+	return false;
+}
+
+private function isEditable($file) {
+
+	$path_parts = pathinfo($file);
+	
+	$exts = array_map('strtolower', $this->config['edit']['editExt']);
+	
+	if(in_array($path_parts['extension'], $exts)) {
+		
+		return true;
+		
+	} else {
+		
+		return false;
+		
+	}
+
+	
+}
+
+
 private function __log($msg) {
 		
 	if($this->logger == true) {
 
 		$fp = fopen($this->logfile, "a");
-		$str = "[" . date("d/m/Y h:i:s", mktime()) . "] " . $msg;
+		$str = "[" . date("d/m/Y h:i:s", mktime()) . "]#".  getUserIP() . "#" . $msg;
 		fwrite($fp, $str . PHP_EOL);
 		fclose($fp);
 	}

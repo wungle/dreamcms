@@ -6,6 +6,7 @@
         "defaultViewMode": "grid",
         "autoload": true,
         "showFullPath": false,
+        "showTitleAttr": false,
         "browseOnly": false,
         "showConfirmation": true,
         "showThumbs": true,
@@ -19,7 +20,7 @@
         "fileRoot": false,
         "relPath": false,
         "logger": false,
-        "capabilities": ["select", "download", "rename", "move", "delete"],
+        "capabilities": ["select", "download", "rename", "move", "delete", "replace"],
         "plugins": []
     },
     "security": {
@@ -42,9 +43,11 @@
             "xlsx",
             "ppt",
             "pptx",
+            "csv",
             "ogv",
             "mp4",
             "webm",
+            "m4v",
             "ogg",
             "mp3",
             "wav"
@@ -57,7 +60,8 @@
     },
     "exclude": {
         "unallowed_files": [
-            ".htaccess"
+            ".htaccess",
+            "web.config"
         ],
         "unallowed_dirs": [
             "_thumbs",
@@ -74,14 +78,20 @@
             "gif",
             "png",
             "svg"
-        ]
+        ],
+        "resize": {
+        	"enabled":true,
+        	"maxWidth": 1280,
+            "maxHeight": 1024
+        }
     },
     "videos": {
         "showVideoPlayer": true,
         "videosExt": [
             "ogv",
             "mp4",
-            "webm"
+            "webm",
+            "m4v"
         ],
         "videosPlayerWidth": 400,
         "videosPlayerHeight": 222
@@ -92,6 +102,17 @@
             "ogg",
             "mp3",
             "wav"
+        ]
+    },
+    "edit": {
+        "enabled": true,
+        "lineNumbers": true,
+        "lineWrapping": true,
+        "codeHighlight": false,
+        "theme": "elegant",
+        "editExt": [
+            "txt",
+            "csv"
         ]
     },
     "extras": {
