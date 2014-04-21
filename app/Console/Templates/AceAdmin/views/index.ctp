@@ -17,7 +17,7 @@
  */
 ?>
 
-<?php echo "<?php \$this->startIfEmpty('breadcrumb'); ?>"; ?> 
+<?php echo "<?php \$this->startIfEmpty('breadcrumb'); ?>"; ?>
 						<ul class="breadcrumb">
 							<li>
 								<i class="icon-home home-icon"></i>
@@ -25,7 +25,7 @@
 							</li>
 							<li class="active"><?php echo "<?php echo __('{$pluralHumanName}'); ?>"; ?></li>
 						</ul><!-- .breadcrumb -->
-<?php echo "<?php \$this->end(); ?>"; ?> 
+<?php echo "<?php \$this->end(); ?>"; ?>
 
 						<div class="page-header">
 							<h1>
@@ -35,7 +35,7 @@
 
 						<div>
 							<div class="col-sm-6">
-								<?php echo '<?php echo $this->element(\'common/data_finder\'); ?>'; ?> 
+								<?php echo '<?php echo $this->element(\'common/data_finder\'); ?>'; ?>
 							</div>
 							<div class="col-sm-6" align="right">
 								<?php echo "<?php echo \$this->Html->link(\$this->Html->tag('i', ' ' . __('New ".$singularHumanName."'), array('class' => 'icon-plus bigger-120')), array('action' => 'add'), array('class' => 'btn btn-info dt-btns', 'escape' => false)); ?> &nbsp; \n"; ?>
@@ -54,14 +54,14 @@
 <?php $x = 0; ?>
 <?php foreach ($fields as $field): ?>
 <?php if ($x < 2) : ?>
-														<th><?php echo "<?php echo \$this->Paginator->sort('{$field}'); ?>"; ?></th> 
+														<th><?php echo "<?php echo \$this->Paginator->sort('{$field}'); ?>"; ?></th>
 <?php else : ?>
-														<th class="hidden-480"><?php echo "<?php echo \$this->Paginator->sort('{$field}'); ?>"; ?></th> 
+														<th class="hidden-480"><?php echo "<?php echo \$this->Paginator->sort('{$field}'); ?>"; ?></th>
 <?php endif; ?>
 <?php $x++; ?>
-<?php endforeach; ?> 
+<?php endforeach; ?>
 														<th class="center">
-															<?php echo "<?php echo __('Actions'); ?>"; ?> 
+															<?php echo "<?php echo __('Actions'); ?>"; ?>
 														</th>
 													</tr>
 												</thead>
@@ -100,7 +100,7 @@
 
 		echo $line_begin . "</tr>\n";
 	echo "<?php endforeach; ?>\n";
-?> 
+?>
 
 												</tbody>
 											</table>
@@ -125,10 +125,10 @@
 									<ul class="pagination">
 										<?php
 											echo "<?php\n";
-											echo "\t\t\t\t\t\techo \$this->Paginator->prev('<i class=\"icon-double-angle-left\"></i>', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li', 'disabledTag' => 'a', 'escape' => false));\n";
-											echo "\t\t\t\t\t\techo \$this->Paginator->numbers(array('separator' => '', 'currentTag' => 'a', 'tag' => 'li', 'currentClass' => 'disabled'));\n";
-											echo "\t\t\t\t\t\techo \$this->Paginator->next('<i class=\"icon-double-angle-right\"></i>', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li', 'disabledTag' => 'a', 'escape' => false));\n";
-											echo "\t\t\t\t\t?>\n";
+											echo "\t\t\t\t\t\t\t\t\t\t\techo \$this->Paginator->prev('<i class=\"icon-double-angle-left\"></i>', array('tag' => 'li', 'escape' => false), null, array('class' => 'disabled', 'tag' => 'li', 'disabledTag' => 'a', 'escape' => false));\n";
+											echo "\t\t\t\t\t\t\t\t\t\t\techo \$this->Paginator->numbers(array('separator' => '', 'currentTag' => 'a', 'tag' => 'li', 'currentClass' => 'disabled'));\n";
+											echo "\t\t\t\t\t\t\t\t\t\t\techo \$this->Paginator->next('<i class=\"icon-double-angle-right\"></i>', array('tag' => 'li', 'escape' => false), null, array('class' => 'disabled', 'tag' => 'li', 'disabledTag' => 'a', 'escape' => false));\n";
+											echo "\t\t\t\t\t\t\t\t\t\t?>\n";
 										?>
 									</ul>
 								</div><!-- /.pagination -->
